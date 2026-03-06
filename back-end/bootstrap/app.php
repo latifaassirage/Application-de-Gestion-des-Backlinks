@@ -17,6 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // لا شيء هنا حاليا
+        // لا شيء
     })
     ->create();

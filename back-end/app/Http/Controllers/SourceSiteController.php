@@ -18,7 +18,7 @@ class SourceSiteController extends Controller
             'domain'=>'required|string|unique:source_sites,domain',
             'quality_score'=>'required|integer|min:1|max:5',
             'dr'=>'nullable|integer',
-            'estimated_traffic'=>'nullable|string',
+            'traffic_estimated'=>'nullable|integer',
             'notes'=>'nullable|string',
         ]);
 
@@ -38,7 +38,7 @@ class SourceSiteController extends Controller
             'domain'=>'sometimes|required|string|unique:source_sites,domain,'.$id,
             'quality_score'=>'sometimes|required|integer|min:1|max:5',
             'dr'=>'nullable|integer',
-            'estimated_traffic'=>'nullable|string',
+            'traffic_estimated'=>'nullable|integer',
             'notes'=>'nullable|string',
         ]);
         $source->update($data);

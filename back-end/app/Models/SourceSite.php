@@ -9,7 +9,7 @@ class SourceSite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['domain', 'quality_score', 'dr', 'estimated_traffic', 'notes'];
+    protected $fillable = ['domain', 'quality_score', 'dr', 'traffic_estimated', 'notes'];
 
     public function backlinks()
     {

@@ -11,7 +11,7 @@ class Backlink extends Model
 
     protected $fillable = [
         'client_id', 'source_site_id', 'type', 'target_url', 'anchor_text',
-        'placement_url', 'date_added', 'status', 'cost'
+        'placement_url', 'date_added', 'status', 'cost', 'quality_score', 'traffic'
     ];
 
     public function client()
@@ -21,6 +21,6 @@ class Backlink extends Model
 
     public function sourceSite()
     {
-        return $this->belongsTo(SourceSite::class);
+        return $this->belongsTo(SourceSite::class, 'source_site_id');
     }
 }
