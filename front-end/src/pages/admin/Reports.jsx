@@ -57,73 +57,58 @@ export default function Reports() {
   };
 
   const generateReport = useCallback(() => {
-    // Auto-set dates for All Clients if not specified
-    if (!filters.client_id && (!filters.start_date || !filters.end_date)) {
-      const allDates = backlinks
-        .map(b => new Date(b.date_added || b.created_at || b.date))
-        .filter(date => !isNaN(date.getTime()))
-        .sort((a, b) => a - b);
-      
-      if (allDates.length > 0) {
-        const earliestDate = allDates[0].toISOString().split('T')[0];
-        setFilters(prev => ({
-          ...prev,
-          start_date: earliestDate,
-          end_date: new Date().toISOString().split('T')[0]
-        }));
-        // Don't return, continue with auto-filled dates
-      }
+    // Only generate if we have data
+    if (!backlinks.length || !sources.length) {
+      console.log("⏳ Waiting for data...");
+      return;
     }
-
-    // Auto-set latest date for Specific Client if not specified
-    if (filters.client_id && !filters.last_update_date) {
-      const clientId = parseInt(filters.client_id);
-      const clientBacklinks = backlinks.filter(b => b.client_id === clientId);
-      if (clientBacklinks.length > 0) {
-        const dates = clientBacklinks
-          .map(b => new Date(b.date_added || b.created_at || b.updated_at || b.date))
-          .filter(date => !isNaN(date.getTime()))
-          .sort((a, b) => b - a); // Sort descending (latest first)
-        
-        if (dates.length > 0) {
-          const latestDate = dates[0].toISOString().split('T')[0];
-          setFilters(prev => ({
-            ...prev,
-            last_update_date: latestDate
-          }));
-          // Don't return, continue with auto-filled date
-        }
-      }
-    }
-
+    
+    console.log("🔄 Generating report...");
+    console.log("📊 Initial data:", {
+      totalBacklinks: backlinks.length,
+      filters: filters
+    });
+    
     let filteredBacklinks = backlinks;
 
     // Filter by client - ensure integer comparison
     if (filters.client_id) {
       const clientId = parseInt(filters.client_id);
+      console.log(`🔍 Filtering by client ID: ${clientId}`);
       filteredBacklinks = filteredBacklinks.filter(b => b.client_id === clientId);
+      console.log(`✅ Filtered result: ${filteredBacklinks.length} backlinks for client ${clientId}`);
+    } else {
+      console.log("📋 No client filter - showing all backlinks");
     }
 
     // Filter by date ranges - use consistent date field
     if (filters.start_date) {
+      const startDate = new Date(filters.start_date);
       filteredBacklinks = filteredBacklinks.filter(b => 
-        new Date(b.date_added || b.created_at || b.date) >= new Date(filters.start_date)
+        new Date(b.date_added || b.created_at || b.date) >= startDate
       );
+      console.log(`📅 Filtered by start date ${filters.start_date}: ${filteredBacklinks.length} backlinks`);
     }
 
     if (filters.end_date) {
+      const endDate = new Date(filters.end_date);
       filteredBacklinks = filteredBacklinks.filter(b => 
-        new Date(b.date_added || b.created_at || b.date) <= new Date(filters.end_date)
+        new Date(b.date_added || b.created_at || b.date) <= endDate
       );
+      console.log(`📅 Filtered by end date ${filters.end_date}: ${filteredBacklinks.length} backlinks`);
     }
 
     // Filter by last update date (for specific client) - use consistent date field
     if (filters.client_id && filters.last_update_date) {
+      const lastUpdateDate = new Date(filters.last_update_date);
       filteredBacklinks = filteredBacklinks.filter(b => {
         const updateDate = new Date(b.date_added || b.created_at || b.updated_at || b.date);
-        return updateDate <= new Date(filters.last_update_date);
+        return updateDate <= lastUpdateDate;
       });
+      console.log(`📅 Filtered by last update date ${filters.last_update_date}: ${filteredBacklinks.length} backlinks`);
     }
+
+    console.log(`🎯 Final filtered backlinks: ${filteredBacklinks.length}`);
 
     // Get dynamic quality scores from source websites
     const enrichedBacklinks = filteredBacklinks.map(backlink => {
@@ -131,21 +116,19 @@ export default function Reports() {
       return {
         ...backlink,
         dynamic_quality_score: source?.quality_score || backlink.quality_score || 3,
-        source_domain: source?.domain || 'Unknown'
       };
     });
 
-    // Calculate statistics
     const total = enrichedBacklinks.length;
     const live = enrichedBacklinks.filter(b => b.status === 'Live').length;
     const lost = enrichedBacklinks.filter(b => b.status === 'Lost').length;
     const pending = enrichedBacklinks.filter(b => b.status === 'Pending').length;
-    
     const totalCost = enrichedBacklinks.reduce((sum, b) => sum + (parseFloat(b.cost) || 0), 0);
     const paid = enrichedBacklinks.filter(b => b.cost && parseFloat(b.cost) > 0).length;
     const free = total - paid;
 
-    setReportData({
+    // Only set report data if it's different from current data
+    const newReportData = {
       backlinks: enrichedBacklinks,
       summary: {
         total,
@@ -156,8 +139,19 @@ export default function Reports() {
         paid,
         free
       }
-    });
-  }, [backlinks, filters, sources]);
+    };
+
+    // Check if data actually changed before setting state
+    if (!reportData || 
+        JSON.stringify(reportData.backlinks) !== JSON.stringify(newReportData.backlinks) ||
+        JSON.stringify(reportData.summary) !== JSON.stringify(newReportData.summary)) {
+      setReportData(newReportData);
+      console.log("✅ Report data updated");
+      console.log(`📊 Report summary: ${total} total, ${live} live, ${pending} pending, ${lost} lost`);
+    } else {
+      console.log("📊 Report data unchanged, skipping update");
+    }
+  }, [backlinks, sources, filters]); // Add filters back but with proper comparison
 
   const exportPDF = async () => {
     if (!reportData) {
@@ -200,91 +194,207 @@ export default function Reports() {
       
       console.log("📝 Title and info added");
       
-      // Table headers
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(8);
-      const headers = ['Date', 'Source', 'Traffic', 'Type', 'Anchor', 'Target URL', 'Status', 'Cost'];
-      const colPositions = [20, 35, 65, 85, 110, 140, 170, 190];
-      const headerHeight = 10;
+      // Individual tables for each backlink using autoTable
+      let currentY = 60;
+      const tableSpacing = 10;
       
-      let yPos = 55;
-      
-      // Draw header background
-      doc.setFillColor(44, 62, 80);
-      doc.rect(colPositions[0], yPos - 6, 170, headerHeight, 'F');
-      
-      // Draw headers
-      doc.setTextColor(255, 255, 255);
-      headers.forEach((header, index) => {
-        doc.text(header, colPositions[index] + 2, yPos);
-      });
-      
-      // Reset text color
-      doc.setTextColor(0, 0, 0);
-      doc.setFont("helvetica", "normal");
-      yPos += headerHeight + 2;
-      
-      // Draw table data
       reportData.backlinks.forEach((backlink, index) => {
-        // Check page break
-        if (yPos > 270) {
-          doc.addPage();
-          yPos = 20;
-          
-          // Redraw headers on new page
-          doc.setFillColor(44, 62, 80);
-          doc.rect(colPositions[0], yPos - 6, 170, headerHeight, 'F');
-          doc.setTextColor(255, 255, 255);
-          doc.setFont("helvetica", "bold");
-          headers.forEach((header, index) => {
-            doc.text(header, colPositions[index] + 2, yPos);
-          });
-          doc.setTextColor(0, 0, 0);
-          doc.setFont("helvetica", "normal");
-          yPos += headerHeight + 2;
-        }
-        
-        // Draw row border
-        doc.rect(colPositions[0], yPos - 4, 170, 7);
-        
-        // Draw vertical lines
-        for (let j = 1; j < colPositions.length; j++) {
-          doc.line(colPositions[j], yPos - 4, colPositions[j], yPos + 3);
-        }
-        
-        // Add row data with better error handling
         try {
+          console.log(`🔍 Processing backlink #${index + 1}:`, backlink);
+          console.log(`📊 Available sources:`, sources.length);
+          
           const source = sources.find(s => s.id === backlink.source_site_id);
+          console.log(`🔗 Found source:`, source);
+          
           const sourceDomain = source ? source.domain : 'Inconnu';
           const traffic = backlink.source_site?.traffic_estimated || backlink.traffic_estimated || 'N/A';
           
-          doc.text(new Date(backlink.date_added).toLocaleDateString('fr-FR'), colPositions[0] + 2, yPos);
-          doc.text(sourceDomain.substring(0, 12), colPositions[1] + 2, yPos);
-          doc.text(traffic.toString(), colPositions[2] + 2, yPos);
-          doc.text(backlink.type || '', colPositions[3] + 2, yPos);
-          doc.text((backlink.anchor_text || '').substring(0, 12), colPositions[4] + 2, yPos);
-          doc.text((backlink.target_url || '').substring(0, 12), colPositions[5] + 2, yPos);
-          doc.text(backlink.status || '', colPositions[6] + 2, yPos);
-          doc.text(`${backlink.cost || 0} €`, colPositions[7] + 2, yPos);
+          console.log(`✅ Extracted data:`, {
+            sourceDomain,
+            traffic,
+            backlinkId: backlink.id,
+            sourceSiteId: backlink.source_site_id,
+            date: backlink.date_added,
+            type: backlink.type,
+            anchor: backlink.anchor_text,
+            targetUrl: backlink.target_url,
+            placementUrl: backlink.placement_url,
+            status: backlink.status,
+            cost: backlink.cost
+          });
+          
+          // Add spacing between tables (except for first one)
+          if (index > 0) {
+            currentY += tableSpacing;
+          }
+          
+          // Check if we need a new page
+          if (currentY > 240) {
+            doc.addPage();
+            currentY = 20;
+          }
+          
+          // Backlink title
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(12);
+          doc.text(`Backlink #${index + 1}`, 20, currentY);
+          currentY += 8;
+          
+          // Prepare table data for this backlink - ensure no undefined values
+          const tableData = [
+            ['Date', new Date(backlink.date_added).toLocaleDateString('fr-FR')],
+            ['Source Site', sourceDomain || 'Inconnu'],
+            ['Traffic', (traffic || 0).toString()],
+            ['Type', backlink.type || ''],
+            ['Anchor', backlink.anchor_text || '-'],
+            ['Target URL', backlink.target_url || '-'],
+            ['Placement URL', backlink.placement_url || '-'],
+            ['Status', backlink.status || ''],
+            ['Cost', `${backlink.cost || 0} €`]
+          ];
+          
+          console.log(`📊 Final table data for backlink #${index + 1}:`, tableData);
+          
+          // Use manual table drawing since autoTable is not available
+          const tableHeaders = ['Label', 'Value'];
+          const cellWidth = { label: 45, value: 145 };
+          const cellHeight = 8;
+          const startX = 20;
+          
+          // Draw table header
+          doc.setFillColor(44, 62, 80);
+          doc.rect(startX, currentY, cellWidth.label + cellWidth.value, cellHeight, 'F');
+          doc.setDrawColor(0, 0, 0);
+          doc.rect(startX, currentY, cellWidth.label + cellWidth.value, cellHeight);
+          
+          // Header text
+          doc.setTextColor(255, 255, 255);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.text(tableHeaders[0], startX + 2, currentY + 5);
+          doc.text(tableHeaders[1], startX + cellWidth.label + 2, currentY + 5);
+          
+          // Reset text color
+          doc.setTextColor(0, 0, 0);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          currentY += cellHeight;
+          
+          // Draw table rows
+          tableData.forEach((row, rowIndex) => {
+            // Check if we need a new page
+            if (currentY > 270) {
+              doc.addPage();
+              currentY = 20;
+              
+              // Redraw header on new page
+              doc.setFillColor(44, 62, 80);
+              doc.rect(startX, currentY, cellWidth.label + cellWidth.value, cellHeight, 'F');
+              doc.setDrawColor(0, 0, 0);
+              doc.rect(startX, currentY, cellWidth.label + cellWidth.value, cellHeight);
+              doc.setTextColor(255, 255, 255);
+              doc.setFont("helvetica", "bold");
+              doc.setFontSize(10);
+              doc.text(tableHeaders[0], startX + 2, currentY + 5);
+              doc.text(tableHeaders[1], startX + cellWidth.label + 2, currentY + 5);
+              doc.setTextColor(0, 0, 0);
+              doc.setFont("helvetica", "normal");
+              doc.setFontSize(9);
+              currentY += cellHeight;
+            }
+            
+            // Calculate row height (might be taller for URLs)
+            let rowCellHeight = cellHeight;
+            const maxTextWidth = cellWidth.value - 4;
+            
+            // Check if value text needs wrapping (especially for URLs)
+            if (rowIndex === 5 || rowIndex === 6) { // Target URL or Placement URL rows
+              const textWidth = doc.getTextWidth(row[1]);
+              if (textWidth > maxTextWidth) {
+                // Estimate extra height needed for wrapping
+                const extraLines = Math.ceil(textWidth / maxTextWidth) - 1;
+                rowCellHeight = cellHeight + (extraLines * 3);
+              }
+            }
+            
+            // Draw row background
+            if (rowIndex % 2 === 0) {
+              doc.setFillColor(240, 240, 240); // Light gray for even rows (labels)
+            } else {
+              doc.setFillColor(255, 255, 255); // White for odd rows
+            }
+            doc.rect(startX, currentY, cellWidth.label, rowCellHeight, 'F');
+            doc.setFillColor(255, 255, 255); // White for value column
+            doc.rect(startX + cellWidth.label, currentY, cellWidth.value, rowCellHeight, 'F');
+            
+            // Draw row borders
+            doc.setDrawColor(0, 0, 0);
+            doc.rect(startX, currentY, cellWidth.label + cellWidth.value, rowCellHeight);
+            doc.line(startX + cellWidth.label, currentY, startX + cellWidth.label, currentY + rowCellHeight);
+            
+            // Draw cell content
+            // Label cell
+            doc.setFillColor(240, 240, 240);
+            doc.setFont("helvetica", "bold");
+            doc.text(row[0], startX + 2, currentY + 5);
+            
+            // Value cell
+            doc.setFillColor(255, 255, 255);
+            doc.setFont("helvetica", "normal");
+            
+            // Handle text wrapping for URLs
+            if ((rowIndex === 5 || rowIndex === 6) && row[1] !== '-') {
+              const words = row[1].split('/');
+              let line = '';
+              let lineY = currentY + 5;
+              
+              words.forEach((word, wordIndex) => {
+                const testLine = line + (line ? '/' : '') + word;
+                const testWidth = doc.getTextWidth(testLine);
+                
+                if (testWidth > maxTextWidth && line) {
+                  doc.text(line, startX + cellWidth.label + 2, lineY);
+                  line = word;
+                  lineY += 3;
+                } else {
+                  line = testLine;
+                }
+              });
+              doc.text(line, startX + cellWidth.label + 2, lineY);
+            } else {
+              // Color code status
+              if (rowIndex === 7) { // Status row
+                if (row[1] === 'Live') {
+                  doc.setTextColor(0, 128, 0);
+                } else if (row[1] === 'Lost') {
+                  doc.setTextColor(255, 0, 0);
+                } else if (row[1] === 'Pending') {
+                  doc.setTextColor(255, 165, 0);
+                }
+              }
+              doc.text(row[1], startX + cellWidth.label + 2, currentY + 5);
+              doc.setTextColor(0, 0, 0); // Reset color
+            }
+            
+            currentY += rowCellHeight;
+          });
+          
+          // Get the final Y position after the table
+          currentY += 5;
+          
         } catch (rowError) {
-          console.error("Error processing row:", rowError, backlink);
-          // Add minimal data if there's an error
-          doc.text('Error', colPositions[0] + 2, yPos);
-          doc.text('Error', colPositions[1] + 2, yPos);
-          doc.text('Error', colPositions[2] + 2, yPos);
-          doc.text('Error', colPositions[3] + 2, yPos);
-          doc.text('Error', colPositions[4] + 2, yPos);
-          doc.text('Error', colPositions[5] + 2, yPos);
-          doc.text('Error', colPositions[6] + 2, yPos);
-          doc.text('Error', colPositions[7] + 2, yPos);
+          console.error("Error processing backlink:", rowError, backlink);
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(10);
+          doc.text(`Error processing backlink #${index + 1}`, 20, currentY);
+          currentY += 15;
         }
-        
-        yPos += 7;
       });
       
       // Download PDF
       const fileName = `backlinks_report_${clientName.replace(/\s+/g, '-')}_${new Date().toISOString().split('T')[0]}.pdf`;
       doc.save(fileName);
+      console.log("✅ PDF saved successfully");
       
     } catch (error) {
       console.error("Error exporting PDF:", error);
@@ -498,14 +608,8 @@ export default function Reports() {
             ...prev,
             last_update_date: latestDate, // Latest date from client's backlinks
             start_date: "", // Clear other dates
-            end_date: ""
+            end_date: ""    // Clear other dates
           }));
-          
-          // Auto-generate report when date is set
-          setTimeout(() => {
-            console.log('Auto-generating report with new date...');
-            generateReport();
-          }, 500);
         } else {
           console.log('No valid dates found for this client');
         }
@@ -522,7 +626,14 @@ export default function Reports() {
         end_date: prev.end_date
       }));
     }
-  }, [filters.client_id, backlinks, generateReport]);
+  }, [filters.client_id, backlinks]);
+
+  // Simple report generation - only when data is ready and filters are set
+  useEffect(() => {
+    if (backlinks.length > 0 && sources.length > 0) {
+      generateReport();
+    }
+  }, [backlinks, sources, generateReport]);
 
   if (loading) {
     return <div className="loading">Loading reports...</div>;
