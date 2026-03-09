@@ -28,41 +28,15 @@ export default function StaffBacklinks() {
     fetchData();
   }, []);
 
-  // Auto-fill quality_score and traffic_estimated when source site is selected (only for new backlinks)
-  useEffect(() => {
-    if (!editingBacklink && formData.source_site_id && sources.length > 0) {
-      const selectedSource = sources.find(source => source.id === parseInt(formData.source_site_id));
-      if (selectedSource) {
-        console.log("🔄 Auto-fetching source data for new backlink:", selectedSource);
-        setFormData(prev => ({
-          ...prev,
-          quality_score: selectedSource.quality_score || 3,
-          traffic_estimated: selectedSource.traffic_estimated || 0
-        }));
-      }
-    }
-  }, [formData.source_site_id, sources, editingBacklink]);
-
-  useEffect(() => {
-    if (formData.source_site_id && formData.quality_score) {
-      const sourceIndex = sources.findIndex(s => s.id === parseInt(formData.source_site_id));
-      if (sourceIndex !== -1) {
-        const updatedSources = [...sources];
-        updatedSources[sourceIndex] = {
-          ...updatedSources[sourceIndex],
-          quality_score: formData.quality_score
-        };
-        setSources(updatedSources);
-      }
-    }
-  }, [formData.quality_score, formData.source_site_id, sources]);
-
+  // Auto-fill quality_score and traffic_estimated when source site is selected
   useEffect(() => {
     if (formData.source_site_id && sources.length > 0) {
       const selectedSource = sources.find(source => source.id === parseInt(formData.source_site_id));
       if (selectedSource) {
+        console.log(" Auto-fetching source data:", selectedSource);
         setFormData(prev => ({
           ...prev,
+          quality_score: selectedSource.quality_score || 3,
           traffic_estimated: parseInt(selectedSource.traffic_estimated || selectedSource.traffic || 0)
         }));
       }
@@ -276,6 +250,38 @@ export default function StaffBacklinks() {
               <div className="form-group">
                 <label>Cost ($) *</label>
                 <input type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({...formData, cost: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>Quality Score</label>
+                <input 
+                  type="text" 
+                  value={formData.quality_score ? '⭐'.repeat(formData.quality_score) : ''} 
+                  readOnly 
+                  style={{ 
+                    backgroundColor: '#f5f5f5', 
+                    cursor: 'not-allowed',
+                    textAlign: 'center',
+                    fontWeight: 'bold'
+                  }} 
+                />
+                <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+                  Auto-populated from source database (Read-only)
+                </small>
+              </div>
+              <div className="form-group">
+                <label>Traffic Est.</label>
+                <input 
+                  type="text" 
+                  value={formData.traffic_estimated ? formData.traffic_estimated.toLocaleString() : ''} 
+                  readOnly 
+                  style={{ 
+                    backgroundColor: '#f5f5f5', 
+                    cursor: 'not-allowed'
+                  }} 
+                />
+                <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+                  Auto-populated from source database (Read-only)
+                </small>
               </div>
             </div>
             <div className="form-actions">

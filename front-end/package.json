@@ -1,5 +1,4 @@
 {
-  "$schema": "./node_modules/@types/react-scripts/package.json",
   "name": "front-end",
   "version": "0.1.0",
   "private": true,

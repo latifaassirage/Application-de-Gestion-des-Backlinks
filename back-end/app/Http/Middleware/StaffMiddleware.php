@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Http\Middleware\Middleware as BaseMiddleware;
 
-class StaffMiddleware extends BaseMiddleware
+class StaffMiddleware 
 {
     public function handle($request, $next)
     {
