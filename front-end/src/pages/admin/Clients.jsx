@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllClients, createClient, updateClient, deleteClient } from "../../api/clients"; 
+import api from "../../api/api"; 
 import Navbar from "../../components/Navbar";
 import "./Clients.css";
 
@@ -49,7 +49,7 @@ export default function Clients() {
 
   const fetchClients = async () => {
     try {
-      const res = await getAllClients();
+      const res = await api.get("/clients");
       setClients(res.data);
     } catch (error) {
       console.error("Error fetching clients:", error);
@@ -64,12 +64,12 @@ export default function Clients() {
     try {
       if (editClient) {
         // Update
-        const res = await updateClient(editClient.id, newClient);
+        const res = await api.put(`/clients/${editClient.id}`, newClient);
         setClients(prev => prev.map(c => c.id === editClient.id ? res.data : c));
         setEditClient(null);
       } else {
         // Create
-        const res = await createClient(newClient);
+        const res = await api.post("/clients", newClient);
         setClients(prev => [...prev, res.data]);
       }
     } catch (error) {
@@ -80,7 +80,7 @@ export default function Clients() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this client?")) return;
     try {
-      await deleteClient(id);
+      await api.delete(`/clients/${id}`);
       setClients(prev => prev.filter(c => c.id !== id));
     } catch (error) {
       console.error("Error deleting client:", error);

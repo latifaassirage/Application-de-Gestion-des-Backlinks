@@ -248,38 +248,42 @@ export default function Backlinks() {
               </div>
               <div className="form-row">
                 <input type="number" value={formData.cost} onChange={e=>setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" />
-                <div className="quality-score-container">
-                  <label className="quality-label">Quality Score: {formData.quality_score} ⭐</label>
-                  <div className="quality-progress-bar">
-                    <div 
-                      className="quality-progress-fill" 
-                      style={{
-                        width: `${(formData.quality_score / 5) * 100}%`,
-                        backgroundColor: formData.quality_score >= 4 ? '#10B981' : 
-                                       formData.quality_score >= 3 ? '#F59E0B' : '#EF4444'
-                      }}
-                    ></div>
+                {isAdmin && (
+                  <div className="quality-score-container">
+                    <label className="quality-label">Quality Score: {formData.quality_score} ⭐</label>
+                    <div className="quality-progress-bar">
+                      <div 
+                        className="quality-progress-fill" 
+                        style={{
+                          width: `${(formData.quality_score / 5) * 100}%`,
+                          backgroundColor: formData.quality_score >= 4 ? '#10B981' : 
+                                         formData.quality_score >= 3 ? '#F59E0B' : '#EF4444'
+                        }}
+                      ></div>
+                    </div>
+                    <select 
+                      value={formData.quality_score} 
+                      onChange={e=>setFormData({...formData, quality_score: parseInt(e.target.value)})}
+                      className="quality-select"
+                    >
+                      {[1,2,3,4,5].map(n => <option key={n} value={n}>{n} ⭐</option>)}
+                    </select>
                   </div>
-                  <select 
-                    value={formData.quality_score} 
-                    onChange={e=>setFormData({...formData, quality_score: parseInt(e.target.value)})}
-                    className="quality-select"
-                  >
-                    {[1,2,3,4,5].map(n => <option key={n} value={n}>{n} ⭐</option>)}
-                  </select>
-                </div>
+                )}
               </div>
               
-              <div className="form-row">
-                <div className="traffic-container">
-                  <label className="traffic-label">Traffic: {(formData.traffic_estimated || 0).toLocaleString()} visitors/month 📊</label>
-                  <div className="traffic-display">
-                    <span className="traffic-value">{(formData.traffic_estimated || 0).toLocaleString()}</span>
-                    <span className="traffic-unit">visitors/month</span>
+              {isAdmin && (
+                <div className="form-row">
+                  <div className="traffic-container">
+                    <label className="traffic-label">Traffic: {(formData.traffic_estimated || 0).toLocaleString()} visitors/month 📊</label>
+                    <div className="traffic-display">
+                      <span className="traffic-value">{(formData.traffic_estimated || 0).toLocaleString()}</span>
+                      <span className="traffic-unit">visitors/month</span>
+                    </div>
+                    <small className="traffic-note">Auto-fetched from source website data</small>
                   </div>
-                  <small className="traffic-note">Auto-fetched from source website data</small>
                 </div>
-              </div>
+              )}
               <div className="form-actions">
                 <button type="submit" className="submit-btn">Save</button>
                 <button type="button" className="cancel-btn" onClick={() => setShowForm(false)}>Cancel</button>

@@ -6,7 +6,7 @@ import "./Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("admin@agency.com");
-  const [password, setPassword] = useState("Admin123!");
+  const [password, setPassword] = useState("admin123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();

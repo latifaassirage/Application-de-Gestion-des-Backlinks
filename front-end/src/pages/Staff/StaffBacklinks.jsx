@@ -251,38 +251,6 @@ export default function StaffBacklinks() {
                 <label>Cost ($) *</label>
                 <input type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({...formData, cost: e.target.value})} required />
               </div>
-              <div className="form-group">
-                <label>Quality Score</label>
-                <input 
-                  type="text" 
-                  value={formData.quality_score ? '⭐'.repeat(formData.quality_score) : ''} 
-                  readOnly 
-                  style={{ 
-                    backgroundColor: '#f5f5f5', 
-                    cursor: 'not-allowed',
-                    textAlign: 'center',
-                    fontWeight: 'bold'
-                  }} 
-                />
-                <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
-                  Auto-populated from source database (Read-only)
-                </small>
-              </div>
-              <div className="form-group">
-                <label>Traffic Est.</label>
-                <input 
-                  type="text" 
-                  value={formData.traffic_estimated ? formData.traffic_estimated.toLocaleString() : ''} 
-                  readOnly 
-                  style={{ 
-                    backgroundColor: '#f5f5f5', 
-                    cursor: 'not-allowed'
-                  }} 
-                />
-                <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
-                  Auto-populated from source database (Read-only)
-                </small>
-              </div>
             </div>
             <div className="form-actions">
               <button type="submit" className="btn btn-success">{editingBacklink ? "Update" : "Add"}</button>

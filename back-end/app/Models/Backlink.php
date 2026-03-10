@@ -11,7 +11,7 @@ class Backlink extends Model
 
     protected $fillable = [
         'client_id', 'source_site_id', 'type', 'target_url', 'anchor_text',
-        'placement_url', 'date_added', 'status', 'cost', 'quality_score', 'traffic'
+        'placement_url', 'date_added', 'status', 'cost', 'quality_score', 'traffic_estimated'
     ];
 
     public function client()
