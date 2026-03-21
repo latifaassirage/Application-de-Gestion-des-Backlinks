@@ -12,13 +12,11 @@ export default function StaffBacklinks() {
   const [editingBacklink, setEditingBacklink] = useState(null);
   
   const [dynamicTypes, setDynamicTypes] = useState([]);
-  const [showAddType, setShowAddType] = useState(false);
-  const [newTypeName, setNewTypeName] = useState("");
   
   const [formData, setFormData] = useState({
     client_id: "",
     source_site_id: "",
-    type: "Guest Post",
+    type: "",
     target_url: "",
     anchor_text: "",
     placement_url: "",
@@ -35,19 +33,6 @@ export default function StaffBacklinks() {
       setDynamicTypes(res.data);
     } catch (error) {
       console.error("Error fetching types:", error);
-    }
-  };
-
-  const handleAddNewType = async () => {
-    if (!newTypeName.trim()) return;
-    try {
-      const res = await api.post("/backlink-types", { name: newTypeName });
-      setDynamicTypes([...dynamicTypes, res.data]);
-      setFormData({ ...formData, type: res.data.name });
-      setNewTypeName("");
-      setShowAddType(false);
-    } catch (error) {
-      alert("Error adding type");
     }
   };
 
@@ -183,7 +168,7 @@ export default function StaffBacklinks() {
     setFormData({
       client_id: "",
       source_site_id: "",
-      type: "Guest Post",
+      type: "",
       target_url: "",
       anchor_text: "",
       placement_url: "",
@@ -242,33 +227,12 @@ export default function StaffBacklinks() {
               </div>
               <div className="form-group">
                 <label>Type *</label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <div style={{ display: 'flex', gap: '5px' }}>
-                    <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} required style={{ flex: 1 }}>
-                      <option value="Guest Post">Guest Post</option>
-                      <option value="Directory">Directory</option>
-                      <option value="Comment">Comment</option>
-                      <option value="Forum">Forum</option>
-                      <option value="Social">Social Media</option>
-                      {dynamicTypes.map(t => (
-                        <option key={t.id} value={t.name}>{t.name}</option>
-                      ))}
-                    </select>
-                    <button type="button" onClick={() => setShowAddType(!showAddType)}>+</button>
-                  </div>
-                  {showAddType && (
-                    <div style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
-                      <input 
-                        type="text" 
-                        placeholder="New type name..." 
-                        value={newTypeName} 
-                        onChange={e => setNewTypeName(e.target.value)} 
-                        style={{ flex: 1 }}
-                      />
-                      <button type="button" onClick={handleAddNewType}>Add</button>
-                    </div>
-                  )}
-                </div>
+                <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} required>
+                  <option value="">Select Type</option>
+                  {dynamicTypes.map(t => (
+                    <option key={t.id} value={t.name}>{t.name}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label>Target URL *</label>

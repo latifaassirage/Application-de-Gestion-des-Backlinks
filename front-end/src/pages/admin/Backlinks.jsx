@@ -42,15 +42,58 @@ export default function Backlinks() {
   };
 
   const handleAddNewType = async () => {
-    if (!newTypeName.trim()) return;
+    if (!newTypeName.trim()) {
+      alert('Veuillez entrer un nom de type');
+      return;
+    }
+    
+    // Vérifier si le type existe déjà (casse insensible)
+    const existingTypes = [
+      'Guest Post', 'Directory', 'Profile', 'Comment',
+      ...dynamicTypes.map(t => t.name.toLowerCase())
+    ];
+    
+    if (existingTypes.includes(newTypeName.toLowerCase().trim())) {
+      alert('Ce type existe déjà !');
+      return;
+    }
+    
     try {
-      const res = await api.post("/backlink-types", { name: newTypeName });
+      const res = await api.post("/backlink-types", { name: newTypeName.trim() });
       setDynamicTypes([...dynamicTypes, res.data]);
       setFormData({ ...formData, type: res.data.name });
       setNewTypeName("");
       setShowAddType(false);
     } catch (error) {
-      alert("Error adding type");
+      alert("Erreur lors de l'ajout du type");
+    }
+  };
+
+  const handleDeleteType = async (typeId, typeName) => {
+    if (window.confirm(`Supprimer le type "${typeName}" ?`)) {
+      try {
+        await api.delete(`/backlink-types/${typeId}`);
+        setDynamicTypes(dynamicTypes.filter(t => t.id !== typeId));
+        
+        // Si le type supprimé était sélectionné, réinitialiser à vide
+        if (formData.type === typeName) {
+          setFormData({ ...formData, type: "" });
+        }
+        
+        alert('Type supprimé avec succès');
+      } catch (error) {
+        console.error("Error deleting type:", error);
+        
+        // Gérer les erreurs spécifiques du backend
+        if (error.response?.status === 422) {
+          // Le type est utilisé par des backlinks
+          alert(error.response.data.message || 'Ce type ne peut pas être supprimé car il est utilisé par des backlinks existants.');
+        } else if (error.response?.status === 404) {
+          alert('Type non trouvé ou déjà supprimé');
+        } else {
+          alert("Erreur lors de la suppression du type");
+        }
+      }
     }
   };
 
@@ -240,33 +283,86 @@ export default function Backlinks() {
                 </select>
               </div>
               <div className="form-row">
-                <input value={formData.target_url} onChange={e=>setFormData({...formData, target_url: e.target.value})} placeholder="Target URL" required />
-                <input value={formData.anchor_text} onChange={e=>setFormData({...formData, anchor_text: e.target.value})} placeholder="Anchor Text" />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>TARGET URL</label>
+                  <input value={formData.target_url} onChange={e=>setFormData({...formData, target_url: e.target.value})} placeholder="ex: https://monsite.com/page" required />
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>ANCHOR TEXT</label>
+                  <input value={formData.anchor_text} onChange={e=>setFormData({...formData, anchor_text: e.target.value})} placeholder="ex: Meilleure Agence SEO" />
+                </div>
               </div>
               <div className="form-row">
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <div style={{ display: 'flex', gap: '5px' }}>
-                    <select 
-                      style={{ flex: 1 }}
-                      value={formData.type} 
-                      onChange={e=>setFormData({...formData, type: e.target.value})}
-                    >
-                      <option value="Guest Post">Guest Post</option>
-                      <option value="Directory">Directory</option>
-                      <option value="Profile">Profile</option>
-                      <option value="Comment">Comment</option>
-                      {dynamicTypes.map(t => (
-                        <option key={t.id} value={t.name}>{t.name}</option>
-                      ))}
-                    </select>
-                    <button type="button" onClick={() => setShowAddType(!showAddType)}>+</button>
-                  </div>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>TYPE</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <div style={{ display: 'flex', gap: '5px' }}>
+                      <div style={{ flex: 1, position: 'relative' }}>
+                        <select 
+                          style={{ flex: 1, width: '100%' }}
+                          value={formData.type} 
+                          onChange={e=>setFormData({...formData, type: e.target.value})}
+                        >
+                          <option value="">Select Type</option>
+                          {dynamicTypes.map(t => (
+                            <option key={t.id} value={t.name}>{t.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {isAdmin && (
+                        <>
+                          <button 
+                            type="button" 
+                            onClick={() => setShowAddType(!showAddType)}
+                            style={{
+                              padding: '8px 12px',
+                              border: '1px solid #ddd',
+                              borderRadius: '4px',
+                              backgroundColor: '#fff',
+                              cursor: 'pointer',
+                              fontSize: '16px',
+                              fontWeight: 'bold',
+                              minWidth: '40px',
+                              height: '40px'
+                            }}
+                          >
+                            +
+                          </button>
+                          {formData.type && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const typeToDelete = dynamicTypes.find(t => t.name === formData.type);
+                                if (typeToDelete && window.confirm(`Supprimer le type "${formData.type}" ?`)) {
+                                  handleDeleteType(typeToDelete.id, formData.type);
+                                }
+                              }}
+                              style={{
+                                padding: '8px 12px',
+                                border: '1px solid #dc3545',
+                                borderRadius: '4px',
+                                backgroundColor: '#fff',
+                                color: '#dc3545',
+                                cursor: 'pointer',
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                minWidth: '40px',
+                                height: '40px'
+                              }}
+                              title={`Supprimer "${formData.type}"`}
+                            >
+                              -
+                            </button>
+                          )}
+                        </>
+                      )}
+                    </div>
 
-                  {showAddType && (
+                  {isAdmin && showAddType && (
                     <div style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
                       <input 
                         type="text" 
-                        placeholder="New type name..." 
+                        placeholder="ex: Press Release" 
                         value={newTypeName} 
                         onChange={e => setNewTypeName(e.target.value)} 
                         style={{ flex: 1 }}
@@ -275,18 +371,31 @@ export default function Backlinks() {
                     </div>
                   )}
                 </div>
-                <input value={formData.placement_url} onChange={e=>setFormData({...formData, placement_url: e.target.value})} placeholder="Placement URL" />
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>PLACEMENT URL</label>
+                  <input value={formData.placement_url} onChange={e=>setFormData({...formData, placement_url: e.target.value})} placeholder="ex: https://blog.com/article" />
+                </div>
               </div>
               <div className="form-row">
-                <input type="date" value={formData.date_added} onChange={e=>setFormData({...formData, date_added: e.target.value})} />
-                <select value={formData.status} onChange={e=>setFormData({...formData, status: e.target.value})}>
-                  <option value="Live">Live</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Lost">Lost</option>
-                </select>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>DATE ADDED</label>
+                  <input type="date" value={formData.date_added} onChange={e=>setFormData({...formData, date_added: e.target.value})} />
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>STATUS</label>
+                  <select value={formData.status} onChange={e=>setFormData({...formData, status: e.target.value})}>
+                    <option value="Live">Live</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Lost">Lost</option>
+                  </select>
+                </div>
               </div>
               <div className="form-row">
-                <input type="number" value={formData.cost} onChange={e=>setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>COST ($)</label>
+                  <input type="number" value={formData.cost} onChange={e=>setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" />
+                </div>
                 {isAdmin && (
                   <div className="quality-score-container">
                     <label className="quality-label">Quality Score: {formData.quality_score} ⭐</label>
