@@ -6,6 +6,10 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SourceSiteController;
 use App\Http\Controllers\BacklinkController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BacklinkTypeController;
+
+Route::get('/backlink-types', [BacklinkTypeController::class, 'index']);
+Route::post('/backlink-types', [BacklinkTypeController::class, 'store']);
 
 // Auth
 Route::post('/login',[AuthController::class,'login']);

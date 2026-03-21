@@ -9,7 +9,7 @@
         .header h1 { margin: 0; color: #2c3e50; font-size: 22px; }
         .header p { margin: 5px 0; color: #7f8c8d; }
         
-
+        
         .stats-container { width: 100%; margin-bottom: 20px; text-align: center; }
         .stat-box { display: inline-block; width: 18%; padding: 10px; background: #fff; border: 1px solid #eee; margin: 0 5px; }
         .stat-box h4 { margin: 0; color: #7f8c8d; font-size: 9px; text-transform: uppercase; }
@@ -49,25 +49,71 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 12%;">Date</th>
-                <th style="width: 15%;">Source</th>
-                <th style="width: 10%;">Score</th>
-                <th style="width: 15%;">Anchor</th>
-                <th style="width: 20%;">Target URL</th>
-                <th style="width: 10%;">Status</th>
-                <th style="width: 10%;">Coût</th>
+                <?php if(isset($selectedColumns['date_added']) && $selectedColumns['date_added']): ?>
+                    <th style="width: 12%;">Date</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['source_website']) && $selectedColumns['source_website']): ?>
+                    <th style="width: 15%;">Source</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['traffic']) && $selectedColumns['traffic']): ?>
+                    <th style="width: 10%;">Traffic</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['type']) && $selectedColumns['type']): ?>
+                    <th style="width: 10%;">Type</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['target_url']) && $selectedColumns['target_url']): ?>
+                    <th style="width: 20%;">Target URL</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['anchor_text']) && $selectedColumns['anchor_text']): ?>
+                    <th style="width: 15%;">Anchor</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['placement_url']) && $selectedColumns['placement_url']): ?>
+                    <th style="width: 15%;">Placement URL</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['status']) && $selectedColumns['status']): ?>
+                    <th style="width: 10%;">Status</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['quality_score']) && $selectedColumns['quality_score']): ?>
+                    <th style="width: 10%;">Score</th>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['cost']) && $selectedColumns['cost']): ?>
+                    <th style="width: 10%;">Coût</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
             <?php $__currentLoopData = $backlinks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <td><?php echo e($link->date_added); ?></td>
-                <td><strong><?php echo e($link->sourceSite->domain ?? 'N/A'); ?></strong></td>
-                <td style="text-align: center;"><?php echo e($link->sourceSite->quality_score ?? '3'); ?> /5</td>
-                <td><?php echo e($link->anchor_text ?? '-'); ?></td>
-                <td class="url-text"><?php echo e($link->target_url); ?></td>
-                <td class="status-<?php echo e(strtolower($link->status)); ?>"><?php echo e($link->status); ?></td>
-                <td>$<?php echo e(number_format($link->cost, 2)); ?></td>
+                <?php if(isset($selectedColumns['date_added']) && $selectedColumns['date_added']): ?>
+                    <td><?php echo e($link->date_added); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['source_website']) && $selectedColumns['source_website']): ?>
+                    <td><strong><?php echo e($link->sourceSite->domain ?? 'N/A'); ?></strong></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['traffic']) && $selectedColumns['traffic']): ?>
+                    <td><?php echo e($link->sourceSite->traffic_estimated ?? 'N/A'); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['type']) && $selectedColumns['type']): ?>
+                    <td><?php echo e($link->type); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['target_url']) && $selectedColumns['target_url']): ?>
+                    <td class="url-text"><?php echo e($link->target_url); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['anchor_text']) && $selectedColumns['anchor_text']): ?>
+                    <td><?php echo e($link->anchor_text ?? '-'); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['placement_url']) && $selectedColumns['placement_url']): ?>
+                    <td class="url-text"><?php echo e($link->placement_url ?? '-'); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['status']) && $selectedColumns['status']): ?>
+                    <td class="status-<?php echo e(strtolower($link->status)); ?>"><?php echo e($link->status); ?></td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['quality_score']) && $selectedColumns['quality_score']): ?>
+                    <td style="text-align: center;"><?php echo e($link->sourceSite->quality_score ?? '3'); ?> /5</td>
+                <?php endif; ?>
+                <?php if(isset($selectedColumns['cost']) && $selectedColumns['cost']): ?>
+                    <td>$<?php echo e(number_format($link->cost, 2)); ?></td>
+                <?php endif; ?>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>

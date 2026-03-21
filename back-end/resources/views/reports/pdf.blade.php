@@ -49,25 +49,71 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 12%;">Date</th>
-                <th style="width: 15%;">Source</th>
-                <th style="width: 10%;">Score</th>
-                <th style="width: 15%;">Anchor</th>
-                <th style="width: 20%;">Target URL</th>
-                <th style="width: 10%;">Status</th>
-                <th style="width: 10%;">Coût</th>
+                @if(isset($selectedColumns['date_added']) && $selectedColumns['date_added'])
+                    <th style="width: 12%;">Date</th>
+                @endif
+                @if(isset($selectedColumns['source_website']) && $selectedColumns['source_website'])
+                    <th style="width: 15%;">Source</th>
+                @endif
+                @if(isset($selectedColumns['traffic']) && $selectedColumns['traffic'])
+                    <th style="width: 10%;">Traffic</th>
+                @endif
+                @if(isset($selectedColumns['type']) && $selectedColumns['type'])
+                    <th style="width: 10%;">Type</th>
+                @endif
+                @if(isset($selectedColumns['target_url']) && $selectedColumns['target_url'])
+                    <th style="width: 20%;">Target URL</th>
+                @endif
+                @if(isset($selectedColumns['anchor_text']) && $selectedColumns['anchor_text'])
+                    <th style="width: 15%;">Anchor</th>
+                @endif
+                @if(isset($selectedColumns['placement_url']) && $selectedColumns['placement_url'])
+                    <th style="width: 15%;">Placement URL</th>
+                @endif
+                @if(isset($selectedColumns['status']) && $selectedColumns['status'])
+                    <th style="width: 10%;">Status</th>
+                @endif
+                @if(isset($selectedColumns['quality_score']) && $selectedColumns['quality_score'])
+                    <th style="width: 10%;">Score</th>
+                @endif
+                @if(isset($selectedColumns['cost']) && $selectedColumns['cost'])
+                    <th style="width: 10%;">Coût</th>
+                @endif
             </tr>
         </thead>
         <tbody>
             @foreach($backlinks as $link)
             <tr>
-                <td>{{ $link->date_added }}</td>
-                <td><strong>{{ $link->sourceSite->domain ?? 'N/A' }}</strong></td>
-                <td style="text-align: center;">{{ $link->sourceSite->quality_score ?? '3' }} /5</td>
-                <td>{{ $link->anchor_text ?? '-' }}</td>
-                <td class="url-text">{{ $link->target_url }}</td>
-                <td class="status-{{ strtolower($link->status) }}">{{ $link->status }}</td>
-                <td>${{ number_format($link->cost, 2) }}</td>
+                @if(isset($selectedColumns['date_added']) && $selectedColumns['date_added'])
+                    <td>{{ $link->date_added }}</td>
+                @endif
+                @if(isset($selectedColumns['source_website']) && $selectedColumns['source_website'])
+                    <td><strong>{{ $link->sourceSite->domain ?? 'N/A' }}</strong></td>
+                @endif
+                @if(isset($selectedColumns['traffic']) && $selectedColumns['traffic'])
+                    <td>{{ $link->sourceSite->traffic_estimated ?? 'N/A' }}</td>
+                @endif
+                @if(isset($selectedColumns['type']) && $selectedColumns['type'])
+                    <td>{{ $link->type }}</td>
+                @endif
+                @if(isset($selectedColumns['target_url']) && $selectedColumns['target_url'])
+                    <td class="url-text">{{ $link->target_url }}</td>
+                @endif
+                @if(isset($selectedColumns['anchor_text']) && $selectedColumns['anchor_text'])
+                    <td>{{ $link->anchor_text ?? '-' }}</td>
+                @endif
+                @if(isset($selectedColumns['placement_url']) && $selectedColumns['placement_url'])
+                    <td class="url-text">{{ $link->placement_url ?? '-' }}</td>
+                @endif
+                @if(isset($selectedColumns['status']) && $selectedColumns['status'])
+                    <td class="status-{{ strtolower($link->status) }}">{{ $link->status }}</td>
+                @endif
+                @if(isset($selectedColumns['quality_score']) && $selectedColumns['quality_score'])
+                    <td style="text-align: center;">{{ $link->sourceSite->quality_score ?? '3' }} /5</td>
+                @endif
+                @if(isset($selectedColumns['cost']) && $selectedColumns['cost'])
+                    <td>${{ number_format($link->cost, 2) }}</td>
+                @endif
             </tr>
             @endforeach
         </tbody>

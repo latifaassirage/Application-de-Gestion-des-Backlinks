@@ -3,9 +3,10 @@ import api from "../../api/api";
 import Navbar from "../../components/Navbar";
 
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import "./Reports.css";
+import "./ReportsCheckboxStyles.css";
 
 export default function Reports() {
   const [clients, setClients] = useState([]);
@@ -21,6 +22,36 @@ export default function Reports() {
     last_update_date: "" 
   });
   
+  const [selectedColumns, setSelectedColumns] = useState({
+    date_added: true,
+    source_website: true,
+    traffic: true,
+    type: true,
+    target_url: true,
+    anchor_text: true,
+    placement_url: true,
+    status: true,
+    quality_score: true,
+    cost: true
+  });
+
+  const columnLabels = {
+    date_added: "Date Added",
+    source_website: "Source Website",
+    traffic: "Traffic",
+    type: "Type",
+    target_url: "Target URL",
+    anchor_text: "Anchor Text",
+    placement_url: "Placement URL",
+    status: "Status",
+    quality_score: "Quality Score",
+    cost: "Cost"
+  };
+
+  const toggleColumn = (col) => {
+    setSelectedColumns(prev => ({ ...prev, [col]: !prev[col] }));
+  };
+
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.role === 'admin';
   
@@ -137,42 +168,128 @@ export default function Reports() {
   }, [backlinks, sources, filters]); 
 
   
-  const exportPDF = async () => {
+  const exportPDF = () => {
     try {
       setExporting(prev => ({ ...prev, pdf: true }));
       
-     
+      // Créer les en-têtes dynamiques basées sur selectedColumns
+      const headers = Object.keys(selectedColumns)
+        .filter(col => selectedColumns[col])
+        .map(col => columnLabels[col]);
+
+      // Créer les données de tableau dynamiques
+      const body = reportData.backlinks.map(backlink => 
+        Object.keys(selectedColumns)
+          .filter(col => selectedColumns[col])
+          .map(col => {
+            // Mapper les clés de colonnes aux valeurs réelles des backlinks
+            switch(col) {
+              case 'date_added':
+                return new Date(backlink.date_added).toLocaleDateString();
+              case 'source_website':
+                return getSourceDomain(backlink.source_site_id);
+              case 'traffic':
+                return backlink.source_site?.traffic_estimated || backlink.traffic_estimated || 'N/A';
+              case 'type':
+                return backlink.type || '-';
+              case 'target_url':
+                return backlink.target_url || '-';
+              case 'anchor_text':
+                return backlink.anchor_text || '-';
+              case 'placement_url':
+                return backlink.placement_url || '-';
+              case 'status':
+                return backlink.status || '-';
+              case 'quality_score':
+                return `${backlink.dynamic_quality_score || 3}/5`;
+              case 'cost':
+                return `$${backlink.cost || '0'}`;
+              default:
+                return '-';
+            }
+          })
+      );
+
+      // Initialiser jsPDF
+      const doc = new jsPDF();
+      
+      // Ajouter le titre
+      doc.setFontSize(20);
+      doc.text('RAPPORT DE BACKLINKS', 105, 20, { align: 'center' });
+      
+      // Ajouter la date de génération
+      doc.setFontSize(12);
+      doc.text(`Généré le : ${new Date().toLocaleDateString('fr-FR')}`, 105, 30, { align: 'center' });
+      
+      // Ajouter la période si applicable
+      if (filters.start_date && filters.end_date) {
+        doc.text(`Période : Du ${filters.start_date} au ${filters.end_date}`, 105, 40, { align: 'center' });
+      } else {
+        doc.text('Période : Rapport Global', 105, 40, { align: 'center' });
+      }
+      
+      // Ajouter les statistiques
+      doc.setFontSize(14);
+      doc.text('Résumé', 20, 60);
+      doc.setFontSize(10);
+      
+      const summary = reportData.summary;
+      const summaryY = 70;
+      doc.text(`Total: ${summary.total}`, 20, summaryY);
+      doc.text(`Live: ${summary.live}`, 60, summaryY);
+      doc.text(`Lost: ${summary.lost}`, 100, summaryY);
+      doc.text(`Paid: ${summary.paid}`, 140, summaryY);
+      doc.text(`Coût Total: $${summary.totalCost.toFixed(2)}`, 20, summaryY + 10);
+      
+      // Générer le tableau avec autoTable
+      autoTable(doc, {
+        head: [headers],
+        body: body,
+        startY: summaryY + 25,
+        theme: 'grid',
+        styles: {
+          fontSize: 9,
+          cellPadding: 3,
+        },
+        headStyles: {
+          fillColor: [44, 62, 80],
+          textColor: 255,
+          fontStyle: 'bold',
+        },
+        alternateRowStyles: {
+          fillColor: [245, 245, 245],
+        },
+        columnStyles: {
+          0: { cellWidth: 20 }, // Date
+          1: { cellWidth: 25 }, // Source
+          2: { cellWidth: 15 }, // Traffic/Type/Score
+          3: { cellWidth: 30 }, // Target URL/Placement URL
+          4: { cellWidth: 20 }, // Anchor Text
+          5: { cellWidth: 15 }, // Status
+          6: { cellWidth: 15 }, // Cost
+        },
+        didDrawPage: (data) => {
+          // Footer
+          doc.setFontSize(9);
+          doc.setTextColor(150);
+          doc.text(
+            'Gestion Backlinks - Rapport Confidentiel - Page ' + doc.internal.getNumberOfPages(),
+            105,
+            doc.internal.pageSize.height - 10,
+            { align: 'center' }
+          );
+        },
+      });
+      
+      // Télécharger le PDF
       const client = filters.client_id 
         ? clients.find(c => c.id === parseInt(filters.client_id))
         : null;
       const clientName = client ? client.company_name : 'tous-les-clients';
-
-      const params = {
-        start_date: filters.start_date,
-        end_date: filters.end_date
-      };
-      
-      let url = '/reports/pdf';
-      if (filters.client_id) {
-        url += `/${filters.client_id}`;
-      }
-      
-      // طلب الملف كـ Blob
-      const response = await api.post(url, params, { responseType: 'blob' });
-      
-      // إنشاء رابط وتحميل الملف
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
       
       const fileName = `rapport-backlinks-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.pdf`;
       
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
+      doc.save(fileName);
       
     } catch (error) {
       console.error("Error generating PDF:", error);
@@ -182,47 +299,106 @@ export default function Reports() {
     }
   };
 
- 
-  const exportExcel = async () => {
+  const exportExcel = () => {
     try {
       setExporting(prev => ({ ...prev, excel: true }));
       
+      // Créer les en-têtes dynamiques basées sur selectedColumns
+      const headers = Object.keys(selectedColumns)
+        .filter(col => selectedColumns[col])
+        .map(col => columnLabels[col]);
+
+      // Créer les données de tableau dynamiques
+      const data = reportData.backlinks.map(backlink => {
+        const row = {};
+        Object.keys(selectedColumns)
+          .filter(col => selectedColumns[col])
+          .forEach(col => {
+            // Mapper les clés de colonnes aux valeurs réelles des backlinks
+            switch(col) {
+              case 'date_added':
+                row[columnLabels[col]] = new Date(backlink.date_added).toLocaleDateString();
+                break;
+              case 'source_website':
+                row[columnLabels[col]] = getSourceDomain(backlink.source_site_id);
+                break;
+              case 'traffic':
+                row[columnLabels[col]] = backlink.source_site?.traffic_estimated || backlink.traffic_estimated || 'N/A';
+                break;
+              case 'type':
+                row[columnLabels[col]] = backlink.type || '-';
+                break;
+              case 'target_url':
+                row[columnLabels[col]] = backlink.target_url || '-';
+                break;
+              case 'anchor_text':
+                row[columnLabels[col]] = backlink.anchor_text || '-';
+                break;
+              case 'placement_url':
+                row[columnLabels[col]] = backlink.placement_url || '-';
+                break;
+              case 'status':
+                row[columnLabels[col]] = backlink.status || '-';
+                break;
+              case 'quality_score':
+                row[columnLabels[col]] = `${backlink.dynamic_quality_score || 3}/5`;
+                break;
+              case 'cost':
+                row[columnLabels[col]] = backlink.cost || 0;
+                break;
+              default:
+                row[columnLabels[col]] = '-';
+            }
+          });
+        return row;
+      });
+
+      // Créer le workbook et la worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(data, { header: headers });
       
+      // Ajuster la largeur des colonnes
+      const colWidths = headers.map((header, index) => {
+        // Définir la largeur basée sur le type de contenu
+        const maxWidth = Math.max(
+          header.length,
+          ...data.map(row => (Object.values(row)[index] || '').toString().length)
+        );
+        return { wch: Math.min(maxWidth + 2, 30) }; // Max 30 characters width
+      });
+      ws['!cols'] = colWidths;
+
+      // Ajouter la worksheet au workbook
+      XLSX.utils.book_append_sheet(wb, ws, 'Backlinks Report');
+      
+      // Ajouter une worksheet pour le résumé
+      const summaryData = [
+        ['Statistiques', 'Valeur'],
+        ['Total Backlinks', reportData.summary.total],
+        ['Live', reportData.summary.live],
+        ['Lost', reportData.summary.lost],
+        ['Pending', reportData.summary.pending],
+        ['Paid', reportData.summary.paid],
+        ['Free', reportData.summary.free],
+        ['Coût Total', reportData.summary.totalCost]
+      ];
+      
+      const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
+      XLSX.utils.book_append_sheet(wb, summaryWs, 'Résumé');
+      
+      // Télécharger le fichier Excel
       const client = filters.client_id 
         ? clients.find(c => c.id === parseInt(filters.client_id))
         : null;
       const clientName = client ? client.company_name : 'tous-les-clients';
-
-      const params = {
-        start_date: filters.start_date,
-        end_date: filters.end_date
-      };
       
-      let url = '/reports/excel';
-      if (filters.client_id) {
-        url += `/${filters.client_id}`;
-      }
+      const fileName = `rapport-backlinks-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.xlsx`;
       
-      
-      const response = await api.post(url, params, { responseType: 'blob' });
-      
-      
-      const blob = new Blob([response.data], { type: 'text/csv' });
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      
-      const fileName = `rapport-backlinks-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.csv`;
-      
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
+      XLSX.writeFile(wb, fileName);
       
     } catch (error) {
       console.error("Error generating Excel:", error);
-      alert("Erreur lors de la génération du fichier Excel/CSV");
+      alert("Erreur lors de la génération du fichier Excel");
     } finally {
       setExporting(prev => ({ ...prev, excel: false }));
     }
@@ -407,16 +583,206 @@ export default function Reports() {
               <table className="report-table">
                 <thead>
                   <tr>
-                    <th>Date Added</th>
-                    <th>Source Website</th>
-                    <th>Traffic</th>
-                    <th>Type</th>
-                    <th>Target URL</th>
-                    <th>Anchor Text</th>
-                    <th>Placement URL</th>
-                    <th>Status</th>
-                    <th>Quality Score ⭐</th>
-                    <th>Cost</th>
+                    <th>
+                      <div className="export-header">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.date_added}
+                          onChange={() => toggleColumn('date_added')}
+                          className="export-checkbox"
+                        />
+                        <span className="export-label">Date Added</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.source_website}
+                          onChange={() => toggleColumn('source_website')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Source Website"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Source Website</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.traffic}
+                          onChange={() => toggleColumn('traffic')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Traffic"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Traffic</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.type}
+                          onChange={() => toggleColumn('type')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Type"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Type</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.target_url}
+                          onChange={() => toggleColumn('target_url')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Target URL"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Target URL</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.anchor_text}
+                          onChange={() => toggleColumn('anchor_text')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Anchor Text"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Anchor Text</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.placement_url}
+                          onChange={() => toggleColumn('placement_url')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Placement URL"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Placement URL</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.status}
+                          onChange={() => toggleColumn('status')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Status"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Status</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.quality_score}
+                          onChange={() => toggleColumn('quality_score')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Quality Score"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Quality Score </span>
+                      </div>
+                    </th>
+                    <th>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColumns.cost}
+                          onChange={() => toggleColumn('cost')}
+                          style={{ 
+                            cursor: 'pointer',
+                            width: '16px',
+                            height: '16px',
+                            accentColor: '#2c3e50',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '3px',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="export-checkbox"
+                          title="Export: Cost"
+                        />
+                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Cost</span>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

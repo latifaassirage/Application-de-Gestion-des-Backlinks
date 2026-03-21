@@ -10,6 +10,11 @@ export default function Backlinks() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingBacklink, setEditingBacklink] = useState(null);
+  
+  const [dynamicTypes, setDynamicTypes] = useState([]);
+  const [showAddType, setShowAddType] = useState(false);
+  const [newTypeName, setNewTypeName] = useState("");
+
   const [formData, setFormData] = useState({
     client_id: "",
     source_site_id: "",
@@ -26,6 +31,28 @@ export default function Backlinks() {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.role === 'admin';
+
+  const fetchTypes = async () => {
+    try {
+      const res = await api.get("/backlink-types");
+      setDynamicTypes(res.data);
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+
+  const handleAddNewType = async () => {
+    if (!newTypeName.trim()) return;
+    try {
+      const res = await api.post("/backlink-types", { name: newTypeName });
+      setDynamicTypes([...dynamicTypes, res.data]);
+      setFormData({ ...formData, type: res.data.name });
+      setNewTypeName("");
+      setShowAddType(false);
+    } catch (error) {
+      alert("Error adding type");
+    }
+  };
 
   const fetchBacklinks = async () => {
     try {
@@ -75,21 +102,17 @@ export default function Backlinks() {
     }
 
     try {
-    
       const source = sources.find(s => s.id === formData.source_site_id);
       const submitData = {
         ...formData,
         quality_score: source?.quality_score || 3,
         traffic_estimated: parseInt(source?.traffic_estimated || source?.traffic || 0) 
       };
-      
       const res = await api.post("/backlinks", submitData);
       setBacklinks([...backlinks, res.data]);
       resetForm();
       setShowForm(false);
       alert("Backlink added successfully!");
-      
-    
       fetchBacklinks();
     } catch (error) {
       alert("Error adding backlink");
@@ -99,22 +122,18 @@ export default function Backlinks() {
   const updateBacklink = async (e) => {
     e.preventDefault();
     try {
-    
       const source = sources.find(s => s.id === formData.source_site_id);
       const submitData = {
         ...formData,
         quality_score: source?.quality_score || 3,
         traffic_estimated: parseInt(source?.traffic_estimated || source?.traffic || 0)
       };
-      
       const res = await api.put(`/backlinks/${editingBacklink.id}`, submitData);
       setBacklinks(backlinks.map(b => b.id === editingBacklink.id ? res.data : b));
       resetForm();
       setEditingBacklink(null);
       setShowForm(false);
       alert("Backlink updated successfully!");
-      
-      
       fetchBacklinks();
     } catch (error) {
       alert("Error updating backlink");
@@ -164,15 +183,13 @@ export default function Backlinks() {
   };
 
   useEffect(() => { 
-    fetchBacklinks(); fetchClients(); fetchSources(); 
+    fetchBacklinks(); fetchClients(); fetchSources(); fetchTypes();
   }, []);
 
-  
   useEffect(() => {
     if (formData.source_site_id && sources.length > 0) {
       const selectedSource = sources.find(source => source.id === parseInt(formData.source_site_id));
       if (selectedSource) {
-        console.log("🔄 Auto-fetching source data:", selectedSource);
         setFormData(prev => ({
           ...prev,
           quality_score: selectedSource.quality_score || 3,
@@ -182,12 +199,10 @@ export default function Backlinks() {
     }
   }, [formData.source_site_id, sources]);
 
-  
   useEffect(() => {
     if (formData.source_site_id && formData.quality_score) {
       const sourceIndex = sources.findIndex(s => s.id === parseInt(formData.source_site_id));
       if (sourceIndex !== -1) {
-        // Update the source quality in real-time
         const updatedSources = [...sources];
         updatedSources[sourceIndex] = {
           ...updatedSources[sourceIndex],
@@ -229,14 +244,38 @@ export default function Backlinks() {
                 <input value={formData.anchor_text} onChange={e=>setFormData({...formData, anchor_text: e.target.value})} placeholder="Anchor Text" />
               </div>
               <div className="form-row">
-                <select value={formData.type} onChange={e=>setFormData({...formData, type: e.target.value})}>
-                  <option value="Guest Post">Guest Post</option>
-                  <option value="Directory">Directory</option>
-                  <option value="Profile">Profile</option>
-                  <option value="Comment">Comment</option>
-                  <option value="Other">Other</option>
-                </select>
-                <input value={formData.placement_url} onChange={e=>setFormData({...formData, placement_url: e.target.value})} placeholder="Placement URL (exact URL where backlink is located)" />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <div style={{ display: 'flex', gap: '5px' }}>
+                    <select 
+                      style={{ flex: 1 }}
+                      value={formData.type} 
+                      onChange={e=>setFormData({...formData, type: e.target.value})}
+                    >
+                      <option value="Guest Post">Guest Post</option>
+                      <option value="Directory">Directory</option>
+                      <option value="Profile">Profile</option>
+                      <option value="Comment">Comment</option>
+                      {dynamicTypes.map(t => (
+                        <option key={t.id} value={t.name}>{t.name}</option>
+                      ))}
+                    </select>
+                    <button type="button" onClick={() => setShowAddType(!showAddType)}>+</button>
+                  </div>
+
+                  {showAddType && (
+                    <div style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
+                      <input 
+                        type="text" 
+                        placeholder="New type name..." 
+                        value={newTypeName} 
+                        onChange={e => setNewTypeName(e.target.value)} 
+                        style={{ flex: 1 }}
+                      />
+                      <button type="button" onClick={handleAddNewType}>Add</button>
+                    </div>
+                  )}
+                </div>
+                <input value={formData.placement_url} onChange={e=>setFormData({...formData, placement_url: e.target.value})} placeholder="Placement URL" />
               </div>
               <div className="form-row">
                 <input type="date" value={formData.date_added} onChange={e=>setFormData({...formData, date_added: e.target.value})} />
@@ -271,7 +310,6 @@ export default function Backlinks() {
                   </div>
                 )}
               </div>
-              
               {isAdmin && (
                 <div className="form-row">
                   <div className="traffic-container">
@@ -280,7 +318,6 @@ export default function Backlinks() {
                       <span className="traffic-value">{(formData.traffic_estimated || 0).toLocaleString()}</span>
                       <span className="traffic-unit">visitors/month</span>
                     </div>
-                    <small className="traffic-note">Auto-fetched from source website data</small>
                   </div>
                 </div>
               )}

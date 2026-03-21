@@ -20,6 +20,7 @@ class ReportController extends Controller
             
             $startDate = $request->start_date;
             $endDate = $request->end_date;
+            $selectedColumns = $request->columns ?? [];
 
             if ($startDate) {
                 $query->whereDate('date_added', '>=', $startDate);
@@ -40,7 +41,7 @@ class ReportController extends Controller
                 'total_cost' => (float) $backlinks->sum('cost')
             ];
 
-            $pdf = Pdf::loadView('reports.pdf', compact('backlinks', 'stats', 'startDate', 'endDate'));
+            $pdf = Pdf::loadView('reports.pdf', compact('backlinks', 'stats', 'startDate', 'endDate', 'selectedColumns'));
             return $pdf->download('rapport.pdf');
 
         } catch (\Exception $e) {
@@ -64,6 +65,7 @@ class ReportController extends Controller
             }
 
             $backlinks = $query->get();
+            $selectedColumns = $request->columns ?? [];
 
             $fileName = 'backlinks_report.csv';
             $headers = [
@@ -71,26 +73,41 @@ class ReportController extends Controller
                 "Content-Disposition" => "attachment; filename=$fileName",
             ];
 
-            $callback = function() use($backlinks) {
+            $callback = function() use($backlinks, $selectedColumns) {
                 $file = fopen('php://output', 'w');
                 // حل مشكل Excel: نزيدو الـ BOM و سطر التعريف بالسيباراتور
                 fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF)); 
                 fputs($file, "sep=,\n"); // هادي هي اللي غاتنظم الخانات فـ Excel أوتوماتيكياً
 
-                fputcsv($file, ['Date', 'Source Site', 'Score', 'Type', 'Anchor Text', 'Target URL', 'Placement URL', 'Status', 'Cost']);
+                // Dynamic headers based on selected columns
+                $headers = [];
+                if ($selectedColumns['date_added'] ?? true) $headers[] = 'Date Added';
+                if ($selectedColumns['source_website'] ?? true) $headers[] = 'Source Website';
+                if ($selectedColumns['traffic'] ?? true) $headers[] = 'Traffic';
+                if ($selectedColumns['type'] ?? true) $headers[] = 'Type';
+                if ($selectedColumns['target_url'] ?? true) $headers[] = 'Target URL';
+                if ($selectedColumns['anchor_text'] ?? true) $headers[] = 'Anchor Text';
+                if ($selectedColumns['placement_url'] ?? true) $headers[] = 'Placement URL';
+                if ($selectedColumns['status'] ?? true) $headers[] = 'Status';
+                if ($selectedColumns['quality_score'] ?? true) $headers[] = 'Quality Score';
+                if ($selectedColumns['cost'] ?? true) $headers[] = 'Cost';
+                
+                fputcsv($file, $headers);
 
                 foreach ($backlinks as $link) {
-                    fputcsv($file, [
-                        $link->date_added,
-                        $link->sourceSite->domain ?? 'N/A',
-                        $link->sourceSite->quality_score ?? 'N/A',
-                        $link->type,
-                        $link->anchor_text ?? '-',
-                        $link->target_url ?? '-',
-                        $link->placement_url ?? '-',
-                        $link->status,
-                        $link->cost
-                    ]);
+                    $row = [];
+                    if ($selectedColumns['date_added'] ?? true) $row[] = $link->date_added;
+                    if ($selectedColumns['source_website'] ?? true) $row[] = $link->sourceSite->domain ?? 'N/A';
+                    if ($selectedColumns['traffic'] ?? true) $row[] = $link->sourceSite->traffic_estimated ?? 'N/A';
+                    if ($selectedColumns['type'] ?? true) $row[] = $link->type;
+                    if ($selectedColumns['target_url'] ?? true) $row[] = $link->target_url ?? '-';
+                    if ($selectedColumns['anchor_text'] ?? true) $row[] = $link->anchor_text ?? '-';
+                    if ($selectedColumns['placement_url'] ?? true) $row[] = $link->placement_url ?? '-';
+                    if ($selectedColumns['status'] ?? true) $row[] = $link->status;
+                    if ($selectedColumns['quality_score'] ?? true) $row[] = $link->sourceSite->quality_score ?? 'N/A';
+                    if ($selectedColumns['cost'] ?? true) $row[] = $link->cost;
+                    
+                    fputcsv($file, $row);
                 }
                 fclose($file);
             };

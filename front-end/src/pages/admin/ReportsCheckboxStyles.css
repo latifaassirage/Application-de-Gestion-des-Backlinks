@@ -1,0 +1,55 @@
+/* Export Checkbox Styles - Compact and Clean */
+.export-checkbox {
+  cursor: pointer !important;
+  width: 14px !important;
+  height: 14px !important;
+  accent-color: #2c3e50 !important;
+  border: 1px solid #d0d0d0 !important;
+  border-radius: 2px !important;
+  transition: all 0.15s ease !important;
+  margin-right: 6px !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.export-checkbox:hover {
+  border-color: #3498db !important;
+  transform: scale(1.05) !important;
+}
+
+.export-checkbox:checked {
+  background-color: #2c3e50 !important;
+  border-color: #2c3e50 !important;
+}
+
+.export-checkbox:focus {
+  outline: 1px solid #3498db !important;
+  outline-offset: 1px !important;
+}
+
+/* Table header styling to maintain layout */
+.report-table th div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  white-space: nowrap !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  gap: 6px !important;
+}
+
+.report-table th div span {
+  line-height: 1.2 !important;
+  font-size: 13px !important;
+}
+
+/* Subtle hover effect for the entire header cell */
+.report-table th:hover .export-checkbox {
+  border-color: #3498db !important;
+  box-shadow: 0 0 2px rgba(52, 152, 219, 0.2) !important;
+}
+
+/* Remove tooltip to keep layout clean */
+.report-table th div[title]:hover::after {
+  display: none !important;
+}
