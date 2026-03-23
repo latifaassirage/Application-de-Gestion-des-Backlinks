@@ -112,15 +112,20 @@ export default function Sources() {
   const [showModal, setShowModal] = useState(false);
   const [editingSource, setEditingSource] = useState(null);
 
+  // S'assurer que sources est toujours un tableau
+  const safeSources = Array.isArray(sources) ? sources : [];
+
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.role === 'admin';
 
   const fetchSources = async () => {
     try {
       const res = await api.get("/sources");
-      setSources(res.data);
+      console.log("Sources API response:", res.data);
+      setSources(res.data.data || []);
     } catch (error) {
       console.error("Error fetching sources:", error);
+      setSources([]);
     } finally {
       setLoading(false);
     }
@@ -177,7 +182,7 @@ export default function Sources() {
         </div>
 
         <div className="sources-table-container">
-          {sources.length === 0 ? (
+          {safeSources.length === 0 ? (
             <div className="no-sources">
               <p>No sources found</p>
               {isAdmin && <p>Click "Add Source" to create your first source website</p>}
@@ -196,7 +201,7 @@ export default function Sources() {
                 </tr>
               </thead>
               <tbody>
-                {sources.map(source => (
+                {safeSources.map(source => (
                   <tr key={source.id}>
                     <td className="domain">
                       <a href={`https://${source.domain}`} target="_blank" rel="noopener noreferrer">

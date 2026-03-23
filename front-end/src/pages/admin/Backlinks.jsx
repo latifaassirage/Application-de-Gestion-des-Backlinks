@@ -4,19 +4,43 @@ import Navbar from "../../components/Navbar";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import "./Backlinks.css";
+import "./SourceSites.css";
 
 export default function Backlinks() {
   const [backlinks, setBacklinks] = useState([]);
   const [clients, setClients] = useState([]);
   const [sources, setSources] = useState([]);
+  const [summarySources, setSummarySources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingBacklink, setEditingBacklink] = useState(null);
   const [showSourceSitesView, setShowSourceSitesView] = useState(false);
   
+  // S'assurer que les variables sont bien des tableaux même pendant le chargement
+  const safeBacklinks = Array.isArray(backlinks) ? backlinks : [];
+  const safeClients = Array.isArray(clients) ? clients : [];
+  const safeSources = Array.isArray(sources) ? sources : [];
+  const safeSummarySources = Array.isArray(summarySources) ? summarySources : [];
+  
   const [dynamicTypes, setDynamicTypes] = useState([]);
   const [showAddType, setShowAddType] = useState(false);
   const [newTypeName, setNewTypeName] = useState("");
+
+  // États pour la pagination des summary sources
+  const [summaryPagination, setSummaryPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    per_page: 10,
+    total: 0
+  });
+
+  // États pour la pagination des backlinks
+  const [backlinksPagination, setBacklinksPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    per_page: 10,
+    total: 0
+  });
 
   const [formData, setFormData] = useState({
     client_id: "",
@@ -101,10 +125,16 @@ export default function Backlinks() {
     }
   };
 
-  const fetchBacklinks = async () => {
+  const fetchBacklinks = async (page = 1) => {
     try {
-      const res = await api.get("/backlinks");
-      setBacklinks(res.data);
+      const res = await api.get(`/backlinks?page=${page}&per_page=10`);
+      setBacklinks(res.data.data || []);
+      setBacklinksPagination({
+        current_page: res.data.current_page || 1,
+        last_page: res.data.last_page || 1,
+        per_page: res.data.per_page || 10,
+        total: res.data.total || 0
+      });
     } catch (error) {
       console.error("Error fetching backlinks:", error);
     } finally {
@@ -114,7 +144,8 @@ export default function Backlinks() {
 
   const fetchClients = async () => {
     try {
-      const res = await api.get("/clients");
+      const res = await api.get("/all-clients");
+      console.log("All clients response:", res.data);
       setClients(res.data);
     } catch (error) {
       console.error("Error fetching clients:", error);
@@ -123,15 +154,35 @@ export default function Backlinks() {
 
   const fetchSources = async () => {
     try {
-      const res = await api.get("/sources");
-      setSources(res.data);
+      const res = await api.get("/all-sources");
+      console.log("All sources response:", res.data);
+      setSources(res.data.data || res.data || []); // Support both formats
     } catch (error) {
       console.error("Error fetching sources:", error);
     }
   };
 
+  const fetchSummarySources = async (page = 1) => {
+    try {
+      const res = await api.get(`/summary-sources?page=${page}&per_page=10`);
+      console.log("Summary sources data received:", res.data);
+      console.log("Number of summary sources:", res.data.data?.length || 0);
+      
+      // Mettre à jour les données et la pagination
+      setSummarySources(res.data.data || []);
+      setSummaryPagination({
+        current_page: res.data.current_page || 1,
+        last_page: res.data.last_page || 1,
+        per_page: res.data.per_page || 10,
+        total: res.data.total || 0
+      });
+    } catch (error) {
+      console.error("Error fetching summary sources:", error);
+    }
+  };
+
   const checkDuplicate = (clientId, sourceId, excludeId = null) => {
-    return backlinks.some(backlink => 
+    return safeBacklinks.some(backlink => 
       backlink.client_id === clientId && 
       backlink.source_site_id === sourceId && 
       backlink.id !== excludeId
@@ -141,7 +192,7 @@ export default function Backlinks() {
   const addBacklink = async (e) => {
     e.preventDefault();
     if (checkDuplicate(formData.client_id, formData.source_site_id)) {
-      const sourceSite = sources.find(s => s.id === formData.source_site_id);
+      const sourceSite = safeSources.find(s => s.id === formData.source_site_id);
       const confirmDuplicate = window.confirm(
         `⚠️ This client already has a backlink on "${sourceSite?.domain || 'Unknown site'}".\n\nDo you want to continue adding another backlink on the same source?`
       );
@@ -149,18 +200,19 @@ export default function Backlinks() {
     }
 
     try {
-      const source = sources.find(s => s.id === formData.source_site_id);
+      const source = safeSources.find(s => s.id === formData.source_site_id);
       const submitData = {
         ...formData,
         quality_score: source?.quality_score || 3,
         traffic_estimated: parseInt(source?.traffic_estimated || source?.traffic || 0) 
       };
       const res = await api.post("/backlinks", submitData);
-      setBacklinks([...backlinks, res.data]);
+      setBacklinks([...safeBacklinks, res.data]);
       resetForm();
       setShowForm(false);
-      alert("Backlink added successfully!");
-      fetchBacklinks();
+      alert("Backlink created successfully!");
+      // Revenir à la première page après création
+      fetchBacklinks(1);
     } catch (error) {
       alert("Error adding backlink");
     }
@@ -169,19 +221,19 @@ export default function Backlinks() {
   const updateBacklink = async (e) => {
     e.preventDefault();
     try {
-      const source = sources.find(s => s.id === formData.source_site_id);
+      const source = safeSources.find(s => s.id === formData.source_site_id);
       const submitData = {
         ...formData,
         quality_score: source?.quality_score || 3,
         traffic_estimated: parseInt(source?.traffic_estimated || source?.traffic || 0)
       };
       const res = await api.put(`/backlinks/${editingBacklink.id}`, submitData);
-      setBacklinks(backlinks.map(b => b.id === editingBacklink.id ? res.data : b));
+      setBacklinks(safeBacklinks.map(b => b.id === editingBacklink.id ? res.data : b));
       resetForm();
       setEditingBacklink(null);
       setShowForm(false);
       alert("Backlink updated successfully!");
-      fetchBacklinks();
+      fetchBacklinks(1);
     } catch (error) {
       alert("Error updating backlink");
     }
@@ -191,7 +243,9 @@ export default function Backlinks() {
     if (window.confirm("Are you sure?")) {
       try {
         await api.delete(`/backlinks/${id}`);
-        setBacklinks(backlinks.filter(b => b.id !== id));
+        setBacklinks(safeBacklinks.filter(b => b.id !== id));
+        // Revenir à la première page après suppression
+        fetchBacklinks(1);
       } catch (error) {
         alert("Error deleting backlink");
       }
@@ -248,7 +302,9 @@ export default function Backlinks() {
       });
       
       // Update the backlinks array
-      setBacklinks(backlinks.map(b => b.id === associatedBacklink.id ? res.data : b));
+      setBacklinks(safeBacklinks.map(b => b.id === associatedBacklink.id ? res.data : b));
+      // Revenir à la première page après modification
+      fetchBacklinks(1);
       console.log('Type updated successfully!');
     } catch (error) {
       console.error('Error updating backlink type:', error);
@@ -284,12 +340,107 @@ export default function Backlinks() {
       });
       
       // Update the backlinks array
-      setBacklinks(backlinks.map(b => b.id === associatedBacklink.id ? res.data : b));
+      setBacklinks(safeBacklinks.map(b => b.id === associatedBacklink.id ? res.data : b));
+      // Revenir à la première page après modification
+      fetchBacklinks(1);
       console.log('Link type updated successfully!');
     } catch (error) {
       console.error('Error updating backlink link type:', error);
       alert('Error updating link type');
     }
+  };
+
+  const handleSummaryLinkTypeChange = async (sourceId, newLinkType) => {
+    try {
+      const res = await api.put(`/summary-sources/${sourceId}`, {
+        link_type: newLinkType
+      });
+      
+      // Rafraîchir les données summarySources pour obtenir les valeurs à jour
+      await fetchSummarySources();
+      console.log('Summary link type updated successfully!');
+    } catch (error) {
+      console.error('Error updating summary link type:', error);
+      alert('Error updating link type');
+    }
+  };
+
+  // Fonctions de navigation pour la pagination des summary sources
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= summaryPagination.last_page) {
+      fetchSummarySources(newPage);
+    }
+  };
+
+  const renderPaginationNumbers = () => {
+    const { current_page, last_page } = summaryPagination;
+    const pages = [];
+    
+    // Afficher toujours la première page
+    if (current_page > 3) {
+      pages.push(1);
+      if (current_page > 4) {
+        pages.push('...');
+      }
+    }
+    
+    // Afficher les pages autour de la page actuelle
+    for (let i = Math.max(1, current_page - 2); i <= Math.min(last_page, current_page + 2); i++) {
+      pages.push(i);
+    }
+    
+    // Afficher la dernière page
+    if (current_page < last_page - 2) {
+      if (current_page < last_page - 3) {
+        pages.push('...');
+      }
+      pages.push(last_page);
+    }
+    
+    return pages;
+  };
+
+  const renderPaginationControls = () => {
+    return (
+      <div className="pagination-controls">
+        <div className="pagination-info">
+          <span>
+            Affichage de {((summaryPagination.current_page - 1) * summaryPagination.per_page) + 1} à{' '}
+            {Math.min(summaryPagination.current_page * summaryPagination.per_page, summaryPagination.total)} sur{' '}
+            {summaryPagination.total} résultats
+          </span>
+        </div>
+        
+        <div className="pagination-buttons">
+          <button
+            className="pagination-btn"
+            onClick={() => handlePageChange(summaryPagination.current_page - 1)}
+            disabled={summaryPagination.current_page === 1}
+          >
+            Précédent
+          </button>
+          
+          {renderPaginationNumbers().map((page, index) => (
+            <button
+              key={index}
+              className={`pagination-btn ${page === summaryPagination.current_page ? 'active' : ''} ${page === '...' ? 'disabled' : ''}`}
+              onClick={() => page !== '...' && handlePageChange(page)}
+              disabled={page === '...'}
+            >
+              {page}
+            </button>
+          ))}
+          
+          <button
+            className="pagination-btn"
+            onClick={() => handlePageChange(summaryPagination.current_page + 1)}
+            disabled={summaryPagination.current_page === summaryPagination.last_page}
+          >
+            Suivant
+          </button>
+        </div>
+      </div>
+    );
   };
 
   const getStatusColor = (status) => {
@@ -302,7 +453,7 @@ export default function Backlinks() {
   };
 
   useEffect(() => { 
-    fetchBacklinks(); fetchClients(); fetchSources(); fetchTypes();
+    fetchBacklinks(); fetchClients(); fetchSources(); fetchSummarySources(); fetchTypes();
   }, []);
 
   useEffect(() => {
@@ -332,12 +483,92 @@ export default function Backlinks() {
     }
   }, [formData.quality_score]);
 
+  const handleImportSourceSites = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validation de l'extension
+    const fileName = file.name.toLowerCase();
+    const allowedExtensions = ['.csv', '.xlsx', '.xls'];
+    const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+    
+    if (!hasValidExtension) {
+      alert(`Format de fichier non supporté. Extensions autorisées: ${allowedExtensions.join(', ')}`);
+      event.target.value = '';
+      return;
+    }
+
+    // Validation de la taille (10MB max)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert('Le fichier est trop volumineux. Taille maximale: 10MB');
+      event.target.value = '';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      setLoading(true);
+      
+      const response = await api.post('/summary/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log("Import response:", response.data);
+      console.log("Import successful, refreshing summary sources...");
+
+      // Rafraîchir les données après l'import
+      await fetchSummarySources(1); // Revenir à la page 1 après import
+
+      console.log("Summary sources refreshed after import");
+      const message = response.data.message || 'Import réussi !';
+      const importedCount = response.data.imported_count || 0;
+      const updatedCount = response.data.updated_count || 0;
+      const totalCount = response.data.total_processed || 0;
+      
+      if (updatedCount > 0) {
+        alert(`${message} Total traité: ${totalCount} lignes.`);
+      } else {
+        alert(message);
+      }
+      
+      // Réinitialiser l'input file
+      event.target.value = '';
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'import:', error);
+      
+      let errorMessage = 'Erreur lors de l\'import: ';
+      
+      if (error.response) {
+        errorMessage += error.response.data?.message || error.response.statusText || 'Erreur serveur';
+        
+        if (error.response.data?.errors && Array.isArray(error.response.data.errors)) {
+          errorMessage += '\n\nDétails:\n' + error.response.data.errors.join('\n');
+        }
+      } else if (error.request) {
+        errorMessage += 'Aucune réponse du serveur';
+      } else {
+        errorMessage += error.message;
+      }
+      
+      alert(errorMessage);
+      event.target.value = '';
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const exportToCSV = () => {
     // Prepare CSV data
-    const csvData = sources.map(source => {
+    const csvData = safeSources.map(source => {
       // Find associated client through backlinks
-      const associatedBacklink = backlinks.find(b => b.source_site_id === source.id);
-      const associatedClient = associatedBacklink ? clients.find(c => c.id === associatedBacklink.client_id) : null;
+      const associatedBacklink = safeBacklinks.find(b => b.source_site_id === source.id);
+      const associatedClient = associatedBacklink ? safeClients.find(c => c.id === associatedBacklink.client_id) : null;
       
       return {
         Website: source.domain,
@@ -380,10 +611,10 @@ export default function Backlinks() {
 
   const exportToPDF = () => {
     // Prepare PDF data
-    const pdfData = sources.map(source => {
+    const pdfData = safeSources.map(source => {
       // Find associated client through backlinks
-      const associatedBacklink = backlinks.find(b => b.source_site_id === source.id);
-      const associatedClient = associatedBacklink ? clients.find(c => c.id === associatedBacklink.client_id) : null;
+      const associatedBacklink = safeBacklinks.find(b => b.source_site_id === source.id);
+      const associatedClient = associatedBacklink ? safeClients.find(c => c.id === associatedBacklink.client_id) : null;
       
       return [
         source.domain,
@@ -463,11 +694,11 @@ export default function Backlinks() {
               <div className="form-row">
                 <select value={formData.client_id} onChange={e=>setFormData({...formData, client_id: e.target.value})} required>
                   <option value="">Select Client</option>
-                  {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
+                  {safeClients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
                 </select>
                 <select value={formData.source_site_id} onChange={e=>setFormData({...formData, source_site_id: e.target.value})} required>
                   <option value="">Select Source</option>
-                  {sources.map(s => <option key={s.id} value={s.id}>{s.domain}</option>)}
+                  {safeSources.map(s => <option key={s.id} value={s.id}>{s.domain}</option>)}
                 </select>
               </div>
               <div className="form-row">
@@ -643,10 +874,10 @@ export default function Backlinks() {
               </tr>
             </thead>
             <tbody>
-              {backlinks.map(b => (
+              {safeBacklinks.map(b => (
                 <tr key={b.id}>
-                  <td>{clients.find(c => c.id === b.client_id)?.company_name || '...'}</td>
-                  <td>{sources.find(s => s.id === b.source_site_id)?.domain || '...'}</td>
+                  <td>{safeClients.find(c => c.id === b.client_id)?.company_name || '...'}</td>
+                  <td>{safeSources.find(s => s.id === b.source_site_id)?.domain || '...'}</td>
                   <td>{new Date(b.date_added || b.created_at || b.date).toLocaleDateString('fr-FR')}</td>
                   <td><span className={`status ${getStatusColor(b.status)}`}>{b.status}</span></td>
                   <td>${b.cost || '0'}</td>
@@ -670,6 +901,16 @@ export default function Backlinks() {
                 <h3>Source Sites Summary</h3>
               </div>
               <div className="modal-header-right">
+                <button className="import-excel-btn" onClick={() => document.getElementById('sources-import-file-input').click()}>
+                  Import Excel
+                </button>
+                <input 
+                  id="sources-import-file-input" 
+                  type="file" 
+                  accept=".csv,.xlsx,.xls" 
+                  style={{ display: 'none' }} 
+                  onChange={handleImportSourceSites}
+                />
                 <button className="export-csv-btn" onClick={exportToCSV}>
                   Export Excel
                 </button>
@@ -697,25 +938,21 @@ export default function Backlinks() {
                       </tr>
                     </thead>
                     <tbody>
-                      {sources.map(source => {
-                        // Find associated client through backlinks
-                        const associatedBacklink = backlinks.find(b => b.source_site_id === source.id);
-                        const associatedClient = associatedBacklink ? clients.find(c => c.id === associatedBacklink.client_id) : null;
-                        
+                      {safeSummarySources.map(source => {
                         return (
                           <tr key={source.id}>
                             <td className="website-cell">
-                              <a href={`https://${source.domain}`} target="_blank" rel="noopener noreferrer">
-                                {source.domain}
+                              <a href={`https://${source.website}`} target="_blank" rel="noopener noreferrer">
+                                {source.website}
                               </a>
                             </td>
                             <td className="cost-cell">
-                              ${associatedBacklink?.cost || '0'}
+                              ${source.cost || '0'}
                             </td>
                             <td className="link-type-cell">
                               <select 
-                                value={associatedBacklink?.link_type || 'DoFollow'} 
-                                onChange={(e) => handleLinkTypeChange(source.id, e.target.value)}
+                                value={source.link_type || 'DoFollow'} 
+                                onChange={(e) => handleSummaryLinkTypeChange(source.id, e.target.value)}
                                 className="link-type-dropdown"
                               >
                                 <option value="DoFollow">DoFollow</option>
@@ -723,11 +960,11 @@ export default function Backlinks() {
                               </select>
                             </td>
                             <td className="email-cell">
-                              {associatedClient?.contact_email || '-'}
+                              {source.contact_email || '-'}
                             </td>
                             <td className="spam-cell">
-                              <span className={`spam-score ${source.spam_score > 30 ? 'spam-danger' : 'spam-safe'}`}>
-                                {source.spam_score || 0}%
+                              <span className={`spam-score ${source.spam > 30 ? 'spam-danger' : 'spam-safe'}`}>
+                                {source.spam || 0}%
                               </span>
                             </td>
                           </tr>
@@ -737,6 +974,9 @@ export default function Backlinks() {
                   </table>
                 )}
               </div>
+              
+              {/* Contrôles de pagination */}
+              {summaryPagination.total > 0 && renderPaginationControls()}
             </div>
           </div>
         </div>

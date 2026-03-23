@@ -7,9 +7,20 @@ use Illuminate\Http\Request;
 
 class SourceSiteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return SourceSite::all();
+        $perPage = $request->get('per_page', 10); // 10 par défaut
+        $page = $request->get('page', 1); // Page 1 par défaut
+        
+        $sources = SourceSite::orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return $sources;
+    }
+
+    public function all()
+    {
+        return SourceSite::orderBy('domain', 'asc')->get();
     }
 
     public function store(Request $request)

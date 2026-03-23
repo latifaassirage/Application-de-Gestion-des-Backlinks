@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Client::all();
+        return Client::orderBy('created_at', 'desc')->get();
+    }
+
+    public function all()
+    {
+        return Client::orderBy('company_name', 'asc')->get();
     }
 
     public function store(Request $request)

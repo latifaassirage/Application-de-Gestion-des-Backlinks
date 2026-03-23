@@ -481,6 +481,46 @@
   color: #333;
 }
 
+.import-btn {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(23,162,184,0.3);
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.import-btn:hover {
+  background: linear-gradient(135deg, #138496 0%, #0d6efd 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(23,162,184,0.4);
+}
+
+.import-excel-btn {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(23,162,184,0.3);
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.import-excel-btn:hover {
+  background: linear-gradient(135deg, #138496 0%, #0d6efd 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(23,162,184,0.4);
+}
+
 .export-csv-btn {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;

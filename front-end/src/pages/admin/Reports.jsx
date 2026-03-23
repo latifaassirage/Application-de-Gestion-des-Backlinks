@@ -70,7 +70,7 @@ export default function Reports() {
 
   const fetchSources = async () => {
     try {
-      const res = await api.get("/sources");
+      const res = await api.get("/all-sources");
       setSources(res.data);
     } catch (error) {
       console.error("Error fetching sources:", error);
@@ -79,7 +79,7 @@ export default function Reports() {
 
   const fetchBacklinks = async () => {
     try {
-      const res = await api.get("/backlinks");
+      const res = await api.get("/all-backlinks");
       setBacklinks(res.data);
     } catch (error) {
       console.error("Error fetching backlinks:", error);

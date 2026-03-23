@@ -10,6 +10,18 @@ export default function SourceSites() {
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingSource, setEditingSource] = useState(null);
+
+  // S'assurer que sources est toujours un tableau
+  const safeSources = Array.isArray(sources) ? sources : [];
+
+  // États pour la pagination
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    per_page: 10,
+    total: 0
+  });
+
   const [formData, setFormData] = useState({
     domain: '',
     quality_score: 5,
@@ -19,10 +31,20 @@ export default function SourceSites() {
     notes: ''
   });
 
-  const fetchSources = async () => {
+  const fetchSources = async (page = 1) => {
     try {
-      const res = await api.get("/sources");
-      setSources(res.data);
+      console.log("Fetching sources page:", page);
+      const res = await api.get(`/sources?page=${page}&per_page=10`);
+      console.log("API response:", res.data);
+      console.log("Sources data type:", typeof res.data.data);
+      console.log("Sources data:", res.data.data);
+      setSources(res.data.data || []);
+      setPagination({
+        current_page: res.data.current_page || 1,
+        last_page: res.data.last_page || 1,
+        per_page: res.data.per_page || 10,
+        total: res.data.total || 0
+      });
     } catch (error) {
       console.error("Error fetching sources:", error);
       setSources([]);
@@ -50,9 +72,12 @@ export default function SourceSites() {
         console.log("Réponse mise à jour:", res.data);
         
         // Mettre à jour la liste locale
-        setSources(sources.map(s => s.id === editingSource.id ? res.data : s));
+        setSources(safeSources.map(s => s.id === editingSource.id ? res.data : s));
         alert('Site source mis à jour avec succès!');
         console.log("=== MISE À JOUR TERMINÉE ===");
+        
+        // Revenir à la première page après mise à jour
+        fetchSources(1);
         
       } else {
         // Mode création - POST request
@@ -63,9 +88,12 @@ export default function SourceSites() {
         console.log("Réponse création:", res.data);
         
         // Ajouter à la liste locale
-        setSources([...sources, res.data]);
+        setSources([...safeSources, res.data]);
         alert('Site source ajouté avec succès!');
         console.log("=== CRÉATION TERMINÉE ===");
+        
+        // Revenir à la première page après création
+        fetchSources(1);
       }
       
       // Réinitialiser le formulaire
@@ -160,7 +188,44 @@ export default function SourceSites() {
     return numScore > 30 ? 'spam-danger' : 'spam-safe';
   };
 
+  // Fonctions de navigation pour la pagination
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.last_page) {
+      fetchSources(newPage);
+    }
+  };
+
+  const renderPaginationNumbers = () => {
+    const { current_page, last_page } = pagination;
+    const pages = [];
+    
+    // Afficher toujours la première page
+    if (current_page > 3) {
+      pages.push(1);
+      if (current_page > 4) {
+        pages.push('...');
+      }
+    }
+    
+    // Afficher les pages autour de la page actuelle
+    for (let i = Math.max(1, current_page - 2); i <= Math.min(last_page, current_page + 2); i++) {
+      pages.push(i);
+    }
+    
+    // Afficher la dernière page
+    if (current_page < last_page - 2) {
+      if (current_page < last_page - 3) {
+        pages.push('...');
+      }
+      pages.push(last_page);
+    }
+    
+    return pages;
+  };
+
   if (loading) {
+    console.log("Loading state, sources type:", typeof sources);
+    console.log("Loading state, sources:", sources);
     return (
       <div className="source-sites">
         <Navbar />
@@ -282,45 +347,91 @@ export default function SourceSites() {
                 </tr>
               </thead>
               <tbody>
-                {sources.map((source) => (
-                  <tr key={source.id}>
-                    <td className="domain-cell">
-                      <a 
-                        href={`https://${source.domain}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="domain-link"
-                      >
-                        {source.domain}
-                      </a>
-                    </td>
-                    <td>
-                      <span className={`quality-score score-${source.quality_score}`}>
-                        {source.quality_score}/5
-                      </span>
-                    </td>
-                    <td>{source.dr || '-'}</td>
-                    <td>{source.traffic_estimated ? source.traffic_estimated.toLocaleString() : '-'}</td>
-                    <td className="spam-score-cell">
-                      <span className={`spam-score ${getSpamScoreColor(source.spam_score)}`}>
-                        {source.spam_score || 0}%
-                      </span>
-                    </td>
-                    <td className="actions-cell">
-                      <button 
-                        className="edit-btn" 
-                        onClick={() => handleEdit(source)}
-                        title="Modifier ce site source"
-                      >
-                        Modifier
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {(() => {
+                  console.log("Rendering sources, type:", typeof safeSources);
+                  console.log("Rendering sources:", safeSources);
+                  return safeSources.map((source) => (
+                    <tr key={source.id}>
+                      <td className="domain-cell">
+                        <a 
+                          href={`https://${source.domain}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="domain-link"
+                        >
+                          {source.domain}
+                        </a>
+                      </td>
+                      <td>
+                        <span className={`quality-score score-${source.quality_score}`}>
+                          {source.quality_score}/5
+                        </span>
+                      </td>
+                      <td>{source.dr || '-'}</td>
+                      <td>{source.traffic_estimated ? source.traffic_estimated.toLocaleString() : '-'}</td>
+                      <td className="spam-score-cell">
+                        <span className={`spam-score ${getSpamScoreColor(source.spam_score)}`}>
+                          {source.spam_score || 0}%
+                        </span>
+                      </td>
+                      <td className="actions-cell">
+                        <button 
+                          className="edit-btn" 
+                          onClick={() => handleEdit(source)}
+                          title="Modifier ce site source"
+                        >
+                          Modifier
+                        </button>
+                      </td>
+                    </tr>
+                  ));
+                })()}
               </tbody>
             </table>
           )}
         </div>
+
+        {/* Contrôles de pagination */}
+        {pagination.total > 0 && (
+          <div className="pagination-controls">
+            <div className="pagination-info">
+              <span>
+                Affichage de {((pagination.current_page - 1) * pagination.per_page) + 1} à{' '}
+                {Math.min(pagination.current_page * pagination.per_page, pagination.total)} sur{' '}
+                {pagination.total} résultats
+              </span>
+            </div>
+            
+            <div className="pagination-buttons">
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(pagination.current_page - 1)}
+                disabled={pagination.current_page === 1}
+              >
+                Précédent
+              </button>
+              
+              {renderPaginationNumbers().map((page, index) => (
+                <button
+                  key={index}
+                  className={`pagination-btn ${page === pagination.current_page ? 'active' : ''} ${page === '...' ? 'disabled' : ''}`}
+                  onClick={() => page !== '...' && handlePageChange(page)}
+                  disabled={page === '...'}
+                >
+                  {page}
+                </button>
+              ))}
+              
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(pagination.current_page + 1)}
+                disabled={pagination.current_page === pagination.last_page}
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

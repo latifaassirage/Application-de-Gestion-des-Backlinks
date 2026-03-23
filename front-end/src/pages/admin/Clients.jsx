@@ -104,15 +104,50 @@ export default function Clients() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [editClient, setEditClient] = useState(null); 
+  const [editClient, setEditClient] = useState(null);
+
+  // États pour la pagination
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    per_page: 10,
+    total: 0
+  }); 
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.role === 'admin';
 
-  const fetchClients = async () => {
+  const fetchClients = async (page = 1) => {
     try {
-      const res = await api.get("/clients");
-      setClients(res.data);
+      const res = await api.get(`/clients?page=${page}&per_page=10`);
+      const clientsData = res.data.data || res.data || []; // Handle both paginated and direct data
+      setClients(clientsData);
+      
+      // Set pagination only if paginated data is available
+      if (res.data.data) {
+        setPagination({
+          current_page: res.data.current_page || 1,
+          last_page: res.data.last_page || 1,
+          per_page: res.data.per_page || 10,
+          total: res.data.total || 0
+        });
+      } else {
+        // For non-paginated data, create simple pagination
+        const perPage = 10;
+        const total = clientsData.length;
+        const lastPage = Math.ceil(total / perPage);
+        const startIndex = (page - 1) * perPage;
+        const endIndex = startIndex + perPage;
+        const paginatedClients = clientsData.slice(startIndex, endIndex);
+        
+        setClients(paginatedClients);
+        setPagination({
+          current_page: page,
+          last_page: lastPage || 1,
+          per_page: perPage,
+          total: total
+        });
+      }
     } catch (error) {
       console.error("Error fetching clients:", error);
     } finally {
@@ -134,6 +169,8 @@ export default function Clients() {
         const res = await api.post("/clients", newClient);
         setClients(prev => [...prev, res.data]);
       }
+      // Revenir à la première page après création/modification
+      fetchClients(1);
     } catch (error) {
       console.error("Error saving client:", error);
     }
@@ -144,6 +181,8 @@ export default function Clients() {
     try {
       await api.delete(`/clients/${id}`);
       setClients(prev => prev.filter(c => c.id !== id));
+      // Revenir à la première page après suppression
+      fetchClients(1);
     } catch (error) {
       console.error("Error deleting client:", error);
     }
@@ -152,6 +191,41 @@ export default function Clients() {
   const handleEdit = (client) => {
     setEditClient(client);
     setShowModal(true);
+  };
+
+  // Fonctions de navigation pour la pagination
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.last_page) {
+      fetchClients(newPage);
+    }
+  };
+
+  const renderPaginationNumbers = () => {
+    const { current_page, last_page } = pagination;
+    const pages = [];
+    
+    // Afficher toujours la première page
+    if (current_page > 3) {
+      pages.push(1);
+      if (current_page > 4) {
+        pages.push('...');
+      }
+    }
+    
+    // Afficher les pages autour de la page actuelle
+    for (let i = Math.max(1, current_page - 2); i <= Math.min(last_page, current_page + 2); i++) {
+      pages.push(i);
+    }
+    
+    // Afficher la dernière page
+    if (current_page < last_page - 2) {
+      if (current_page < last_page - 3) {
+        pages.push('...');
+      }
+      pages.push(last_page);
+    }
+    
+    return pages;
   };
 
   if (loading) return <div className="loading">Loading clients...</div>;
@@ -209,6 +283,48 @@ export default function Clients() {
             </table>
           )}
         </div>
+
+        {/* Contrôles de pagination */}
+        {pagination.total > 0 && (
+          <div className="pagination-controls">
+            <div className="pagination-info">
+              <span>
+                Affichage de {((pagination.current_page - 1) * pagination.per_page) + 1} à{' '}
+                {Math.min(pagination.current_page * pagination.per_page, pagination.total)} sur{' '}
+                {pagination.total} résultats
+              </span>
+            </div>
+            
+            <div className="pagination-buttons">
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(pagination.current_page - 1)}
+                disabled={pagination.current_page === 1}
+              >
+                Précédent
+              </button>
+              
+              {renderPaginationNumbers().map((page, index) => (
+                <button
+                  key={index}
+                  className={`pagination-btn ${page === pagination.current_page ? 'active' : ''} ${page === '...' ? 'disabled' : ''}`}
+                  onClick={() => page !== '...' && handlePageChange(page)}
+                  disabled={page === '...'}
+                >
+                  {page}
+                </button>
+              ))}
+              
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(pagination.current_page + 1)}
+                disabled={pagination.current_page === pagination.last_page}
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        )}
 
         {showModal && (
           <ClientModal

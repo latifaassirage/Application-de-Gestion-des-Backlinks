@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\BacklinkObserver;
 
 class Backlink extends Model
 {
@@ -13,6 +14,11 @@ class Backlink extends Model
         'client_id', 'source_site_id', 'type', 'link_type', 'target_url', 'anchor_text',
         'placement_url', 'date_added', 'status', 'cost', 'quality_score', 'traffic_estimated'
     ];
+
+    protected static function booted()
+    {
+        static::observe(BacklinkObserver::class);
+    }
 
     public function client()
     {

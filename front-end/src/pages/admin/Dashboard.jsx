@@ -108,7 +108,7 @@ const Dashboard = () => {
       ]);
       
       const clients = clientsRes.data;
-      const backlinks = backlinksRes.data;
+      const backlinks = backlinksRes.data.data || backlinksRes.data || []; // Handle both paginated and direct data
       
       console.log('Backlinks data:', backlinks);
       console.log('Clients data:', clients);
