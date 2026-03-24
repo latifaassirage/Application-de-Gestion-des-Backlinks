@@ -107,11 +107,12 @@ const Dashboard = () => {
         api.get('/backlinks')
       ]);
       
-      const clients = clientsRes.data;
+      const clients = clientsRes.data.data || clientsRes.data || []; // Handle both paginated and direct data
       const backlinks = backlinksRes.data.data || backlinksRes.data || []; // Handle both paginated and direct data
       
       console.log('Backlinks data:', backlinks);
       console.log('Clients data:', clients);
+      console.log('Clients response:', clientsRes);
       
       const currentMonth = new Date().getMonth();
       const currentYear = new Date().getFullYear();

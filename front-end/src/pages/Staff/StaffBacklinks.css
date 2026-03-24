@@ -1,7 +1,8 @@
 .staff-backlinks {
   padding: 20px;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .page-header {
@@ -262,12 +263,12 @@ tr:hover {
 }
 
 .btn-primary {
-  background: #007bff;
+  background: #FF6B35;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #0056b3;
+  background: #e55a2b;
 }
 
 .btn-secondary {
@@ -289,12 +290,12 @@ tr:hover {
 }
 
 .btn-edit {
-  background: #ffc107;
-  color: #212529;
+  background: #FF6B35;
+  color: white;
 }
 
 .btn-edit:hover {
-  background: #e0a800;
+  background: #e55a2b;
 }
 
 .btn-delete {
@@ -316,6 +317,41 @@ tr:hover {
   padding: 40px;
   font-size: 1.1rem;
   color: #666;
+}
+
+.pagination-info {
+  margin-bottom: 20px;
+  padding: 10px 0;
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 20px 0;
+}
+
+.pagination .btn {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  min-width: 40px;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 a {
@@ -355,5 +391,21 @@ a:hover {
   th,
   td {
     padding: 8px 4px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .pagination .btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    min-width: 35px;
+  }
+
+  .page-numbers {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

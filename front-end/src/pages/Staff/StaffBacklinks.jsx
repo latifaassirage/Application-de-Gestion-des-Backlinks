@@ -10,6 +10,10 @@ export default function StaffBacklinks() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingBacklink, setEditingBacklink] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const itemsPerPage = 10;
   
   const [dynamicTypes, setDynamicTypes] = useState([]);
   
@@ -22,9 +26,7 @@ export default function StaffBacklinks() {
     placement_url: "",
     date_added: new Date().toISOString().split('T')[0],
     status: "Pending",
-    cost: "",
-    quality_score: 3,
-    traffic_estimated: 0
+    cost: ""
   });
 
   const fetchTypes = async () => {
@@ -41,29 +43,18 @@ export default function StaffBacklinks() {
     fetchTypes();
   }, []);
 
-  useEffect(() => {
-    if (formData.source_site_id && sources.length > 0) {
-      const selectedSource = sources.find(source => source.id === parseInt(formData.source_site_id));
-      if (selectedSource) {
-        console.log(" Auto-fetching source data:", selectedSource);
-        setFormData(prev => ({
-          ...prev,
-          quality_score: selectedSource.quality_score || 3,
-          traffic_estimated: parseInt(selectedSource.traffic_estimated || selectedSource.traffic || 0)
-        }));
-      }
-    }
-  }, [formData.source_site_id, sources]);
-
-  const fetchData = async () => {
+  const fetchData = async (page = 1) => {
     try {
       setLoading(true);
       const [backlinksRes, clientsRes, sourcesRes] = await Promise.all([
-        api.get("/backlinks"),
+        api.get(`/backlinks?page=${page}&per_page=${itemsPerPage}`),
         api.get("/clients"),
         api.get("/sources")
       ]);
       setBacklinks(backlinksRes.data.data || []);
+      setTotal(backlinksRes.data.total || 0);
+      setTotalPages(backlinksRes.data.last_page || 1);
+      setCurrentPage(backlinksRes.data.current_page || 1);
       setClients(clientsRes.data.data || []);
       setSources(sourcesRes.data.data || []);
     } catch (error) {
@@ -115,9 +106,7 @@ export default function StaffBacklinks() {
         
         submitData = {
           ...formData,
-          link_type: "DoFollow", // Valeur par défaut pour le Staff
-          quality_score: formData.quality_score,
-          traffic_estimated: parseInt(formData.traffic_estimated || 0)
+          link_type: "DoFollow"
         };
         console.log("📝 Editing backlink with data:", submitData);
       } else {
@@ -125,9 +114,7 @@ export default function StaffBacklinks() {
         const source = sources.find(s => s.id === formData.source_site_id);
         submitData = {
           ...formData,
-          link_type: "DoFollow", // Valeur par défaut pour le Staff
-          quality_score: source?.quality_score || 3,
-          traffic_estimated: parseInt(source?.traffic_estimated || source?.traffic || 0)
+          link_type: "DoFollow"
         };
         console.log("➕ Adding new backlink with data:", submitData);
       }
@@ -141,7 +128,7 @@ export default function StaffBacklinks() {
       }
       
       resetForm();
-      fetchData();
+      fetchData(currentPage);
     } catch (error) {
       console.error("Error saving backlink:", error);
       alert("Error saving backlink. Please check console for details.");
@@ -159,9 +146,7 @@ export default function StaffBacklinks() {
       placement_url: backlink.placement_url,
       date_added: backlink.date_added || backlink.date,
       status: backlink.status,
-      cost: backlink.cost,
-      quality_score: backlink.quality_score || 3,
-      traffic_estimated: parseInt(backlink.traffic_estimated || 0)
+      cost: backlink.cost
     });
     setShowForm(true);
   };
@@ -176,9 +161,7 @@ export default function StaffBacklinks() {
       placement_url: "",
       date_added: new Date().toISOString().split('T')[0],
       status: "Pending",
-      cost: "",
-      quality_score: 3,
-      traffic_estimated: 0
+      cost: ""
     });
     setEditingBacklink(null);
     setShowForm(false);
@@ -272,7 +255,6 @@ export default function StaffBacklinks() {
           </form>
         </div>
       )}
-
       <div className="backlinks-table">
         <div className="table-responsive">
           <table>
@@ -280,8 +262,6 @@ export default function StaffBacklinks() {
               <tr>
                 <th>Client</th>
                 <th>Source Site</th>
-                <th>Traffic</th>
-                <th>Quality</th>
                 <th>Type</th>
                 <th>Status</th>
                 <th>Date</th>
@@ -294,8 +274,6 @@ export default function StaffBacklinks() {
                 <tr key={backlink.id}>
                   <td>{getClientName(backlink.client_id)}</td>
                   <td>{backlink.source_site?.domain || backlink.source_site}</td>
-                  <td>{(backlink.source_site?.traffic_estimated || backlink.traffic_estimated || 0).toLocaleString()}</td>
-                  <td>{'⭐'.repeat(backlink.source_site?.quality_score || backlink.quality_score || 3)}</td>
                   <td>{backlink.type}</td>
                   <td>{backlink.status}</td>
                   <td>{new Date(backlink.date_added || backlink.date).toLocaleDateString()}</td>
@@ -307,6 +285,42 @@ export default function StaffBacklinks() {
           </table>
         </div>
       </div>
+
+      <div className="pagination-info">
+        <span>Affichage de {((currentPage - 1) * itemsPerPage) + 1} à {Math.min(currentPage * itemsPerPage, total)} sur {total} résultats</span>
+      </div>
+
+      {totalPages >= 1 && (
+        <div className="pagination">
+          <button 
+            className="btn btn-secondary" 
+            onClick={() => fetchData(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          
+          <span className="page-numbers">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                className={`btn ${currentPage === page ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => fetchData(page)}
+              >
+                {page}
+              </button>
+            ))}
+          </span>
+          
+          <button 
+            className="btn btn-secondary" 
+            onClick={() => fetchData(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }
