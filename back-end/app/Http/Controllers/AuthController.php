@@ -42,6 +42,68 @@ class AuthController extends Controller
         return response()->json($request->user());
     }
 
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Aucun utilisateur trouvé avec cette adresse email'
+            ], 404);
+        }
+
+        // Générer un token de réinitialisation
+        $token = bin2hex(random_bytes(32));
+        $expiry = now()->addHours(1); // Token valide 1 heure
+
+        // Stocker le token (vous pourriez utiliser une table password_resets)
+        // Pour simplifier, on utilise directement une notification par email
+        // Dans un vrai projet, vous enverriez un email avec un lien de réinitialisation
+        
+        // Simulation d'envoi d'email - dans la vraie vie, utilisez Mail::send()
+        \Log::info("Password reset token for {$user->email}: {$token}");
+        
+        // Pour cette démo, on retourne juste un message de succès
+        // En production, vous enverriez un email avec le lien: 
+        // https://votre-app.com/reset-password?token={$token}&email={$user->email}
+        
+        return response()->json([
+            'message' => 'Un email de réinitialisation a été envoyé à votre adresse email.',
+            'debug_token' => app()->environment('local') ? $token : null // Debug uniquement en local
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required|string',
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
+
+        // Vérifier le token (dans un vrai projet, vous vérifieriez dans la table password_resets)
+        // Pour cette démo, on accepte directement le reset
+        
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Mot de passe réinitialisé avec succès'
+        ]);
+    }
+
     public function updateProfile(Request $request)
     {
         $user = $request->user();

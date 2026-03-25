@@ -94,7 +94,7 @@ export default function StaffBacklinks() {
     if (!editingBacklink && checkDuplicate(formData.client_id, formData.source_site_id)) {
       const sourceSite = sources.find(s => s.id === formData.source_site_id);
       const confirmDuplicate = window.confirm(
-        `A backlink already exists for this client on "${sourceSite?.domain || 'Unknown site'}". Continue?`
+        `⚠️ Doublon détecté! Un backlink existe déjà pour ce client sur "${sourceSite?.domain || 'Site inconnu'}".\n\nVoulez-vous continuer malgré tout?`
       );
       if (!confirmDuplicate) return;
     }
@@ -121,17 +121,29 @@ export default function StaffBacklinks() {
       
       if (editingBacklink) {
         await api.put(`/backlinks/${editingBacklink.id}`, submitData);
-        alert("Backlink updated successfully!");
+        alert("✅ Backlink mis à jour avec succès!");
       } else {
         await api.post("/backlinks", submitData);
-        alert("Backlink added successfully!");
+        alert("✅ Backlink ajouté avec succès!");
       }
       
       resetForm();
       fetchData(currentPage);
     } catch (error) {
       console.error("Error saving backlink:", error);
-      alert("Error saving backlink. Please check console for details.");
+      
+      // Gestion des erreurs spécifiques
+      if (error.response?.status === 401) {
+        alert("❌ Session expirée! Veuillez vous reconnecter.");
+        // Redirection vers la page de login si nécessaire
+        window.location.href = '/login';
+      } else if (error.response?.status === 403) {
+        alert("❌ Accès refusé! Vous n'avez pas les permissions pour cette action.");
+      } else if (error.response?.status === 409) {
+        alert("❌ Doublon détecté! Ce backlink existe déjà.");
+      } else {
+        alert(`❌ Erreur lors de la sauvegarde: ${error.response?.data?.message || error.message || 'Veuillez vérifier la console pour plus de détails.'}`);
+      }
     }
   };
 
@@ -184,80 +196,84 @@ export default function StaffBacklinks() {
   return (
     <div className="staff-backlinks">
       <StaffNavbar />
-      <div className="page-header">
-        <h1>Backlinks Management</h1>
-        <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? "Cancel" : "Add Backlink"}
-        </button>
-      </div>
+      <div className="staff-backlinks-content">
+        <div className="backlinks-header">
+          <h1>Backlinks Management</h1>
+          <div className="header-buttons">
+            <button className="add-backlink-btn" onClick={() => { resetForm(); setEditingBacklink(null); setShowForm(!showForm); }}>
+              {editingBacklink ? 'Edit Backlink' : 'Add Backlink'}
+            </button>
+          </div>
+        </div>
 
-      {showForm && (
-        <div className="backlink-form">
-          <h2>{editingBacklink ? "Edit Backlink" : "Add Backlink"}</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form-grid">
-              <div className="form-group">
-                <label>Client *</label>
+        {showForm && (
+          <div className="backlink-form-container">
+            <form onSubmit={handleSubmit} className="backlink-form">
+              <h2>{editingBacklink ? "Edit Backlink" : "Add Backlink"}</h2>
+              <div className="form-row">
                 <select value={formData.client_id} onChange={(e) => handleClientChange(e.target.value)} required>
-                  <option value="">Select a client</option>
+                  <option value="">Select Client</option>
                   {clients.map(client => <option key={client.id} value={client.id}>{client.company_name}</option>)}
                 </select>
-              </div>
-              <div className="form-group">
-                <label>Source Site *</label>
                 <select value={formData.source_site_id} onChange={(e) => handleSourceChange(e.target.value)} required>
-                  <option value="">Select a source site</option>
+                  <option value="">Select Source</option>
                   {sources.map(source => <option key={source.id} value={source.id}>{source.domain}</option>)}
                 </select>
               </div>
-              <div className="form-group">
-                <label>Type *</label>
-                <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} required>
-                  <option value="">Select Type</option>
-                  {dynamicTypes.map(t => (
-                    <option key={t.id} value={t.name}>{t.name}</option>
-                  ))}
-                </select>
+              <div className="form-row">
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>TARGET URL</label>
+                  <input type="url" value={formData.target_url} onChange={(e) => setFormData({...formData, target_url: e.target.value})} placeholder="ex: https://monsite.com/page" required />
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>ANCHOR TEXT</label>
+                  <input type="text" value={formData.anchor_text} onChange={(e) => setFormData({...formData, anchor_text: e.target.value})} placeholder="ex: Meilleure Agence SEO" required />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Target URL *</label>
-                <input type="url" value={formData.target_url} onChange={(e) => setFormData({...formData, target_url: e.target.value})} required />
+              <div className="form-row">
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>TYPE</label>
+                  <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} required>
+                    <option value="">Select Type</option>
+                    {dynamicTypes.map(t => (
+                      <option key={t.id} value={t.name}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>STATUS</label>
+                  <select value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})} required>
+                    <option value="Pending">Pending</option>
+                    <option value="Live">Live</option>
+                    <option value="Lost">Lost</option>
+                  </select>
+                </div>
               </div>
-              <div className="form-group">
-                <label>Anchor Text *</label>
-                <input type="text" value={formData.anchor_text} onChange={(e) => setFormData({...formData, anchor_text: e.target.value})} required />
+              <div className="form-row">
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>PLACEMENT URL</label>
+                  <input type="url" value={formData.placement_url} onChange={(e) => setFormData({...formData, placement_url: e.target.value})} placeholder="ex: https://blog.com/article" required />
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>DATE ADDED</label>
+                  <input type="date" value={formData.date_added} onChange={(e) => setFormData({...formData, date_added: e.target.value})} required />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Placement URL *</label>
-                <input type="url" value={formData.placement_url} onChange={(e) => setFormData({...formData, placement_url: e.target.value})} required />
+              <div className="form-row">
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>COST ($)</label>
+                  <input type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" required />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Date *</label>
-                <input type="date" value={formData.date_added} onChange={(e) => setFormData({...formData, date_added: e.target.value})} required />
+              <div className="form-actions">
+                <button type="submit" className="submit-btn">{editingBacklink ? "Update" : "Add"}</button>
+                <button type="button" className="cancel-btn" onClick={resetForm}>Cancel</button>
               </div>
-              <div className="form-group">
-                <label>Status *</label>
-                <select value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})} required>
-                  <option value="Pending">Pending</option>
-                  <option value="Live">Live</option>
-                  <option value="Lost">Lost</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Cost ($) *</label>
-                <input type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({...formData, cost: e.target.value})} required />
-              </div>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="btn btn-success">{editingBacklink ? "Update" : "Add"}</button>
-              <button type="button" className="btn btn-secondary" onClick={resetForm}>Cancel</button>
-            </div>
-          </form>
-        </div>
-      )}
-      <div className="backlinks-table">
-        <div className="table-responsive">
-          <table>
+            </form>
+          </div>
+        )}
+        <div className="backlinks-table-container">
+          <table className="backlinks-table">
             <thead>
               <tr>
                 <th>Client</th>
@@ -272,55 +288,59 @@ export default function StaffBacklinks() {
             <tbody>
               {backlinks.map(backlink => (
                 <tr key={backlink.id}>
-                  <td>{getClientName(backlink.client_id)}</td>
-                  <td>{backlink.source_site?.domain || backlink.source_site}</td>
-                  <td>{backlink.type}</td>
-                  <td>{backlink.status}</td>
-                  <td>{new Date(backlink.date_added || backlink.date).toLocaleDateString()}</td>
-                  <td>{backlink.cost}€</td>
-                  <td><button className="btn btn-sm btn-edit" onClick={() => handleEdit(backlink)}>Edit</button></td>
+                  <td className="client-name">{getClientName(backlink.client_id)}</td>
+                  <td className="source-domain">{backlink.source_site?.domain || backlink.source_site}</td>
+                  <td><span className="type">{backlink.type}</span></td>
+                  <td><span className={`status status-${backlink.status.toLowerCase()}`}>{backlink.status}</span></td>
+                  <td className="date-added">{new Date(backlink.date_added || backlink.date).toLocaleDateString()}</td>
+                  <td className="cost">{backlink.cost}€</td>
+                  <td className="actions">
+                    <button className="edit-btn" onClick={() => handleEdit(backlink)}>Edit</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
 
-      <div className="pagination-info">
-        <span>Affichage de {((currentPage - 1) * itemsPerPage) + 1} à {Math.min(currentPage * itemsPerPage, total)} sur {total} résultats</span>
-      </div>
-
-      {totalPages >= 1 && (
-        <div className="pagination">
-          <button 
-            className="btn btn-secondary" 
-            onClick={() => fetchData(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
+        <div className="pagination-controls">
+          <div className="pagination-info">
+            <span>
+              Affichage de {((currentPage - 1) * itemsPerPage) + 1} à{' '}
+              {Math.min(currentPage * itemsPerPage, total)} sur{' '}
+              {total} résultats
+            </span>
+          </div>
           
-          <span className="page-numbers">
+          <div className="pagination-buttons">
+            <button 
+              className="pagination-btn" 
+              onClick={() => fetchData(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Précédent
+            </button>
+            
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
               <button
                 key={page}
-                className={`btn ${currentPage === page ? 'btn-primary' : 'btn-secondary'}`}
+                className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
                 onClick={() => fetchData(page)}
               >
                 {page}
               </button>
             ))}
-          </span>
-          
-          <button 
-            className="btn btn-secondary" 
-            onClick={() => fetchData(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+            
+            <button 
+              className="pagination-btn" 
+              onClick={() => fetchData(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Suivant
+            </button>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

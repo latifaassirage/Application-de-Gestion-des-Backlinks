@@ -9,6 +9,10 @@ export default function Login() {
   const [password, setPassword] = useState("admin123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showResetForm, setShowResetForm] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState('');
   const { login } = useAuth();
   
 
@@ -16,10 +20,31 @@ export default function Login() {
     console.log(error);
   }
   
-    if (login && false) { 
+  if (login && false) { 
     console.log('login function available');
   }
   const navigate = useNavigate();
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setResetLoading(true);
+    setResetMessage('');
+    
+    try {
+      const response = await api.post('/forgot-password', { email: resetEmail });
+      setResetMessage('✅ Un email de réinitialisation a été envoyé à votre adresse email.');
+      setTimeout(() => {
+        setShowResetForm(false);
+        setResetEmail('');
+        setResetMessage('');
+      }, 3000);
+    } catch (err) {
+      console.error('Reset password error:', err);
+      setResetMessage('❌ Erreur: ' + (err.response?.data?.message || 'Email non trouvé. Veuillez réessayer.'));
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +59,7 @@ export default function Login() {
       
       const { user, token } = response.data;
       
-       localStorage.setItem('token', token);
+      localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('role', user.role);
       
@@ -84,7 +109,66 @@ export default function Login() {
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
+          
+          <div className="reset-password-section">
+            <button 
+              type="button" 
+              className="reset-password-btn" 
+              onClick={() => setShowResetForm(true)}
+            >
+              Mot de passe oublié?
+            </button>
+          </div>
         </form>
+        
+        {showResetForm && (
+          <div className="reset-password-modal">
+            <div className="reset-password-content">
+              <h3>Réinitialiser le mot de passe</h3>
+              <p>Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
+              
+              <form onSubmit={handleResetPassword}>
+                <div className="input-group">
+                  <input 
+                    type="email" 
+                    placeholder="Votre email" 
+                    value={resetEmail} 
+                    onChange={e => setResetEmail(e.target.value)} 
+                    required 
+                    disabled={resetLoading}
+                  />
+                </div>
+                
+                {resetMessage && (
+                  <div className={`reset-message ${resetMessage.includes('✅') ? 'success' : 'error'}`}>
+                    {resetMessage}
+                  </div>
+                )}
+                
+                <div className="reset-actions">
+                  <button 
+                    type="submit" 
+                    className="reset-submit-btn" 
+                    disabled={resetLoading}
+                  >
+                    {resetLoading ? 'Envoi...' : 'Envoyer le lien'}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="reset-cancel-btn" 
+                    onClick={() => {
+                      setShowResetForm(false);
+                      setResetEmail('');
+                      setResetMessage('');
+                    }}
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

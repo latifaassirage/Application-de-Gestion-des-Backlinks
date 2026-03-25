@@ -14428,3 +14428,5 @@ Did you mean one of these?
 [2026-03-24 15:01:33] local.INFO: Backlink synchronized to source_summaries {"backlink_id":10,"website":"vvs.com","action":"sync"} 
 [2026-03-24 15:02:06] local.INFO: Backlink synchronized to source_summaries {"backlink_id":10,"website":"vvs.com","action":"sync"} 
 [2026-03-24 15:06:02] local.INFO: Backlink synchronized to source_summaries {"backlink_id":11,"website":"vvs.com","action":"sync"} 
+[2026-03-24 15:59:46] local.INFO: Password reset token for admin@agency.com: df1959a990d84de63e506ea4bf5feabaffef0a14e6f5567c3373cc86a807cced  
+[2026-03-25 09:10:52] local.INFO: Backlink synchronized to source_summaries {"backlink_id":1,"website":"Medium.com","action":"sync"} 
