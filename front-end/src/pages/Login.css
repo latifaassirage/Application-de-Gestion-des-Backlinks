@@ -1,10 +1,28 @@
+/* Logo Styles */
+.login-logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
 .login-container {
   width: 400px;
   margin: 80px auto;
   padding: 40px;
   background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
   border: 1px solid #e5e7eb;
 }
 
@@ -14,6 +32,7 @@
   color: #ff7f50;
   font-size: 28px;
   font-weight: 600;
+  margin-top: 0;
 }
 
 .login-container input {
@@ -52,9 +71,9 @@
 }
 
 .login-container button:hover {
-  background: #e6733f;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
+  background: #e55a2b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 127, 80, 0.4);
 }
 
 .login-container button:active {
@@ -63,7 +82,7 @@
 }
 
 body {
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -76,18 +95,33 @@ body {
   margin-top: 20px;
 }
 
+/* Reset Password Link Styles */
+.reset-password-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
 .reset-password-btn {
-  background: none;
+  background: transparent;
   border: none;
-  color: #ff7f50;
-  text-decoration: underline;
+  border-width: 0;
+  color: #6b7280; /* text-gray-600 */
+  text-decoration: none;
   cursor: pointer;
   font-size: 14px;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+  padding: 0;
+  font-family: inherit;
+  font-weight: normal;
+  text-align: center;
+  display: inline-block;
 }
 
 .reset-password-btn:hover {
-  color: #e6733f;
+  color: #ff7f50;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 .reset-password-modal {
@@ -166,8 +200,9 @@ body {
 }
 
 .reset-submit-btn:hover:not(:disabled) {
-  background: #e6733f;
-  transform: translateY(-1px);
+  background: #e55a2b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
 }
 
 .reset-submit-btn:disabled {

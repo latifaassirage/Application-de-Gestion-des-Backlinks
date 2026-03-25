@@ -69,7 +69,7 @@ export default function SourceSites() {
         console.log("Données envoyées:", formData);
         
         await api.put(`/sources/${editingSource.id}`, formData);
-        alert('Site source mis à jour avec succès!');
+        alert('Source site updated successfully!');
         console.log("=== MISE À JOUR TERMINÉE ===");
         
       } else {
@@ -78,7 +78,7 @@ export default function SourceSites() {
         console.log("Données envoyées:", formData);
         
         await api.post("/sources", formData);
-        alert('Site source ajouté avec succès!');
+        alert('Source site added successfully!');
         console.log("=== CRÉATION TERMINÉE ===");
       }
       
@@ -95,7 +95,7 @@ export default function SourceSites() {
         console.error("Erreur response:", error.response.data);
         console.error("Status:", error.response.status);
       }
-      alert("Erreur lors de la sauvegarde du site source");
+      alert("Error saving source site");
     }
   };
 
@@ -367,9 +367,9 @@ export default function SourceSites() {
                         <button 
                           className="edit-btn" 
                           onClick={() => handleEdit(source)}
-                          title="Modifier ce site source"
+                          title="Edit this source site"
                         >
-                          Modifier
+                          Edit
                         </button>
                       </td>
                     </tr>
@@ -385,9 +385,9 @@ export default function SourceSites() {
           <div className="pagination-controls">
             <div className="pagination-info">
               <span>
-                Affichage de {((pagination.current_page - 1) * pagination.per_page) + 1} à{' '}
-                {Math.min(pagination.current_page * pagination.per_page, pagination.total)} sur{' '}
-                {pagination.total} résultats
+                Showing {((pagination.current_page - 1) * pagination.per_page) + 1} to{' '}
+                {Math.min(pagination.current_page * pagination.per_page, pagination.total)} of{' '}
+                {pagination.total} results
               </span>
             </div>
             
@@ -397,7 +397,7 @@ export default function SourceSites() {
                 onClick={() => handlePageChange(pagination.current_page - 1)}
                 disabled={pagination.current_page === 1}
               >
-                Précédent
+                Previous
               </button>
               
               {renderPaginationNumbers().map((page, index) => (
@@ -416,7 +416,7 @@ export default function SourceSites() {
                 onClick={() => handlePageChange(pagination.current_page + 1)}
                 disabled={pagination.current_page === pagination.last_page}
               >
-                Suivant
+                Next
               </button>
             </div>
           </div>

@@ -121,10 +121,10 @@ export default function StaffBacklinks() {
       
       if (editingBacklink) {
         await api.put(`/backlinks/${editingBacklink.id}`, submitData);
-        alert("✅ Backlink mis à jour avec succès!");
+        alert("✅ Backlink updated successfully!");
       } else {
         await api.post("/backlinks", submitData);
-        alert("✅ Backlink ajouté avec succès!");
+        alert("✅ Backlink added successfully!");
       }
       
       resetForm();
@@ -132,17 +132,17 @@ export default function StaffBacklinks() {
     } catch (error) {
       console.error("Error saving backlink:", error);
       
-      // Gestion des erreurs spécifiques
+      // Error handling
       if (error.response?.status === 401) {
-        alert("❌ Session expirée! Veuillez vous reconnecter.");
-        // Redirection vers la page de login si nécessaire
+        alert("❌ Session expired! Please reconnect.");
+        // Redirect to login page if necessary
         window.location.href = '/login';
       } else if (error.response?.status === 403) {
-        alert("❌ Accès refusé! Vous n'avez pas les permissions pour cette action.");
+        alert("❌ Access denied! You don't have permissions for this action.");
       } else if (error.response?.status === 409) {
-        alert("❌ Doublon détecté! Ce backlink existe déjà.");
+        alert("❌ Duplicate detected! This backlink already exists.");
       } else {
-        alert(`❌ Erreur lors de la sauvegarde: ${error.response?.data?.message || error.message || 'Veuillez vérifier la console pour plus de détails.'}`);
+        alert(`❌ Error saving: ${error.response?.data?.message || error.message || 'Please check the console for more details.'}`);
       }
     }
   };

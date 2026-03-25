@@ -87,7 +87,7 @@ class BacklinkController extends Controller
                           ->where('source_site_id',$data['source_site_id'])
                           ->first();
         if($exists){
-            return response()->json(['message'=>'Doublon détecté'], 409);
+            return response()->json(['message'=>'Duplicate detected'], 409);
         }
 
         $backlink = Backlink::create($data);
@@ -141,7 +141,7 @@ class BacklinkController extends Controller
         try {
             $file = $request->file('file');
             if (!$file) {
-                return response()->json(['message' => 'Aucun fichier reçu'], 400);
+                return response()->json(['message' => 'No file received'], 400);
             }
 
             $filePath = $file->getPathname();
@@ -151,7 +151,7 @@ class BacklinkController extends Controller
             $allowedExtensions = ['csv', 'xlsx', 'xls'];
             if (!in_array($fileExtension, $allowedExtensions)) {
                 return response()->json([
-                    'message' => 'Format de fichier non supporté. Utilisez CSV ou XLSX.',
+                    'message' => 'Unsupported file format. Use CSV or XLSX.',
                     'allowed_extensions' => $allowedExtensions
                 ], 400);
             }
@@ -165,7 +165,7 @@ class BacklinkController extends Controller
             }
 
             if (empty($data)) {
-                return response()->json(['message' => 'Aucune donnée trouvée dans le fichier'], 400);
+                return response()->json(['message' => 'No data found in file'], 400);
             }
 
             $importedCount = 0;
@@ -213,13 +213,13 @@ class BacklinkController extends Controller
                     $importedCount++;
 
                 } catch (\Exception $e) {
-                    $errors[] = "Ligne " . ($index + 2) . ": Erreur - " . $e->getMessage();
+                    $errors[] = "Line " . ($index + 2) . ": Error - " . $e->getMessage();
                 }
             }
 
-            $message = "Importation terminée. {$importedCount} sites sources importés avec succès.";
+            $message = "Import completed. {$importedCount} source sites imported successfully.";
             if (!empty($errors)) {
-                $message .= " " . count($errors) . " erreurs rencontrées.";
+                $message .= " " . count($errors) . " errors encountered.";
             }
 
             return response()->json([
@@ -230,7 +230,7 @@ class BacklinkController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur lors de l\'importation: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Error during import: ' . $e->getMessage()], 500);
         }
     }
 
@@ -251,7 +251,7 @@ class BacklinkController extends Controller
         try {
             $file = $request->file('file');
             if (!$file) {
-                return response()->json(['message' => 'Aucun fichier reçu'], 400);
+                return response()->json(['message' => 'No file received'], 400);
             }
 
             $filePath = $file->getPathname();
@@ -288,7 +288,7 @@ class BacklinkController extends Controller
             }
 
             if (empty($data)) {
-                return response()->json(['message' => 'Aucune donnée trouvée dans le fichier'], 400);
+                return response()->json(['message' => 'No data found in file'], 400);
             }
 
             $importedCount = 0;
@@ -318,12 +318,12 @@ class BacklinkController extends Controller
                     }
 
                     if (!$client) {
-                        $errors[] = "Ligne " . ($index + 2) . ": Client non trouvé pour l'email '" . ($clientEmail ?? 'vide') . "'";
+                        $errors[] = "Line " . ($index + 2) . ": Client not found for email '" . ($clientEmail ?? 'empty') . "'";
                         continue;
                     }
 
                     if (!$source) {
-                        $errors[] = "Ligne " . ($index + 2) . ": Source site non trouvé pour le domaine '" . ($websiteDomain ?? 'vide') . "'";
+                        $errors[] = "Line " . ($index + 2) . ": Source site not found for domain '" . ($websiteDomain ?? 'empty') . "'";
                         continue;
                     }
 
@@ -347,13 +347,13 @@ class BacklinkController extends Controller
                     $importedCount++;
 
                 } catch (\Exception $e) {
-                    $errors[] = "Ligne " . ($index + 2) . ": Erreur - " . $e->getMessage();
+                    $errors[] = "Line " . ($index + 2) . ": Error - " . $e->getMessage();
                 }
             }
 
-            $message = "Importation terminée. {$importedCount} backlinks importés avec succès.";
+            $message = "Import completed. {$importedCount} backlinks imported successfully.";
             if (!empty($errors)) {
-                $message .= " " . count($errors) . " erreurs rencontrées.";
+                $message .= " " . count($errors) . " errors encountered.";
             }
 
             return response()->json([
@@ -364,7 +364,7 @@ class BacklinkController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur lors de l\'importation: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Error during import: ' . $e->getMessage()], 500);
         }
     }
 
@@ -478,7 +478,7 @@ class BacklinkController extends Controller
             }
 
         } catch (\Exception $e) {
-            throw new \Exception('Erreur lors de la lecture du fichier Excel: ' . $e->getMessage());
+            throw new \Exception('Error reading Excel file: ' . $e->getMessage());
         }
 
         return $data;
@@ -493,7 +493,7 @@ class BacklinkController extends Controller
         try {
             $file = $request->file('file');
             if (!$file) {
-                return response()->json(['message' => 'Aucun fichier reçu'], 400);
+                return response()->json(['message' => 'No file received'], 400);
             }
 
             $filePath = $file->getPathname();
@@ -503,7 +503,7 @@ class BacklinkController extends Controller
             $allowedExtensions = ['csv', 'xlsx', 'xls'];
             if (!in_array($fileExtension, $allowedExtensions)) {
                 return response()->json([
-                    'message' => 'Format de fichier non supporté. Utilisez CSV ou XLSX.',
+                    'message' => 'Unsupported file format. Use CSV or XLSX.',
                     'allowed_extensions' => $allowedExtensions
                 ], 400);
             }
@@ -517,7 +517,7 @@ class BacklinkController extends Controller
             }
 
             if (empty($data)) {
-                return response()->json(['message' => 'Aucune donnée trouvée dans le fichier'], 400);
+                return response()->json(['message' => 'No data found in file'], 400);
             }
 
             $importedCount = 0;
@@ -542,7 +542,7 @@ class BacklinkController extends Controller
 
                     // Validation: si website est null, on passe à la ligne suivante
                     if (empty($website)) {
-                        $errors[] = "Ligne " . ($index + 2) . ": Website manquant - ligne ignorée";
+                        $errors[] = "Line " . ($index + 2) . ": Website missing - line ignored";
                         continue;
                     }
 
@@ -579,13 +579,13 @@ class BacklinkController extends Controller
                     }
 
                 } catch (\Exception $e) {
-                    $errors[] = "Ligne " . ($index + 2) . ": Erreur - " . $e->getMessage();
+                    $errors[] = "Line " . ($index + 2) . ": Error - " . $e->getMessage();
                 }
             }
 
-            $message = "Importation réussie : {$importedCount} sites ajoutés et {$updatedCount} sites mis à jour.";
+            $message = "Import successful: {$importedCount} sites added and {$updatedCount} sites updated.";
             if (!empty($errors)) {
-                $message .= " " . count($errors) . " erreurs rencontrées.";
+                $message .= " " . count($errors) . " errors encountered.";
             }
 
             return response()->json([
@@ -597,7 +597,7 @@ class BacklinkController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur lors de l\'importation: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Error during import: ' . $e->getMessage()], 500);
         }
     }
 

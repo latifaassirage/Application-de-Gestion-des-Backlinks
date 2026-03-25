@@ -32,7 +32,7 @@ export default function Login() {
     
     try {
       const response = await api.post('/forgot-password', { email: resetEmail });
-      setResetMessage('✅ Un email de réinitialisation a été envoyé à votre adresse email.');
+      setResetMessage('✅ A password reset email has been sent to your email address.');
       setTimeout(() => {
         setShowResetForm(false);
         setResetEmail('');
@@ -40,7 +40,7 @@ export default function Login() {
       }, 3000);
     } catch (err) {
       console.error('Reset password error:', err);
-      setResetMessage('❌ Erreur: ' + (err.response?.data?.message || 'Email non trouvé. Veuillez réessayer.'));
+      setResetMessage('❌ Error: ' + (err.response?.data?.message || 'Email not found. Please try again.'));
     } finally {
       setResetLoading(false);
     }
@@ -83,13 +83,16 @@ export default function Login() {
 
   return (
     <div className="login-container">
+      <div className="login-logo">
+        <img src="/favicon.ico" alt="Logo" className="logo-image" />
+      </div>
       <div className="login-box">
-        <h2>Connexion</h2>
+        <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <input 
               type="email" 
-              placeholder="Email" 
+              placeholder="Email Address" 
               value={email} 
               onChange={e => setEmail(e.target.value)} 
               required 
@@ -99,7 +102,7 @@ export default function Login() {
           <div className="input-group">
             <input 
               type="password" 
-              placeholder="Mot de passe"                
+              placeholder="Password"                
               value={password} 
               onChange={e => setPassword(e.target.value)} 
               required 
@@ -107,31 +110,33 @@ export default function Login() {
             />
           </div>
           <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? 'Logging in...' : 'Sign In'}
           </button>
-          
-          <div className="reset-password-section">
-            <button 
-              type="button" 
+          <div className="reset-password-link">
+            <a 
+              href="#" 
               className="reset-password-btn" 
-              onClick={() => setShowResetForm(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowResetForm(true);
+              }}
             >
-              Mot de passe oublié?
-            </button>
+              Forgot password?
+            </a>
           </div>
         </form>
         
         {showResetForm && (
           <div className="reset-password-modal">
             <div className="reset-password-content">
-              <h3>Réinitialiser le mot de passe</h3>
-              <p>Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
+              <h3>Reset Password</h3>
+              <p>Enter your email address to receive a password reset link.</p>
               
               <form onSubmit={handleResetPassword}>
                 <div className="input-group">
                   <input 
                     type="email" 
-                    placeholder="Votre email" 
+                    placeholder="Your Email" 
                     value={resetEmail} 
                     onChange={e => setResetEmail(e.target.value)} 
                     required 
@@ -151,7 +156,7 @@ export default function Login() {
                     className="reset-submit-btn" 
                     disabled={resetLoading}
                   >
-                    {resetLoading ? 'Envoi...' : 'Envoyer le lien'}
+                    {resetLoading ? 'Sending...' : 'Send Reset Link'}
                   </button>
                   <button 
                     type="button" 
@@ -162,7 +167,7 @@ export default function Login() {
                       setResetMessage('');
                     }}
                   >
-                    Annuler
+                    Cancel
                   </button>
                 </div>
               </form>

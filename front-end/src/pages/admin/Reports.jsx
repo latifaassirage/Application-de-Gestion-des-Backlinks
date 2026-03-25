@@ -215,22 +215,22 @@ export default function Reports() {
       
       // Ajouter le titre
       doc.setFontSize(20);
-      doc.text('RAPPORT DE BACKLINKS', 105, 20, { align: 'center' });
+      doc.text('BACKLINKS REPORT', 105, 20, { align: 'center' });
       
       // Ajouter la date de génération
       doc.setFontSize(12);
-      doc.text(`Généré le : ${new Date().toLocaleDateString('fr-FR')}`, 105, 30, { align: 'center' });
+      doc.text(`Generated on: ${new Date().toLocaleDateString('en-US')}`, 105, 30, { align: 'center' });
       
       // Ajouter la période si applicable
       if (filters.start_date && filters.end_date) {
-        doc.text(`Période : Du ${filters.start_date} au ${filters.end_date}`, 105, 40, { align: 'center' });
+        doc.text(`Period: From ${filters.start_date} to ${filters.end_date}`, 105, 40, { align: 'center' });
       } else {
-        doc.text('Période : Rapport Global', 105, 40, { align: 'center' });
+        doc.text('Period: Global Report', 105, 40, { align: 'center' });
       }
       
       // Ajouter les statistiques
       doc.setFontSize(14);
-      doc.text('Résumé', 20, 60);
+      doc.text('Summary', 20, 60);
       doc.setFontSize(10);
       
       const summary = reportData.summary;
@@ -239,7 +239,7 @@ export default function Reports() {
       doc.text(`Live: ${summary.live}`, 60, summaryY);
       doc.text(`Lost: ${summary.lost}`, 100, summaryY);
       doc.text(`Paid: ${summary.paid}`, 140, summaryY);
-      doc.text(`Coût Total: $${summary.totalCost.toFixed(2)}`, 20, summaryY + 10);
+      doc.text(`Total Cost: $${summary.totalCost.toFixed(2)}`, 20, summaryY + 10);
       
       // Générer le tableau avec autoTable
       autoTable(doc, {
@@ -273,7 +273,7 @@ export default function Reports() {
           doc.setFontSize(9);
           doc.setTextColor(150);
           doc.text(
-            'Gestion Backlinks - Rapport Confidentiel - Page ' + doc.internal.getNumberOfPages(),
+            'Backlinks Management - Confidential Report - Page ' + doc.internal.getNumberOfPages(),
             105,
             doc.internal.pageSize.height - 10,
             { align: 'center' }
@@ -287,13 +287,13 @@ export default function Reports() {
         : null;
       const clientName = client ? client.company_name : 'tous-les-clients';
       
-      const fileName = `rapport-backlinks-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.pdf`;
+      const fileName = `backlinks-report-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.pdf`;
       
       doc.save(fileName);
       
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert("Erreur lors de la génération du PDF");
+      alert("Error generating PDF");
     } finally {
       setExporting(prev => ({ ...prev, pdf: false }));
     }
@@ -373,18 +373,18 @@ export default function Reports() {
       
       // Ajouter une worksheet pour le résumé
       const summaryData = [
-        ['Statistiques', 'Valeur'],
+        ['Statistics', 'Value'],
         ['Total Backlinks', reportData.summary.total],
         ['Live', reportData.summary.live],
         ['Lost', reportData.summary.lost],
         ['Pending', reportData.summary.pending],
         ['Paid', reportData.summary.paid],
         ['Free', reportData.summary.free],
-        ['Coût Total', reportData.summary.totalCost]
+        ['Total Cost', reportData.summary.totalCost]
       ];
       
       const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
-      XLSX.utils.book_append_sheet(wb, summaryWs, 'Résumé');
+      XLSX.utils.book_append_sheet(wb, summaryWs, 'Summary');
       
       // Télécharger le fichier Excel
       const client = filters.client_id 
@@ -392,13 +392,13 @@ export default function Reports() {
         : null;
       const clientName = client ? client.company_name : 'tous-les-clients';
       
-      const fileName = `rapport-backlinks-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.xlsx`;
+      const fileName = `backlinks-report-${clientName.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.xlsx`;
       
       XLSX.writeFile(wb, fileName);
       
     } catch (error) {
       console.error("Error generating Excel:", error);
-      alert("Erreur lors de la génération du fichier Excel");
+      alert("Error generating Excel file");
     } finally {
       setExporting(prev => ({ ...prev, excel: false }));
     }

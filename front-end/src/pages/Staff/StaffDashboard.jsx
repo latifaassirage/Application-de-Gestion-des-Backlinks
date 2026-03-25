@@ -206,7 +206,7 @@ const StaffDashboard = () => {
             </div>
             <div className="stat-info-enhanced">
               <h3 className="stat-number">{stats.totalClients}</h3>
-              <p className="stat-label">Nombre total de clients</p>
+              <p className="stat-label">Total Clients</p>
             </div>
           </div>
           

@@ -193,10 +193,10 @@ export default function Profile() {
 
                 <div className="form-actions">
                   <button type="submit" className="btn-save" disabled={loading}>
-                    {loading ? 'Enregistrement...' : 'Enregistrer'}
+                    {loading ? 'Saving...' : 'Save'}
                   </button>
                   <button type="button" className="btn-cancel" onClick={() => setEditing(false)}>
-                    Annuler
+                    Cancel
                   </button>
                 </div>
               </form>
@@ -224,7 +224,7 @@ export default function Profile() {
                     className="edit-btn"
                     onClick={() => setEditing(true)}
                   >
-                    Modifier le Profil
+                    Edit Profile
                   </button>
                 </div>
               </div>

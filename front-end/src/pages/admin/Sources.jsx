@@ -285,9 +285,9 @@ export default function Sources() {
           <div className="pagination-controls">
             <div className="pagination-info">
               <span>
-                Affichage de {((pagination.current_page - 1) * pagination.per_page) + 1} à{' '}
-                {Math.min(pagination.current_page * pagination.per_page, pagination.total)} sur{' '}
-                {pagination.total} résultats
+                Showing {((pagination.current_page - 1) * pagination.per_page) + 1} to{' '}
+                {Math.min(pagination.current_page * pagination.per_page, pagination.total)} of{' '}
+                {pagination.total} results
               </span>
             </div>
             
@@ -297,7 +297,7 @@ export default function Sources() {
                 onClick={() => handlePageChange(pagination.current_page - 1)}
                 disabled={pagination.current_page === 1}
               >
-                Précédent
+                Previous
               </button>
               
               {renderPaginationNumbers().map((page, index) => (
@@ -316,7 +316,7 @@ export default function Sources() {
                 onClick={() => handlePageChange(pagination.current_page + 1)}
                 disabled={pagination.current_page === pagination.last_page}
               >
-                Suivant
+                Next
               </button>
             </div>
           </div>

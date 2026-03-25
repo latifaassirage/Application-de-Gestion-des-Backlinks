@@ -92,12 +92,12 @@ export default function Backlinks() {
       setNewTypeName("");
       setShowAddType(false);
     } catch (error) {
-      alert("Erreur lors de l'ajout du type");
+      alert("Error adding type");
     }
   };
 
   const handleDeleteType = async (typeId, typeName) => {
-    if (window.confirm(`Supprimer le type "${typeName}" ?`)) {
+    if (window.confirm(`Delete type "${typeName}"?`)) {
       try {
         await api.delete(`/backlink-types/${typeId}`);
         setDynamicTypes(dynamicTypes.filter(t => t.id !== typeId));
@@ -107,18 +107,18 @@ export default function Backlinks() {
           setFormData({ ...formData, type: "" });
         }
         
-        alert('Type supprimé avec succès');
+      alert('Type deleted successfully');
       } catch (error) {
         console.error("Error deleting type:", error);
         
         
         if (error.response?.status === 422) {
         
-          alert(error.response.data.message || 'Ce type ne peut pas être supprimé car il est utilisé par des backlinks existants.');
+          alert(error.response.data.message || 'This type cannot be deleted as it is used by existing backlinks.');
         } else if (error.response?.status === 404) {
-          alert('Type non trouvé ou déjà supprimé');
+          alert('Type not found or already deleted');
         } else {
-          alert("Erreur lors de la suppression du type");
+          alert("Error deleting type");
         }
       }
     }
@@ -804,7 +804,7 @@ export default function Backlinks() {
                               type="button"
                               onClick={() => {
                                 const typeToDelete = dynamicTypes.find(t => t.name === formData.type);
-                                if (typeToDelete && window.confirm(`Supprimer le type "${formData.type}" ?`)) {
+                                if (typeToDelete && window.confirm(`Delete type "${formData.type}"?`)) {
                                   handleDeleteType(typeToDelete.id, formData.type);
                                 }
                               }}
@@ -820,7 +820,7 @@ export default function Backlinks() {
                                 minWidth: '40px',
                                 height: '40px'
                               }}
-                              title={`Supprimer "${formData.type}"`}
+                              title={`Delete "${formData.type}"`}
                             >
                               -
                             </button>
