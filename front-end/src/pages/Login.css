@@ -18,7 +18,7 @@
 
 .login-container {
   width: 400px;
-  margin: 80px auto;
+  margin: 80px auto 60px auto;
   padding: 40px;
   background: #ffffff;
   border-radius: 20px;
@@ -86,7 +86,112 @@ body {
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-container {
+    width: 95%;
+    max-width: 360px;
+    margin: 40px auto 40px auto;
+    padding: 30px 25px;
+    border-radius: 16px;
+  }
+  
+  .login-container h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  
+  .login-container input {
+    padding: 14px;
+    margin-bottom: 18px;
+    font-size: 15px;
+  }
+  
+  .login-container button {
+    padding: 14px;
+    font-size: 15px;
+  }
+  
+  .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  body {
+    padding: 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 92%;
+    max-width: 320px;
+    margin: 30px auto 30px auto;
+    padding: 25px 20px;
+    border-radius: 12px;
+  }
+  
+  .login-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .login-container input {
+    padding: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  
+  .login-container button {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .logo-image {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .reset-password-btn {
+    font-size: 13px;
+  }
+  
+  body {
+    padding: 10px 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .login-container {
+    width: 90%;
+    margin: 20px auto 20px auto;
+    padding: 20px 15px;
+  }
+  
+  .login-container h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+  
+  .login-container input {
+    padding: 10px;
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+  
+  .login-container button {
+    padding: 10px;
+    font-size: 13px;
+  }
+  
+  .logo-image {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* Reset Password Styles */

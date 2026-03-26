@@ -7,6 +7,7 @@ const StaffNavbar = () => {
   const { logout } = useAuth();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -20,9 +21,18 @@ const StaffNavbar = () => {
         <span className="brand-name">Agency SEO - Staff</span>
       </div>
       
-      <div className="navbar-links">
-        <Link to="/staff/dashboard">Dashboard</Link>
-        <Link to="/staff/backlinks">Backlinks</Link>
+      <button 
+        className="mobile-menu-toggle"
+        onClick={() => setShowMobileMenu(!showMobileMenu)}
+      >
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+      </button>
+      
+      <div className={`navbar-links ${showMobileMenu ? 'mobile-open' : ''}`}>
+        <Link to="/staff/dashboard" onClick={() => setShowMobileMenu(false)}>Dashboard</Link>
+        <Link to="/staff/backlinks" onClick={() => setShowMobileMenu(false)}>Backlinks</Link>
       </div>
       
       <div className="navbar-user">

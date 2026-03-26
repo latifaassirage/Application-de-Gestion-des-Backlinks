@@ -63,6 +63,9 @@
   width: 90%;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   border: 1px solid #e9ecef;
+  overflow: visible; /* Pas d'overflow caché */
+  position: relative;
+  z-index: 1000;
 }
 
 /* Header المودال */
@@ -82,13 +85,13 @@
 .modal form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 /* Form Rows - 2 colonnes */
 .form-row {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   align-items: stretch;
 }
 
@@ -100,30 +103,31 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
-/* Labels */
+/* Labels - Style Add Client */
 .form-label {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #333;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.25rem;
 }
 
-/* الحقول الفردية */
+/* Enhanced Input Fields */
 .modal input,
 .modal textarea,
 .modal select {
   width: 100%;
-  padding: 0.6rem 0.8rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
   transition: all 0.3s ease;
   font-family: inherit;
+  background: #ffffff;
 }
 
 .modal input:focus,
@@ -131,59 +135,66 @@
 .modal select:focus {
   outline: none;
   border-color: #ff7f50;
-  box-shadow: 0 0 0 2px rgba(255,127,80,0.1);
+  box-shadow: 0 0 0 3px rgba(255,127,80,0.1);
+  transform: translateY(-1px);
 }
 
-/* textarea ديال الملاحظات */
+.modal input::placeholder,
+.modal textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Textarea */
 .modal textarea {
   resize: vertical;
-  min-height: 60px;
+  min-height: 80px;
 }
 
-/* أزرار Save / Cancel */
+/* Form Actions - Enhanced Buttons */
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 .form-actions button {
-  padding: 0.6rem 1.5rem;
+  padding: 0.75rem 2rem;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   border: none;
   transition: all 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  min-width: 120px;
 }
 
-.full-width {
-  width: 100% !important;
-}
-
-/* Save Button */
+/* Submit Button - Green Gradient */
 .submit-btn {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  box-shadow: 0 2px 8px rgba(40,167,69,0.3);
+  box-shadow: 0 4px 12px rgba(16,185,129,0.3);
 }
 
 .submit-btn:hover {
-  background: linear-gradient(135deg, #20c997 0%, #198754 100%);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(40,167,69,0.4);
+  box-shadow: 0 6px 20px rgba(16,185,129,0.4);
 }
 
-/* Cancel Button */
+/* Cancel Button - Gray */
 .cancel-btn {
-  background: #6c757d;
+  background: #6b7280;
   color: white;
+  box-shadow: 0 2px 8px rgba(107,114,128,0.3);
 }
 
 .cancel-btn:hover {
-  background: #5a6268;
+  background: #4b5563;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107,114,128,0.4);
 }
 
 .sources-table-container {
@@ -325,7 +336,7 @@
 
 @media (max-width: 768px) {
   .sources-content {
-    padding: 1rem;
+    padding: 1.5rem;
   }
   
   .sources-header {
@@ -334,18 +345,17 @@
     text-align: center;
   }
   
-  .modal {
-    padding: 1.5rem;
-    max-width: 95%;
+  .sources-header h2 {
+    font-size: 1.5rem;
   }
   
-  .form-row {
-    flex-direction: column;
-    gap: 0.5rem;
+  .add-source-btn {
+    width: 100%;
+    max-width: 250px;
   }
   
-  .form-actions {
-    flex-direction: column;
+  .sources-table-container {
+    padding: 1rem;
   }
   
   .sources-table {
@@ -364,6 +374,195 @@
   .quality-score {
     flex-direction: row;
     justify-content: space-between;
+  }
+  
+  /* Modal responsive */
+  .modal {
+    max-width: 95vw;
+    max-height: 95vh;
+    margin: 1rem;
+    border-radius: 8px;
+  }
+  
+  .modal-header {
+    padding: 0.75rem; /* Réduit pour mobile */
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.1rem; /* Plus petit sur mobile */
+  }
+  
+  .modal-content {
+    padding: 0.75rem; /* Réduit pour mobile */
+    overflow-y: auto;
+    max-height: calc(85vh - 80px); /* Hauteur adaptée */
+  }
+  
+  .form-row {
+    flex-direction: row; /* Garder côte à côte même sur mobile */
+    gap: 0.5rem; /* Gap réduit */
+    align-items: stretch;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  /* Réduire la largeur des champs spécifiques */
+  .form-row:has(textarea) .form-group:has(textarea) {
+    flex: 0.7; /* Encore plus petit sur mobile */
+  }
+  
+  .form-row:has(input[type="number"]) .form-group:has(input[type="number"]) {
+    flex: 0.8; /* Spam Score compact sur mobile */
+  }
+  
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    padding: 0.4rem 0.6rem; /* Très compact sur mobile */
+    font-size: 13px; /* Police plus petite */
+  }
+  
+  .form-row textarea {
+    min-height: 50px; /* Encore plus petit */
+    resize: vertical;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.75rem; /* Réduit */
+    padding-bottom: 0.5rem;
+    position: relative;
+    z-index: 1001;
+    background: white;
+  }
+  
+  .form-actions button {
+    padding: 0.6rem 1rem; /* Plus petit sur mobile */
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: 600;
+    min-width: 80px; /* Plus petit */
+    flex: 1;
+    position: relative;
+    z-index: 1002;
+    display: block !important; /* Force l'affichage */
+    visibility: visible !important;
+  }
+  
+  .cancel-btn {
+    order: 1;
+    background: #6c757d !important;
+    color: white !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .cancel-btn:hover {
+    background: #5a6268 !important;
+    transform: translateY(-1px);
+  }
+  
+  .submit-btn {
+    order: 2;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(40,167,69,0.3);
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .submit-btn:hover {
+    background: linear-gradient(135deg, #20c997 0%, #198754 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(40,167,69,0.4);
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    margin: 0.5rem;
+    max-width: 98vw;
+    max-height: 98vh;
+  }
+  
+  .modal-header {
+    padding: 0.5rem;
+    gap: 0.25rem;
+  }
+  
+  .modal-header h3 {
+    font-size: 1rem;
+  }
+  
+  .modal-content {
+    padding: 0.5rem;
+    max-height: calc(98vh - 60px);
+  }
+  
+  .form-row {
+    gap: 0.4rem;
+  }
+  
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    padding: 0.3rem 0.5rem;
+    font-size: 12px;
+  }
+  
+  .form-row textarea {
+    min-height: 45px;
+  }
+  
+  .form-actions {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .form-actions button {
+    padding: 0.5rem 0.75rem;
+    font-size: 12px;
+    min-width: 70px;
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .cancel-btn {
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .submit-btn {
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .close-btn {
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1rem;
   }
 }
 

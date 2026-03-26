@@ -480,57 +480,8 @@
 
 
 @media (max-width: 768px) {
-  .stats-grid-enhanced {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .stat-card-enhanced {
-    padding: 2rem;
-    gap: 1.5rem;
-  }
-  
-  .stat-icon-enhanced {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .stat-icon-enhanced svg {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .stat-number {
-    font-size: 2.5rem;
-  }
-  
-  .chart-section-enhanced,
-  .monthly-backlinks-table {
-    padding: 2rem;
-  }
-  
-  .pie-chart-container svg {
-    width: 250px;
-    height: 250px;
-  }
-  
-  .pie-legend {
-    gap: 1rem;
-  }
-  
-  .monthly-table {
-    font-size: 0.9rem;
-  }
-  
-  .monthly-table th,
-  .monthly-table td {
-    padding: 0.8rem 1rem;
-  }
-}
-
-@media (max-width: 768px) {
   .dashboard-content {
-    padding: 1rem;
+    padding: 1.5rem; /* Augmenté de 1rem à 1.5rem */
   }
   
   .dashboard-title {
@@ -572,5 +523,81 @@
   
   .bar-segment {
     font-size: 0.8rem;
+  }
+  
+  .stats-grid-enhanced {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .stat-card-enhanced {
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  
+  .stat-icon-enhanced {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .stat-icon-enhanced svg {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+  }
+  
+  .chart-section-enhanced,
+  .monthly-backlinks-table {
+    padding: 2rem;
+  }
+  
+  /* Agrandir le Pie Chart sur mobile */
+  .pie-chart-container svg {
+    width: 280px !important; /* Augmenté de 250px à 280px */
+    height: 280px !important;
+  }
+  
+  .pie-legend {
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .monthly-table {
+    font-size: 0.9rem;
+  }
+  
+  .monthly-table th,
+  .monthly-table td {
+    padding: 0.8rem 1rem;
+  }
+  
+  /* Corriger le dépassement des URLs */
+  .domain-cell {
+    max-width: 200px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
+  }
+  
+  .domain-link {
+    white-space: normal;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 1rem;
+  }
+  
+  .pie-chart-container svg {
+    width: 240px !important;
+    height: 240px !important;
   }
 }

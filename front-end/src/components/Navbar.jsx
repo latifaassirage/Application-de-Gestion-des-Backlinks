@@ -8,6 +8,7 @@ const Navbar = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.role === 'admin';
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -21,12 +22,21 @@ const Navbar = () => {
         <span className="brand-name">Agency SEO</span>
       </div>
       
-      <div className="navbar-links">
-        <Link to="/dashboard">Dashboard</Link>
-        {isAdmin && <Link to="/clients">Clients</Link>}
-        <Link to="/sources">Source Websites</Link>
-        <Link to="/backlinks">Backlinks</Link>
-        <Link to="/reports">Reports</Link>
+      <button 
+        className="mobile-menu-toggle"
+        onClick={() => setShowMobileMenu(!showMobileMenu)}
+      >
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+      </button>
+      
+      <div className={`navbar-links ${showMobileMenu ? 'mobile-open' : ''}`}>
+        <Link to="/dashboard" onClick={() => setShowMobileMenu(false)}>Dashboard</Link>
+        {isAdmin && <Link to="/clients" onClick={() => setShowMobileMenu(false)}>Clients</Link>}
+        <Link to="/sources" onClick={() => setShowMobileMenu(false)}>Source Websites</Link>
+        <Link to="/backlinks" onClick={() => setShowMobileMenu(false)}>Backlinks</Link>
+        <Link to="/reports" onClick={() => setShowMobileMenu(false)}>Reports</Link>
       </div>
       
       <div className="navbar-user">

@@ -14658,3 +14658,14 @@ Did you mean one of these?
 [2026-03-25 13:45:33] local.INFO: Reset password attempt with token: b9decf50406347596614bffac047d97460eca33c3272ee82b3cba59ccb1a29fb for email: staff@agency.com  
 [2026-03-25 13:45:33] local.INFO: User found in User table: staff@agency.com  
 [2026-03-25 13:45:33] local.INFO: Password reset successful for User: staff@agency.com  
+[2026-03-26 11:13:35] local.INFO: Backlink synchronized to source_summaries {"backlink_id":1,"website":"Medium.com","action":"sync"} 
+[2026-03-26 11:15:26] local.INFO: Password reset token for User admin@agency.com: 330317f51fb6a7748c87557906aa8394b7b455db90d3f72aa784557abe6dc737  
+[2026-03-26 11:15:26] local.INFO: Reset URL: http://localhost:8000/password/reset/330317f51fb6a7748c87557906aa8394b7b455db90d3f72aa784557abe6dc737  
+[2026-03-26 11:16:32] local.INFO: Reset password attempt with token: 330317f51fb6a7748c87557906aa8394b7b455db90d3f72aa784557abe6dc737 for email: admin@agency.com  
+[2026-03-26 11:16:32] local.INFO: User found in User table: admin@agency.com  
+[2026-03-26 11:16:32] local.INFO: Password reset successful for User: admin@agency.com  
+[2026-03-26 11:17:19] local.INFO: Password reset token for User staff@agency.com: ecd16440a6bc1ad5db6cd3f7e21b6421e2f7dce69a19fd6a3622677830e4ff6b  
+[2026-03-26 11:17:19] local.INFO: Reset URL: http://localhost:8000/password/reset/ecd16440a6bc1ad5db6cd3f7e21b6421e2f7dce69a19fd6a3622677830e4ff6b  
+[2026-03-26 11:18:49] local.INFO: Reset password attempt with token: ecd16440a6bc1ad5db6cd3f7e21b6421e2f7dce69a19fd6a3622677830e4ff6b for email: staff@agency.com  
+[2026-03-26 11:18:49] local.INFO: User found in User table: staff@agency.com  
+[2026-03-26 11:18:49] local.INFO: Password reset successful for User: staff@agency.com  

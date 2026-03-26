@@ -76,7 +76,7 @@ function AddSourceModal({ onClose, onSave, source }) {
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group" style={{ flex: '0.9' }}>
               <label className="form-label">Spam Score (%)</label>
               <input
                 type="number"
@@ -85,20 +85,22 @@ function AddSourceModal({ onClose, onSave, source }) {
                 onChange={e => setSpamScore(e.target.value)}
                 min="0"
                 max="100"
+                style={{ padding: '0.5rem 0.75rem' }}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ flex: '0.8' }}>
               <label className="form-label">Notes</label>
               <textarea
                 placeholder="Notes"
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
+                style={{ minHeight: '60px', padding: '0.5rem 0.75rem' }}
               />
             </div>
           </div>
-          <div className="form-actions" style={{ textAlign: 'right' }}>
-            <button type="submit" className="submit-btn">Save</button>
+          <div className="form-actions">
             <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
+            <button type="submit" className="submit-btn">Save</button>
           </div>
         </form>
       </div>
