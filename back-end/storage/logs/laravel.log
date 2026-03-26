@@ -14669,3 +14669,22 @@ Did you mean one of these?
 [2026-03-26 11:18:49] local.INFO: Reset password attempt with token: ecd16440a6bc1ad5db6cd3f7e21b6421e2f7dce69a19fd6a3622677830e4ff6b for email: staff@agency.com  
 [2026-03-26 11:18:49] local.INFO: User found in User table: staff@agency.com  
 [2026-03-26 11:18:49] local.INFO: Password reset successful for User: staff@agency.com  
+[2026-03-26 11:42:32] local.INFO: Backlink synchronized to source_summaries {"backlink_id":12,"website":"inc.com","action":"sync"} 
+[2026-03-26 11:44:08] local.INFO: Backlink synchronized to source_summaries {"backlink_id":12,"website":"inc.com","action":"sync"} 
+[2026-03-26 13:14:53] local.INFO: Backlink synchronized to source_summaries {"backlink_id":13,"website":"Incc.com","action":"sync"} 
+[2026-03-26 14:12:23] local.INFO: Backlink synchronized to source_summaries {"backlink_id":14,"website":"inccc.com","action":"sync"} 
+[2026-03-26 14:13:46] local.INFO: Backlink synchronized to source_summaries {"backlink_id":14,"website":"inc.com","action":"sync"} 
+[2026-03-26 14:25:58] local.INFO: Backlink synchronized to source_summaries {"backlink_id":14,"website":"inc.com","action":"sync"} 
+[2026-03-26 14:26:21] local.INFO: Backlink synchronized to source_summaries {"backlink_id":3,"website":"bloomberg.com","action":"sync"} 
+[2026-03-26 14:26:43] local.INFO: Backlink synchronized to source_summaries {"backlink_id":1,"website":"Medium.com","action":"sync"} 
+[2026-03-26 14:28:36] local.INFO: Backlink synchronized to source_summaries {"backlink_id":14,"website":"inc.com","action":"sync"} 
+[2026-03-26 14:36:30] local.INFO: Backlink synchronized to source_summaries {"backlink_id":2,"website":"bdb.org","action":"sync"} 
+[2026-03-26 14:36:47] local.INFO: Backlink synchronized to source_summaries {"backlink_id":14,"website":"inc.com","action":"sync"} 
+[2026-03-26 14:48:14] local.INFO: Backlink synchronized to source_summaries {"backlink_id":6,"website":"businessinsider.com","action":"sync"} 
+[2026-03-26 15:01:16] local.INFO: Backlink synchronized to source_summaries {"backlink_id":15,"website":"travelandleisure.com","action":"sync"} 
+[2026-03-26 15:13:31] local.INFO: Backlink synchronized to source_summaries {"backlink_id":16,"website":"manchestereveningnews.co.uk","action":"sync"} 
+[2026-03-26 15:21:36] local.INFO: Backlink synchronized to source_summaries {"backlink_id":17,"website":"theknot.com","action":"sync"} 
+[2026-03-26 15:28:01] local.INFO: Backlink synchronized to source_summaries {"backlink_id":18,"website":"elitedaily.com","action":"sync"} 
+[2026-03-26 15:37:29] local.INFO: Backlink synchronized to source_summaries {"backlink_id":19,"website":"luxurytravelmagazine.com","action":"sync"} 
+[2026-03-26 15:38:21] local.INFO: Backlink synchronized to source_summaries {"backlink_id":19,"website":"luxurytravelmagazine.com","action":"sync"} 
+[2026-03-26 15:38:57] local.INFO: Backlink synchronized to source_summaries {"backlink_id":19,"website":"luxurytravelmagazine.com","action":"sync"} 

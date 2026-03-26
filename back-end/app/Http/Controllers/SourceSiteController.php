@@ -35,6 +35,20 @@ class SourceSiteController extends Controller
         ]);
 
         $source = SourceSite::create($data);
+        
+        // Créer automatiquement un enregistrement dans source_summaries si n'existe pas
+        \App\Models\SourceSummary::firstOrCreate(
+            ['website' => $data['domain']],
+            [
+                'cost' => 0,
+                'link_type' => 'DoFollow',
+                'contact_email' => null,
+                'spam' => $data['spam_score'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        );
+        
         return response()->json($source, 201);
     }
 
@@ -46,6 +60,8 @@ class SourceSiteController extends Controller
     public function update(Request $request, $id)
     {
         $source = SourceSite::findOrFail($id);
+        $oldDomain = $source->domain; // Garder l'ancien domaine
+        
         $data = $request->validate([
             'domain'=>'sometimes|required|string|unique:source_sites,domain,'.$id,
             'quality_score'=>'sometimes|required|integer|min:1|max:5',
@@ -54,13 +70,28 @@ class SourceSiteController extends Controller
             'spam_score'=>'sometimes|required|integer|min:0|max:100',
             'notes'=>'nullable|string',
         ]);
+        
         $source->update($data);
+        
+        // Si le domaine a changé, mettre à jour la table source_summaries
+        if (isset($data['domain']) && $data['domain'] !== $oldDomain) {
+            \App\Models\SourceSummary::where('website', $oldDomain)
+                ->update(['website' => $data['domain']]);
+        }
+        
         return response()->json($source);
     }
 
     public function destroy($id)
     {
-        SourceSite::findOrFail($id)->delete();
+        $source = SourceSite::findOrFail($id);
+        $domain = $source->domain; // Garder le domaine avant suppression
+        
+        $source->delete();
+        
+        // Supprimer aussi les enregistrements correspondants dans source_summaries
+        \App\Models\SourceSummary::where('website', $domain)->delete();
+        
         return response()->json(['message'=>'Deleted']);
     }
 }

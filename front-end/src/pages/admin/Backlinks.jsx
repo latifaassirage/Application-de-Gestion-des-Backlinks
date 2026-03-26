@@ -165,7 +165,9 @@ export default function Backlinks() {
     try {
       const res = await api.get(`/summary-sources?page=${page}&per_page=10`);
       console.log("Summary sources data received:", res.data);
-      console.log("Number of summary sources:", res.data.data?.length || 0);
+      console.log("Summary sources type:", typeof res.data.data);
+      console.log("First summary source:", res.data.data?.[0]);
+      console.log("Summary sources keys:", res.data.data?.[0] ? Object.keys(res.data.data[0]) : 'No data');
       
       setSummarySources(res.data.data || []);
       setSummaryPagination({
@@ -350,15 +352,33 @@ export default function Backlinks() {
 
   const handleSummaryLinkTypeChange = async (sourceId, newLinkType) => {
     try {
-      const res = await api.put(`/summary-sources/${sourceId}`, {
+      // Trouver le backlink correspondant à ce site source
+      const associatedBacklink = safeBacklinks.find(b => b.source_site_id === sourceId);
+      
+      if (!associatedBacklink) {
+        console.error('No backlink found for this source site');
+        alert('No backlink found for this source site');
+        return;
+      }
+      
+      // Mettre à jour le backlink avec le nouveau link_type
+      const res = await api.put(`/backlinks/${associatedBacklink.id}`, {
         link_type: newLinkType
       });
       
+      // Mettre à jour le backlink dans l'état local
+      setBacklinks(safeBacklinks.map(b => 
+        b.id === associatedBacklink.id ? { ...b, link_type: newLinkType } : b
+      ));
       
+      // Rafraîchir immédiatement les backlinks pour garantir la cohérence
+      await fetchBacklinks(1);
+      
+      // Rafraîchir les données summary pour voir le changement
       await fetchSummarySources();
-      console.log('Summary link type updated successfully!');
+      console.log('Backlink link type updated successfully!');
     } catch (error) {
-      console.error('Error updating summary link type:', error);
+      console.error('Error updating backlink link type:', error);
       alert('Error updating link type');
     }
   };
@@ -508,6 +528,24 @@ export default function Backlinks() {
     fetchBacklinks(); fetchClients(); fetchSources(); fetchSummarySources(); fetchTypes();
   }, []);
 
+  // Rafraîchissement automatique des données summary toutes les 30 secondes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchSummarySources();
+      fetchBacklinks(); // Rafraîchir aussi les backlinks pour garantir la cohérence
+    }, 30000); // 30 secondes
+
+    return () => clearInterval(interval); // Nettoyer l'intervalle quand le composant est démonté
+  }, []);
+
+  // Rafraîchissement quand le modal est ouvert
+  useEffect(() => {
+    if (showSourceSitesView) {
+      fetchSummarySources();
+      fetchBacklinks();
+    }
+  }, [showSourceSitesView]);
+
   useEffect(() => {
     if (formData.source_site_id && sources.length > 0) {
       const selectedSource = sources.find(source => source.id === parseInt(formData.source_site_id));
@@ -617,17 +655,13 @@ export default function Backlinks() {
 
   const exportToCSV = () => {
     // Prepare CSV data
-    const csvData = safeSources.map(source => {
-      // Find associated client through backlinks
-      const associatedBacklink = safeBacklinks.find(b => b.source_site_id === source.id);
-      const associatedClient = associatedBacklink ? safeClients.find(c => c.id === associatedBacklink.client_id) : null;
-      
+    const csvData = safeSummarySources.map(source => {
       return {
-        Website: source.domain,
-        Cost: associatedBacklink?.cost || 0,
-        LinkType: associatedBacklink?.link_type || 'DoFollow',
-        ContactEmail: associatedClient?.contact_email || '-',
-        SpamScore: source.spam_score || 0
+        Website: source.actual_domain || source.domain || source.website, // Utilise le domaine actuel
+        Cost: source.cost || 0, // Utilise le coût direct du summary
+        LinkType: source.backlink_link_type || 'DoFollow', // Utilise uniquement le link_type depuis backlinks
+        ContactEmail: source.contact_email || '-', // Utilise l'email direct du summary
+        SpamScore: source.spam || 0 // Utilise le spam direct du summary
       };
     });
 
@@ -636,7 +670,7 @@ export default function Backlinks() {
     const csvContent = [
       '\uFEFF' + headers.join(';'), // Add UTF-8 BOM for Excel
       ...csvData.map(row => [
-        `"${row.Website}"`,
+        `"${row.Website}"`, // Utilise la valeur Website
         row.Cost,
         `"${row.LinkType}"`,
         `"${row.ContactEmail}"`,
@@ -1037,22 +1071,17 @@ export default function Backlinks() {
                         return (
                           <tr key={source.id}>
                             <td className="website-cell">
-                              <a href={`https://${source.website}`} target="_blank" rel="noopener noreferrer">
-                                {source.website}
+                              <a href={`https://${source.actual_domain || source.domain || source.website || 'example.com'}`} target="_blank" rel="noopener noreferrer">
+                                {source.actual_domain || source.domain || source.website || 'No domain'}
                               </a>
                             </td>
                             <td className="cost-cell">
                               ${source.cost || '0'}
                             </td>
                             <td className="link-type-cell">
-                              <select 
-                                value={source.link_type || 'DoFollow'} 
-                                onChange={(e) => handleSummaryLinkTypeChange(source.id, e.target.value)}
-                                className="link-type-dropdown"
-                              >
-                                <option value="DoFollow">DoFollow</option>
-                                <option value="NoFollow">NoFollow</option>
-                              </select>
+                              <span className={`link-type-badge ${(source.backlink_link_type || 'DoFollow') === 'DoFollow' ? 'dofollow' : 'nofollow'}`}>
+                                {source.backlink_link_type || 'DoFollow'}
+                              </span>
                             </td>
                             <td className="email-cell">
                               {source.contact_email || '-'}

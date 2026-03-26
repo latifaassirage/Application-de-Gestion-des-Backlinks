@@ -30,11 +30,22 @@ class BacklinkController extends Controller
 
     public function getSummarySources(Request $request)
     {
-        // Récupérer les données de la table source_summaries avec pagination
+        // Récupérer les données de la table source_summaries avec jointure vers source_sites et backlinks
         $perPage = $request->get('per_page', 10); // 10 par défaut
         $page = $request->get('page', 1); // Page 1 par défaut
         
-        $summaryData = SourceSummary::orderBy('created_at', 'desc')
+        $summaryData = SourceSummary::leftJoin('source_sites', 'source_summaries.website', '=', 'source_sites.domain')
+            ->leftJoin('backlinks', function($join) {
+                $join->on('source_sites.id', '=', 'backlinks.source_site_id')
+                     ->where('backlinks.status', '=', 'Live') // Prendre le backlink actif
+                     ->orderBy('backlinks.updated_at', 'desc'); // Prendre le plus récent
+            })
+            ->select(
+                'source_summaries.*',
+                'source_sites.domain as actual_domain', // Récupérer le domaine actuel depuis source_sites
+                'backlinks.link_type as backlink_link_type' // Récupérer le link_type depuis backlinks
+            )
+            ->orderBy('source_summaries.created_at', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
 
         return $summaryData;
@@ -91,7 +102,9 @@ class BacklinkController extends Controller
         }
 
         $backlink = Backlink::create($data);
-        return response()->json($backlink, 201);
+        
+        // Renvoyer l'objet complet avec les relations
+        return response()->json($backlink->load(['client', 'sourceSite']), 201);
     }
 
     public function show($id)
@@ -123,7 +136,9 @@ class BacklinkController extends Controller
             'traffic_estimated'=>'nullable|integer',
         ]);
         $backlink->update($data);
-        return response()->json($backlink);
+        
+        // Renvoyer l'objet complet avec les relations
+        return response()->json($backlink->load(['client', 'sourceSite']));
     }
 
     public function destroy($id)

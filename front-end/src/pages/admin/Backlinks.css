@@ -575,7 +575,6 @@
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(255,107,53,0.3);
   font-size: 0.9rem;
 }
@@ -626,6 +625,31 @@
 
 .website-cell a:hover {
   text-decoration: underline;
+}
+
+/* Link Type Badges */
+.link-type-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.link-type-badge.dofollow {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border-color: #28a745;
+}
+
+.link-type-badge.nofollow {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border-color: #dc3545;
 }
 
 .cost-cell {
