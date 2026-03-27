@@ -28,6 +28,36 @@ class BacklinkController extends Controller
         return Backlink::with(['client','sourceSite'])->orderBy('created_at', 'desc')->get();
     }
 
+    public function dashboardStats()
+    {
+        // Statistiques complètes basées sur toute la base de données
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+        
+        // Calcul mensuel robuste : vérifie date_added puis created_at
+        $monthlyBacklinks = Backlink::where(function($query) use ($currentMonth, $currentYear) {
+                $query->whereMonth('date_added', $currentMonth)
+                      ->whereYear('date_added', $currentYear);
+            })->orWhere(function($query) use ($currentMonth, $currentYear) {
+                $query->whereNull('date_added')
+                      ->whereMonth('created_at', $currentMonth)
+                      ->whereYear('created_at', $currentYear);
+            })->count();
+        
+        return response()->json([
+            'total_backlinks' => Backlink::count(),
+            'total_clients' => \App\Models\Client::count(),
+            'total_sources' => \App\Models\SourceSite::count(),
+            'live_backlinks' => Backlink::where('status', 'Live')->count(),
+            'pending_backlinks' => Backlink::where('status', 'Pending')->count(),
+            'lost_backlinks' => Backlink::where('status', 'Lost')->count(),
+            'total_cost' => Backlink::sum('cost'),
+            'dofollow_backlinks' => Backlink::where('link_type', 'DoFollow')->count(),
+            'nofollow_backlinks' => Backlink::where('link_type', 'NoFollow')->count(),
+            'monthly_backlinks' => $monthlyBacklinks,
+        ]);
+    }
+
     public function getSummarySources(Request $request)
     {
         // Récupérer les données de la table source_summaries avec jointure vers source_sites et backlinks

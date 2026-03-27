@@ -61,8 +61,8 @@ export default function Reports() {
 
   const fetchClients = async () => {
     try {
-      const res = await api.get("/clients");
-      setClients(res.data.data || []);
+      const res = await api.get("/unique-clients");
+      setClients(res.data);
     } catch (error) {
       console.error("Error fetching clients:", error);
     }
@@ -203,7 +203,9 @@ export default function Reports() {
               case 'quality_score':
                 return `${backlink.dynamic_quality_score || 3}/5`;
               case 'cost':
-                return `$${backlink.cost || '0'}`;
+                return backlink.cost == 0 || backlink.cost === "0" || backlink.cost === null || backlink.cost === undefined ? 
+                  'Free' : 
+                  `$${backlink.cost || '0'}`;
               default:
                 return '-';
             }
@@ -228,18 +230,52 @@ export default function Reports() {
         doc.text('Period: Global Report', 105, 40, { align: 'center' });
       }
       
-      // Ajouter les statistiques
+      // Ajouter les statistiques dynamiques en fonction des colonnes sélectionnées
       doc.setFontSize(14);
       doc.text('Summary', 20, 60);
       doc.setFontSize(10);
       
       const summary = reportData.summary;
-      const summaryY = 70;
-      doc.text(`Total: ${summary.total}`, 20, summaryY);
-      doc.text(`Live: ${summary.live}`, 60, summaryY);
-      doc.text(`Lost: ${summary.lost}`, 100, summaryY);
-      doc.text(`Paid: ${summary.paid}`, 140, summaryY);
-      doc.text(`Total Cost: $${summary.totalCost.toFixed(2)}`, 20, summaryY + 10);
+      let summaryY = 70;
+      let currentX = 20;
+      
+      // Afficher uniquement les statistiques dont les colonnes sont cochées
+      if (selectedColumns.status) {
+        doc.text(`Total: ${summary.total}`, currentX, summaryY);
+        currentX += 40;
+        
+        if (selectedColumns.status) {
+          doc.text(`Live: ${summary.live}`, currentX, summaryY);
+          currentX += 40;
+          
+          doc.text(`Lost: ${summary.lost}`, currentX, summaryY);
+          currentX += 40;
+          
+          doc.text(`Pending: ${summary.pending}`, currentX, summaryY);
+          currentX += 40;
+        }
+      }
+      
+      // Afficher Paid/Free si la colonne Cost est cochée
+      if (selectedColumns.cost) {
+        doc.text(`Paid: ${summary.paid}`, currentX, summaryY);
+        currentX += 40;
+        doc.text(`Free: ${summary.free}`, currentX, summaryY);
+        currentX += 40;
+      }
+      
+      // Total Cost uniquement si la colonne Cost est cochée
+      if (selectedColumns.cost) {
+        // Aller à la ligne si nécessaire
+        if (currentX > 120) {
+          summaryY += 10;
+          currentX = 20;
+        }
+        doc.text(`Total Cost: $${summary.totalCost.toFixed(2)}`, currentX, summaryY);
+        summaryY += 10;
+      } else {
+        summaryY += 10;
+      }
       
       // Générer le tableau avec autoTable
       autoTable(doc, {
@@ -344,7 +380,9 @@ export default function Reports() {
                 row[columnLabels[col]] = `${backlink.dynamic_quality_score || 3}/5`;
                 break;
               case 'cost':
-                row[columnLabels[col]] = backlink.cost || 0;
+                row[columnLabels[col]] = backlink.cost == 0 || backlink.cost === "0" || backlink.cost === null || backlink.cost === undefined ? 
+                  'Free' : 
+                  backlink.cost || 0;
                 break;
               default:
                 row[columnLabels[col]] = '-';
@@ -371,17 +409,23 @@ export default function Reports() {
       // Ajouter la worksheet au workbook
       XLSX.utils.book_append_sheet(wb, ws, 'Backlinks Report');
       
-      // Ajouter une worksheet pour le résumé
-      const summaryData = [
-        ['Statistics', 'Value'],
-        ['Total Backlinks', reportData.summary.total],
-        ['Live', reportData.summary.live],
-        ['Lost', reportData.summary.lost],
-        ['Pending', reportData.summary.pending],
-        ['Paid', reportData.summary.paid],
-        ['Free', reportData.summary.free],
-        ['Total Cost', reportData.summary.totalCost]
-      ];
+      // Ajouter une worksheet pour le résumé dynamique
+      const summaryData = [['Statistics', 'Value']];
+      
+      // Ajouter uniquement les statistiques dont les colonnes sont cochées
+      if (selectedColumns.status) {
+        summaryData.push(['Total Backlinks', reportData.summary.total]);
+        summaryData.push(['Live', reportData.summary.live]);
+        summaryData.push(['Lost', reportData.summary.lost]);
+        summaryData.push(['Pending', reportData.summary.pending]);
+      }
+      
+      // Ajouter Paid/Free si la colonne Cost est cochée
+      if (selectedColumns.cost) {
+        summaryData.push(['Paid', reportData.summary.paid]);
+        summaryData.push(['Free', reportData.summary.free]);
+        summaryData.push(['Total Cost', reportData.summary.totalCost]);
+      }
       
       const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
       XLSX.utils.book_append_sheet(wb, summaryWs, 'Summary');
@@ -425,6 +469,13 @@ export default function Reports() {
       generateReport();
     }
   }, [sources, backlinks, generateReport]);
+
+  // Rendre le filtrage interactif - mettre à jour le tableau quand les filtres changent
+  useEffect(() => {
+    if (sources.length > 0 && backlinks.length > 0) {
+      generateReport();
+    }
+  }, [filters, sources, backlinks, generateReport]);
 
   useEffect(() => {
     if (filters.client_id) {
@@ -531,30 +582,41 @@ export default function Reports() {
             <div className="summary-section">
               <h3>Summary</h3>
               <div className="summary-grid">
-                <div className="summary-card total">
-                  <h4> Total Backlinks</h4>
-                  <p>{reportData.summary.total}</p>
-                </div>
-                <div className="summary-card live">
-                  <h4> Live</h4>
-                  <p>{reportData.summary.live}</p>
-                </div>
-                <div className="summary-card pending">
-                  <h4> Pending</h4>
-                  <p>{reportData.summary.pending}</p>
-                </div>
-                <div className="summary-card lost">
-                  <h4> Lost</h4>
-                  <p>{reportData.summary.lost}</p>
-                </div>
-                <div className="summary-card paid">
-                  <h4> Paid</h4>
-                  <p>{reportData.summary.paid}</p>
-                </div>
-                <div className="summary-card free">
-                  <h4> Free</h4>
-                  <p>{reportData.summary.free}</p>
-                </div>
+                {/* Afficher uniquement les cartes dont les colonnes sont cochées */}
+                {selectedColumns.status && (
+                  <>
+                    <div className="summary-card total">
+                      <h4> Total Backlinks</h4>
+                      <p>{reportData.summary.total}</p>
+                    </div>
+                    <div className="summary-card live">
+                      <h4> Live</h4>
+                      <p>{reportData.summary.live}</p>
+                    </div>
+                    <div className="summary-card pending">
+                      <h4> Pending</h4>
+                      <p>{reportData.summary.pending}</p>
+                    </div>
+                    <div className="summary-card lost">
+                      <h4> Lost</h4>
+                      <p>{reportData.summary.lost}</p>
+                    </div>
+                  </>
+                )}
+                
+                {/* Afficher Paid/Free si la colonne Cost est cochée */}
+                {selectedColumns.cost && (
+                  <>
+                    <div className="summary-card paid">
+                      <h4> Paid</h4>
+                      <p>{reportData.summary.paid}</p>
+                    </div>
+                    <div className="summary-card free">
+                      <h4> Free</h4>
+                      <p>{reportData.summary.free}</p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -813,7 +875,12 @@ export default function Reports() {
                         {backlink.status}
                       </td>
                       <td className="quality">{renderQualityStars(backlink.dynamic_quality_score)}</td>
-                      <td className="cost">${backlink.cost || '0'}</td>
+                      <td className="cost">
+                      {backlink.cost == 0 || backlink.cost === "0" || backlink.cost === null || backlink.cost === undefined ? 
+                        <span className="cost-free">Free</span> : 
+                        backlink.cost || '0'
+                      }
+                    </td>
                     </tr>
                   ))}
                 </tbody>

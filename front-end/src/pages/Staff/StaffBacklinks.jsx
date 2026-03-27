@@ -48,15 +48,15 @@ export default function StaffBacklinks() {
       setLoading(true);
       const [backlinksRes, clientsRes, sourcesRes] = await Promise.all([
         api.get(`/backlinks?page=${page}&per_page=${itemsPerPage}`),
-        api.get("/clients"),
-        api.get("/sources")
+        api.get("/all-clients"),
+        api.get("/all-sources")
       ]);
       setBacklinks(backlinksRes.data.data || []);
       setTotal(backlinksRes.data.total || 0);
       setTotalPages(backlinksRes.data.last_page || 1);
       setCurrentPage(backlinksRes.data.current_page || 1);
-      setClients(clientsRes.data.data || []);
-      setSources(sourcesRes.data.data || []);
+      setClients(clientsRes.data || []);
+      setSources(sourcesRes.data || []);
     } catch (error) {
       console.error("Error fetching data:", error);
       setBacklinks([]);
@@ -262,7 +262,7 @@ export default function StaffBacklinks() {
               <div className="form-row">
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>COST ($)</label>
-                  <input type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" required />
+                  <input type="number" min="0" step="0.01" value={formData.cost} onChange={(e) => setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" required />
                 </div>
               </div>
               <div className="form-actions">
@@ -293,7 +293,12 @@ export default function StaffBacklinks() {
                   <td><span className="type">{backlink.type}</span></td>
                   <td><span className={`status status-${backlink.status.toLowerCase()}`}>{backlink.status}</span></td>
                   <td className="date-added">{new Date(backlink.date_added || backlink.date).toLocaleDateString()}</td>
-                  <td className="cost">{backlink.cost}€</td>
+                  <td className="cost">
+                    {backlink.cost == 0 || backlink.cost === "0" || backlink.cost === null || backlink.cost === undefined ? 
+                      <span className="cost-free">Free</span> : 
+                      `${backlink.cost}€`
+                    }
+                  </td>
                   <td className="actions">
                     <button className="edit-btn" onClick={() => handleEdit(backlink)}>Edit</button>
                   </td>

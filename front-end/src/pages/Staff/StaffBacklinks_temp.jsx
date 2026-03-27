@@ -102,12 +102,12 @@ export default function StaffBacklinks() {
       setLoading(true);
       const [backlinksRes, clientsRes, sourcesRes] = await Promise.all([
         api.get("/backlinks"),
-        api.get("/clients"),
-        api.get("/sources")
+        api.get("/all-clients"),
+        api.get("/all-sources")
       ]);
       setBacklinks(backlinksRes.data.data || []);
-      setClients(clientsRes.data.data || []);
-      setSources(sourcesRes.data.data || []);
+      setClients(clientsRes.data || []);
+      setSources(sourcesRes.data || []);
     } catch (error) {
       console.error("Error fetching data:", error);
       setBacklinks([]);

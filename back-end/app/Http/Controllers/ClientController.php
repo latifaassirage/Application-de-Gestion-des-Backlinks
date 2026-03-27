@@ -23,6 +23,15 @@ class ClientController extends Controller
         return Client::orderBy('company_name', 'asc')->get();
     }
 
+    public function unique()
+    {
+        // Retourne les clients uniques par email pour éviter les doublons
+        return Client::select('id', 'company_name', 'contact_email', 'created_at')
+            ->distinct('contact_email')
+            ->orderBy('company_name', 'asc')
+            ->get();
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

@@ -445,3 +445,14 @@
     max-width: 100px;
   }
 }
+
+.cost-free {
+  color: #28a745;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #c3e6cb;
+  font-size: 0.85rem;
+}

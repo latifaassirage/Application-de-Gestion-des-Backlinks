@@ -28,10 +28,13 @@ Route::put('/profile',[AuthController::class,'updateProfile'])->middleware('auth
 Route::middleware(['auth:sanctum', 'staff'])->group(function(){
     Route::get('/clients', [ClientController::class, 'index']);
     Route::get('/all-clients', [ClientController::class, 'all']);
+    Route::get('/unique-clients', [ClientController::class, 'unique']);
     Route::get('/sources', [SourceSiteController::class, 'index']);
     Route::get('/all-sources', [SourceSiteController::class, 'all']);
+    Route::get('/grouped-sources', [SourceSiteController::class, 'grouped']);
     Route::get('/backlinks', [BacklinkController::class, 'index']);
     Route::get('/all-backlinks', [BacklinkController::class, 'all']);
+    Route::get('/dashboard-stats', [BacklinkController::class, 'dashboardStats']);
     Route::get('/summary-sources', [BacklinkController::class, 'getSummarySources']);
     Route::put('/summary-sources/{id}', [BacklinkController::class, 'updateSummarySource']);
     Route::delete('/summary-sources/{id}', [BacklinkController::class, 'deleteSummarySource']);

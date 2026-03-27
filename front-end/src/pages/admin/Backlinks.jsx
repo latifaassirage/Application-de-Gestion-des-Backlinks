@@ -658,7 +658,7 @@ export default function Backlinks() {
     const csvData = safeSummarySources.map(source => {
       return {
         Website: source.actual_domain || source.domain || source.website, // Utilise le domaine actuel
-        Cost: source.cost || 0, // Utilise le coût direct du summary
+        Cost: source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${source.cost || 0}`, // Utilise le coût direct du summary
         LinkType: source.backlink_link_type || 'DoFollow', // Utilise uniquement le link_type depuis backlinks
         ContactEmail: source.contact_email || '-', // Utilise l'email direct du summary
         SpamScore: source.spam || 0 // Utilise le spam direct du summary
@@ -704,7 +704,7 @@ export default function Backlinks() {
       
       return [
         source.domain,
-        `$${associatedBacklink?.cost || 0}`,
+        source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${associatedBacklink?.cost || 0}`,
         associatedBacklink?.link_type || 'DoFollow',
         associatedClient?.contact_email || '-',
         `${source.spam_score || 0}%`
@@ -908,7 +908,7 @@ export default function Backlinks() {
               <div className="form-row">
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '4px' }}>COST ($)</label>
-                  <input type="number" value={formData.cost} onChange={e=>setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" />
+                  <input type="number" min="0" value={formData.cost} onChange={e=>setFormData({...formData, cost: e.target.value})} placeholder="Cost (0 = Free)" />
                 </div>
                 {isAdmin && (
                   <div className="quality-score-container">
@@ -966,7 +966,12 @@ export default function Backlinks() {
                   <td>{safeSources.find(s => s.id === b.source_site_id)?.domain || '...'}</td>
                   <td>{new Date(b.date_added || b.created_at || b.date).toLocaleDateString('fr-FR')}</td>
                   <td><span className={`status ${getStatusColor(b.status)}`}>{b.status}</span></td>
-                  <td>${b.cost || '0'}</td>
+                  <td>
+                    {b.cost == 0 || b.cost === "0" || b.cost === null || b.cost === undefined ? 
+                      <span className="cost-free">Free</span> : 
+                      `$${b.cost || '0'}`
+                    }
+                  </td>
                   <td className="actions">
                     <button className="edit-btn" onClick={() => editBacklink(b)}>Edit</button>
                     {isAdmin && <button className="delete-btn" onClick={() => deleteBacklink(b.id)}>Delete</button>}
@@ -1076,7 +1081,10 @@ export default function Backlinks() {
                               </a>
                             </td>
                             <td className="cost-cell">
-                              ${source.cost || '0'}
+                              {source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 
+                                <span className="cost-free">Free</span> : 
+                                `$${source.cost || '0'}`
+                              }
                             </td>
                             <td className="link-type-cell">
                               <span className={`link-type-badge ${(source.backlink_link_type || 'DoFollow') === 'DoFollow' ? 'dofollow' : 'nofollow'}`}>

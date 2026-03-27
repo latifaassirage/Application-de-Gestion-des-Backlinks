@@ -23,6 +23,45 @@ class SourceSiteController extends Controller
         return SourceSite::orderBy('domain', 'asc')->get();
     }
 
+    public function grouped()
+    {
+        // Regrouper les sources par domaine avec des statistiques agrégées
+        $groupedSources = SourceSite::select([
+                'domain',
+                \DB::raw('MIN(id) as id'),
+                \DB::raw('MIN(quality_score) as min_quality_score'),
+                \DB::raw('MAX(quality_score) as max_quality_score'),
+                \DB::raw('AVG(quality_score) as avg_quality_score'),
+                \DB::raw('MIN(dr) as min_dr'),
+                \DB::raw('MAX(dr) as max_dr'),
+                \DB::raw('AVG(dr) as avg_dr'),
+                \DB::raw('MIN(traffic_estimated) as min_traffic'),
+                \DB::raw('MAX(traffic_estimated) as max_traffic'),
+                \DB::raw('AVG(traffic_estimated) as avg_traffic'),
+                \DB::raw('MIN(spam_score) as min_spam'),
+                \DB::raw('MAX(spam_score) as max_spam'),
+                \DB::raw('AVG(spam_score) as avg_spam'),
+                \DB::raw('COUNT(*) as source_count'),
+                \DB::raw('MIN(created_at) as first_created'),
+                \DB::raw('MAX(created_at) as last_created')
+            ])
+            ->groupBy('domain')
+            ->orderBy('domain', 'asc')
+            ->get();
+
+        // Ajouter le nombre de backlinks pour chaque domaine
+        foreach ($groupedSources as $source) {
+            $backlinkCount = \DB::table('backlinks')
+                ->join('source_sites', 'backlinks.source_site_id', '=', 'source_sites.id')
+                ->where('source_sites.domain', $source->domain)
+                ->count();
+            
+            $source->backlink_count = $backlinkCount;
+        }
+
+        return $groupedSources;
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

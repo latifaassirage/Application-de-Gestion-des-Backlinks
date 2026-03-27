@@ -120,13 +120,14 @@ export default function Clients() {
 
   const fetchClients = async (page = 1) => {
     try {
-      const res = await api.get(`/clients?page=${page}&per_page=10`);
-      setClients(res.data.data || []);
+      const res = await api.get("/unique-clients");
+      setClients(res.data || []);
+      // Pas de pagination pour les clients uniques
       setPagination({
-        current_page: res.data.current_page || 1,
-        last_page: res.data.last_page || 1,
-        per_page: res.data.per_page || 10,
-        total: res.data.total || 0
+        current_page: 1,
+        last_page: 1,
+        per_page: res.data?.length || 10,
+        total: res.data?.length || 0
       });
     } catch (error) {
       console.error("Error fetching clients:", error);

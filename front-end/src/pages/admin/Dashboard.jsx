@@ -102,70 +102,52 @@ const Dashboard = () => {
     try {
       console.log('Fetching dashboard stats...');
       
-      const [clientsRes, backlinksRes] = await Promise.all([
-        api.get('/clients'),
-        api.get('/backlinks')
-      ]);
+      // Utiliser la nouvelle API pour les statistiques complètes
+      const statsRes = await api.get('/dashboard-stats');
+      const statsData = statsRes.data;
       
-      const clients = clientsRes.data.data || clientsRes.data || []; // Handle both paginated and direct data
-      const backlinks = backlinksRes.data.data || backlinksRes.data || []; // Handle both paginated and direct data
+      console.log('Dashboard stats:', statsData);
       
-      console.log('Backlinks data:', backlinks);
-      console.log('Clients data:', clients);
-      console.log('Clients response:', clientsRes);
+      setStats({
+        totalClients: statsData.total_clients || 0,
+        totalBacklinks: statsData.total_backlinks || 0,
+        liveBacklinks: statsData.live_backlinks || 0,
+        pendingBacklinks: statsData.pending_backlinks || 0,
+        lostBacklinks: statsData.lost_backlinks || 0,
+        monthlyBacklinks: statsData.monthly_backlinks || 0 // Utilise la valeur directe depuis l'API
+      });
+      
+      // Récupérer les backlinks pour le tableau mensuel (uniquement pour l'affichage du tableau)
+      const backlinksRes = await api.get('/all-backlinks');
+      const backlinks = backlinksRes.data || [];
       
       const currentMonth = new Date().getMonth();
       const currentYear = new Date().getFullYear();
       
+      // Logique identique à celle de l'API : date_added prioritaire, sinon created_at
       const monthlyBacklinksList = backlinks.filter(backlink => {
-     
-        const dateFields = [
-          backlink.date_added,  
-          backlink.date,       
-          backlink.created_at,   
-          backlink.updated_at
-        ].filter(Boolean);
-        
-        if (dateFields.length === 0) {
-          console.log('No date fields found for backlink:', backlink.id);
-          return false;
+        // Priorité à date_added si elle existe et est valide
+        if (backlink.date_added) {
+          const dateAdded = new Date(backlink.date_added);
+          if (!isNaN(dateAdded.getTime())) {
+            return dateAdded.getMonth() === currentMonth && 
+                   dateAdded.getFullYear() === currentYear;
+          }
         }
         
-        
-        const backlinkDate = new Date(dateFields[0]);
-        const isValidDate = !isNaN(backlinkDate.getTime());
-        
-        if (!isValidDate) {
-          console.log('Invalid date for backlink:', backlink.id, dateFields[0]);
-          return false;
+        // Sinon utilise created_at
+        if (backlink.created_at) {
+          const createdAt = new Date(backlink.created_at);
+          if (!isNaN(createdAt.getTime())) {
+            return createdAt.getMonth() === currentMonth && 
+                   createdAt.getFullYear() === currentYear;
+          }
         }
         
-        const isCurrentMonth = backlinkDate.getMonth() === currentMonth && 
-                           backlinkDate.getFullYear() === currentYear;
-        
-        console.log(`Backlink ${backlink.id}: Date=${backlinkDate.toISOString().split('T')[0]}, CurrentMonth=${isCurrentMonth}`);
-        
-        return isCurrentMonth;
+        return false;
       });
       
-      const monthlyBacklinks = monthlyBacklinksList.length;
-
-      const liveBacklinks = backlinks.filter(b => b.status === 'Live').length;
-      const pendingBacklinks = backlinks.filter(b => b.status === 'Pending').length;
-      const lostBacklinks = backlinks.filter(b => b.status === 'Lost').length;
-
-      const totalClients = clients.length;
-        
-      setStats({
-        totalClients,
-        totalBacklinks: backlinks.length,
-        liveBacklinks,
-        pendingBacklinks,
-        lostBacklinks,
-        monthlyBacklinks
-      });
-      
-      // Set monthly backlinks data for table - show ALL backlinks for current month
+      // Set monthly backlinks data for table (uniquement pour le tableau)
       setMonthlyBacklinksData(monthlyBacklinksList); 
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
