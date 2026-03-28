@@ -11,6 +11,73 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class BacklinkController extends Controller
 {
+    /**
+     * Synchroniser les totaux dans source_summaries pour un domaine donné
+     */
+    private function syncSourceSummary($domain)
+    {
+        try {
+            // Récupérer tous les backlinks pour ce domaine (sans jointure qui crée des stdClass)
+            $backlinks = Backlink::with('sourceSite')
+                ->whereHas('sourceSite', function($query) use ($domain) {
+                    $query->where('domain', $domain);
+                })
+                ->get();
+
+            // Calculer les totaux
+            $totalBacklinks = $backlinks->count();
+            $liveBacklinks = $backlinks->where('status', 'Live')->count();
+            $pendingBacklinks = $backlinks->where('status', 'Pending')->count();
+            $lostBacklinks = $backlinks->where('status', 'Lost')->count();
+            $totalCost = $backlinks->sum('cost');
+            $dofollowBacklinks = $backlinks->where('link_type', 'DoFollow')->count();
+            $nofollowBacklinks = $backlinks->where('link_type', 'NoFollow')->count();
+
+            // Récupérer le type de lien du backlink le plus récent
+            $latestBacklink = $backlinks->sortByDesc('updated_at')->first();
+            $latestLinkType = $latestBacklink ? $latestBacklink->link_type : null;
+
+            // Si aucun backlink n'existe, supprimer le résumé
+            if ($totalBacklinks === 0) {
+                SourceSummary::where('website', $domain)->delete();
+                return;
+            }
+
+            // Mettre à jour ou créer le résumé - SEULEMENT les totaux calculés
+            $summaryData = [
+                // ✅ TOTAUX CALCULÉS (stockés)
+                'total_backlinks' => $totalBacklinks,
+                'live_backlinks' => $liveBacklinks,
+                'pending_backlinks' => $pendingBacklinks,
+                'lost_backlinks' => $lostBacklinks,
+                'total_cost' => $totalCost,
+                'dofollow_backlinks' => $dofollowBacklinks,
+                'nofollow_backlinks' => $nofollowBacklinks,
+                
+                // ✅ METTRE À JOUR le link_type depuis le backlink le plus récent
+                'link_type' => $latestLinkType,
+            ];
+
+            // Utiliser updateOrCreate avec try-catch pour gérer les erreurs
+            SourceSummary::updateOrCreate(
+                ['website' => $domain],
+                $summaryData
+            );
+
+            // Forcer la mise à jour des champs dynamiques SEULEMENT si nécessaire
+            // Garder link_type tel quel pour qu'il soit synchronisé
+            SourceSummary::where('website', $domain)->update([
+                'contact_email' => null, // Récupéré dynamiquement via accessor
+                'spam' => null, // Récupéré dynamiquement via accessor
+                // NE PAS forcer link_type à null pour conserver la synchronisation
+            ]);
+
+        } catch (\Exception $e) {
+            // Logger l'erreur mais ne pas bloquer le processus
+            \Log::error('Error syncing source summary for domain ' . $domain . ': ' . $e->getMessage());
+        }
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10); // 10 par défaut
@@ -73,23 +140,37 @@ class BacklinkController extends Controller
 
     public function getSummarySources(Request $request)
     {
-        // Récupérer les données de la table source_summaries avec jointure vers source_sites et backlinks
+        // Récupérer les données de la table source_summaries avec la relation sourceSite
         $perPage = $request->get('per_page', 10); // 10 par défaut
         $page = $request->get('page', 1); // Page 1 par défaut
         
-        $summaryData = SourceSummary::leftJoin('source_sites', 'source_summaries.website', '=', 'source_sites.domain')
-            ->leftJoin('backlinks', function($join) {
-                $join->on('source_sites.id', '=', 'backlinks.source_site_id')
-                     ->where('backlinks.status', '=', 'Live') // Prendre le backlink actif
-                     ->orderBy('backlinks.updated_at', 'desc'); // Prendre le plus récent
-            })
-            ->select(
-                'source_summaries.*',
-                'source_sites.domain as actual_domain', // Récupérer le domaine actuel depuis source_sites
-                'backlinks.link_type as backlink_link_type' // Récupérer le link_type depuis backlinks
-            )
-            ->orderBy('source_summaries.created_at', 'desc')
+        $summaryData = SourceSummary::with('sourceSite')
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
+
+        // Transformer les données pour inclure les champs dynamiques depuis sourceSite
+        $transformedData = $summaryData->getCollection()->map(function ($summary) {
+            return [
+                'id' => $summary->id,
+                'website' => $summary->website, // Garder website intact
+                'cost' => $summary->getAttribute('cost'), // Forcer l'appel de l'accessor
+                'link_type' => $summary->getAttribute('link_type'), // Forcer l'appel de l'accessor
+                'contact_email' => $summary->getAttribute('contact_email'), // Forcer l'appel de l'accessor
+                'spam' => $summary->getAttribute('spam'), // Forcer l'appel de l'accessor
+                'total_backlinks' => $summary->total_backlinks,
+                'live_backlinks' => $summary->live_backlinks,
+                'pending_backlinks' => $summary->pending_backlinks,
+                'lost_backlinks' => $summary->lost_backlinks,
+                'dofollow_backlinks' => $summary->dofollow_backlinks,
+                'nofollow_backlinks' => $summary->nofollow_backlinks,
+                'created_at' => $summary->created_at,
+                'updated_at' => $summary->updated_at,
+                'source_site' => $summary->sourceSite, // Inclure les données complètes du sourceSite
+            ];
+        });
+
+        // Remplacer la collection dans la pagination
+        $summaryData->setCollection($transformedData);
 
         return $summaryData;
     }
@@ -146,6 +227,12 @@ class BacklinkController extends Controller
 
         $backlink = Backlink::create($data);
         
+        // Synchroniser les totaux dans source_summaries
+        $sourceSite = SourceSite::find($data['source_site_id']);
+        if ($sourceSite) {
+            $this->syncSourceSummary($sourceSite->domain);
+        }
+        
         // Renvoyer l'objet complet avec les relations
         return response()->json($backlink->load(['client', 'sourceSite']), 201);
     }
@@ -158,6 +245,7 @@ class BacklinkController extends Controller
     public function update(Request $request, $id)
     {
         $backlink = Backlink::findOrFail($id);
+        $oldSourceSiteId = $backlink->source_site_id;
         
         // Récupérer les types dynamiques disponibles
         $availableTypes = \App\Models\BacklinkType::pluck('name')->toArray();
@@ -178,7 +266,42 @@ class BacklinkController extends Controller
             'quality_score'=>'nullable|integer|min:1|max:5',
             'traffic_estimated'=>'nullable|integer',
         ]);
+        
+        // Vérification doublon lors de l'update
+        $clientId = $data['client_id'] ?? $backlink->client_id;
+        $sourceSiteId = $data['source_site_id'] ?? $backlink->source_site_id;
+        
+        $exists = Backlink::where('client_id', $clientId)
+                          ->where('source_site_id', $sourceSiteId)
+                          ->where('id', '!=', $id)
+                          ->first();
+        if($exists){
+            return response()->json(['message'=>'Duplicate detected'], 409);
+        }
+        
         $backlink->update($data);
+        
+        // Synchroniser les totaux dans source_summaries
+        // Si le source_site_id a changé, synchroniser les deux domaines
+        if (isset($data['source_site_id']) && $data['source_site_id'] != $oldSourceSiteId) {
+            // Ancien domaine
+            $oldSourceSite = SourceSite::find($oldSourceSiteId);
+            if ($oldSourceSite) {
+                $this->syncSourceSummary($oldSourceSite->domain);
+            }
+            
+            // Nouveau domaine
+            $newSourceSite = SourceSite::find($data['source_site_id']);
+            if ($newSourceSite) {
+                $this->syncSourceSummary($newSourceSite->domain);
+            }
+        } else {
+            // Même domaine, synchroniser une seule fois
+            $sourceSite = SourceSite::find($backlink->source_site_id);
+            if ($sourceSite) {
+                $this->syncSourceSummary($sourceSite->domain);
+            }
+        }
         
         // Renvoyer l'objet complet avec les relations
         return response()->json($backlink->load(['client', 'sourceSite']));
@@ -186,7 +309,17 @@ class BacklinkController extends Controller
 
     public function destroy($id)
     {
-        Backlink::findOrFail($id)->delete();
+        $backlink = Backlink::findOrFail($id);
+        $sourceSiteId = $backlink->source_site_id;
+        
+        $backlink->delete();
+        
+        // Synchroniser les totaux dans source_summaries
+        $sourceSite = SourceSite::find($sourceSiteId);
+        if ($sourceSite) {
+            $this->syncSourceSummary($sourceSite->domain);
+        }
+        
         return response()->json(['message'=>'Deleted']);
     }
 

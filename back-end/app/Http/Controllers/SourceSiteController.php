@@ -77,6 +77,7 @@ class SourceSiteController extends Controller
             'dr'=>'nullable|integer',
             'traffic_estimated'=>'nullable|integer',
             'spam_score'=>'required|integer|min:0|max:100',
+            'contact_email'=>'nullable|email',
             'notes'=>'nullable|string',
         ]);
 
@@ -123,6 +124,7 @@ class SourceSiteController extends Controller
             'dr'=>'nullable|integer',
             'traffic_estimated'=>'nullable|integer',
             'spam_score'=>'sometimes|required|integer|min:0|max:100',
+            'contact_email'=>'nullable|email',
             'notes'=>'nullable|string',
         ]);
 
@@ -158,7 +160,10 @@ class SourceSiteController extends Controller
         $source->delete();
         
         // Supprimer aussi les enregistrements correspondants dans source_summaries
-        \App\Models\SourceSummary::where('website', $domain)->delete();
+        $summary = \App\Models\SourceSummary::where('website', $domain)->first();
+        if ($summary) {
+            $summary->delete();
+        }
         
         return response()->json(['message'=>'Deleted']);
     }

@@ -3,10 +3,65 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\SourceSummary;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    /**
+     * Synchroniser les summaries pour tous les domaines où ce client a des backlinks
+     */
+    private function syncClientSummaries($clientId)
+    {
+        try {
+            // Récupérer tous les domaines où ce client a des backlinks (sans jointure)
+            $domains = \App\Models\Backlink::with('sourceSite')
+                ->where('client_id', $clientId)
+                ->whereHas('sourceSite')
+                ->get()
+                ->pluck('sourceSite.domain')
+                ->unique();
+
+            // Pour chaque domaine, forcer la mise à jour du summary
+            foreach ($domains as $domain) {
+                // Supprimer l'entrée summary pour forcer la recréation avec les nouvelles données
+                SourceSummary::where('website', $domain)->delete();
+                
+                // Recréer le summary avec les données à jour (sans jointure)
+                $backlinks = \App\Models\Backlink::with('sourceSite')
+                    ->whereHas('sourceSite', function($query) use ($domain) {
+                        $query->where('domain', $domain);
+                    })
+                    ->get();
+
+                $totalBacklinks = $backlinks->count();
+                $liveBacklinks = $backlinks->where('status', 'Live')->count();
+                $pendingBacklinks = $backlinks->where('status', 'Pending')->count();
+                $lostBacklinks = $backlinks->where('status', 'Lost')->count();
+                $totalCost = $backlinks->sum('cost');
+                $dofollowBacklinks = $backlinks->where('link_type', 'DoFollow')->count();
+                $nofollowBacklinks = $backlinks->where('link_type', 'NoFollow')->count();
+
+                if ($totalBacklinks > 0) {
+                    SourceSummary::updateOrCreate(
+                        ['website' => $domain],
+                        [
+                            'total_backlinks' => $totalBacklinks,
+                            'live_backlinks' => $liveBacklinks,
+                            'pending_backlinks' => $pendingBacklinks,
+                            'lost_backlinks' => $lostBacklinks,
+                            'total_cost' => $totalCost,
+                            'dofollow_backlinks' => $dofollowBacklinks,
+                            'nofollow_backlinks' => $nofollowBacklinks,
+                        ]
+                    );
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error syncing client summaries for client ' . $clientId . ': ' . $e->getMessage());
+        }
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10); // 10 par défaut
@@ -66,6 +121,11 @@ class ClientController extends Controller
         }
 
         $client = Client::create($data);
+        
+        // Synchroniser les summaries pour mettre à jour l'email du contact
+        // (utile si le client est créé avec des backlinks existants)
+        $this->syncClientSummaries($client->id);
+        
         return response()->json($client, 201);
     }
 
@@ -100,6 +160,10 @@ class ClientController extends Controller
         }
 
         $client->update($data);
+        
+        // Synchroniser les summaries pour mettre à jour l'email du contact
+        $this->syncClientSummaries($id);
+        
         return response()->json($client);
     }
 

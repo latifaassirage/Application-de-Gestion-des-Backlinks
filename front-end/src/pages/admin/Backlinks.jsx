@@ -693,7 +693,7 @@ export default function Backlinks() {
       return {
         Website: source.actual_domain || source.domain || source.website, // Utilise le domaine actuel
         Cost: source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${source.cost || 0}`, // Utilise le coût direct du summary
-        LinkType: source.backlink_link_type || 'DoFollow', // Utilise uniquement le link_type depuis backlinks
+        LinkType: source.link_type || '-', // Utilise le link_type depuis l'API sans valeur par défaut
         ContactEmail: source.contact_email || '-', // Utilise l'email direct du summary
         SpamScore: source.spam || 0 // Utilise le spam direct du summary
       };
@@ -739,7 +739,7 @@ export default function Backlinks() {
       return [
         source.domain,
         source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${associatedBacklink?.cost || 0}`,
-        associatedBacklink?.link_type || 'DoFollow',
+        associatedBacklink?.link_type || '-',
         associatedClient?.contact_email || '-',
         `${source.spam_score || 0}%`
       ];
@@ -1133,8 +1133,8 @@ export default function Backlinks() {
                               }
                             </td>
                             <td className="link-type-cell">
-                              <span className={`link-type-badge ${(source.backlink_link_type || 'DoFollow') === 'DoFollow' ? 'dofollow' : 'nofollow'}`}>
-                                {source.backlink_link_type || 'DoFollow'}
+                              <span className={`link-type-badge ${(source.link_type || '-') === 'DoFollow' ? 'dofollow' : (source.link_type || '-') === 'NoFollow' ? 'nofollow' : 'unknown'}`}>
+                                {source.link_type || '-'}
                               </span>
                             </td>
                             <td className="email-cell">

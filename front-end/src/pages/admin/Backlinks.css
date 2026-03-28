@@ -694,6 +694,12 @@
   border-color: #dc3545;
 }
 
+.link-type-badge.unknown {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  border-color: #6c757d;
+}
+
 .cost-cell {
   font-weight: 600;
   color: #28a745;
