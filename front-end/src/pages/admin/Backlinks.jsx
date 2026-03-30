@@ -15,12 +15,23 @@ export default function Backlinks() {
   const [showForm, setShowForm] = useState(false);
   const [editingBacklink, setEditingBacklink] = useState(null);
   const [showSourceSitesView, setShowSourceSitesView] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   
   
   const safeBacklinks = Array.isArray(backlinks) ? backlinks : [];
   const safeClients = Array.isArray(clients) ? clients : [];
   const safeSources = Array.isArray(sources) ? sources : [];
   const safeSummarySources = Array.isArray(summarySources) ? summarySources : [];
+
+  // Filtrer les sources en fonction du terme de recherche
+  const filteredSummarySources = safeSummarySources.filter(source => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      (source.domain && source.domain.toLowerCase().includes(searchLower)) ||
+      (source.website && source.website.toLowerCase().includes(searchLower)) ||
+      (source.actual_domain && source.actual_domain.toLowerCase().includes(searchLower))
+    );
+  });
   
   const [dynamicTypes, setDynamicTypes] = useState([]);
   const [showAddType, setShowAddType] = useState(false);
@@ -56,9 +67,6 @@ export default function Backlinks() {
     quality_score: 3,
     traffic_estimated: 0
   });
-
-  // État pour la recherche
-  const [searchTerm, setSearchTerm] = useState('');
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.role === 'admin';
@@ -167,9 +175,13 @@ export default function Backlinks() {
 
   const fetchSummarySources = async (page = 1) => {
     try {
+      console.log(`Fetching summary sources for page ${page}`);
       const res = await api.get(`/summary-sources?page=${page}&per_page=10`);
       console.log("Summary sources data received:", res.data);
       console.log("Summary sources type:", typeof res.data.data);
+      console.log("Summary sources total:", res.data.total);
+      console.log("Summary sources current_page:", res.data.current_page);
+      console.log("Summary sources last_page:", res.data.last_page);
       console.log("First summary source:", res.data.data?.[0]);
       console.log("Summary sources keys:", res.data.data?.[0] ? Object.keys(res.data.data[0]) : 'No data');
       
@@ -238,6 +250,8 @@ export default function Backlinks() {
       setShowForm(false);
       alert("Backlink updated successfully!");
       fetchBacklinks(1);
+      // Rafraîchir aussi les summary sources pour garantir la cohérence
+      fetchSummarySources(summaryPagination.current_page);
     } catch (error) {
       alert("Error updating backlink");
     }
@@ -250,6 +264,8 @@ export default function Backlinks() {
         setBacklinks(safeBacklinks.filter(b => b.id !== id));
       
         fetchBacklinks(1);
+        // Rafraîchir aussi les summary sources pour garantir la cohérence
+        fetchSummarySources(summaryPagination.current_page);
       } catch (error) {
         alert("Error deleting backlink");
       }
@@ -489,6 +505,45 @@ export default function Backlinks() {
     );
   };
 
+  // Fonctions de pagination pour les summary sources
+  const handleSummaryPageChange = (newPage) => {
+    // Validation stricte pour éviter les réinitialisations accidentelles
+    if (newPage >= 1 && newPage <= summaryPagination.last_page && newPage !== summaryPagination.current_page) {
+      console.log(`Changing summary to page ${newPage} from page ${summaryPagination.current_page}`);
+      fetchSummarySources(newPage);
+    } else {
+      console.log(`Invalid summary page change: ${newPage} (current: ${summaryPagination.current_page}, max: ${summaryPagination.last_page})`);
+    }
+  };
+
+  const renderSummaryPaginationNumbers = () => {
+    const { current_page, last_page } = summaryPagination;
+    const pages = [];
+    
+    // Afficher toujours la première page
+    if (current_page > 3) {
+      pages.push(1);
+      if (current_page > 4) {
+        pages.push('...');
+      }
+    }
+    
+    // Afficher les pages autour de la page actuelle
+    for (let i = Math.max(1, current_page - 2); i <= Math.min(last_page, current_page + 2); i++) {
+      pages.push(i);
+    }
+    
+    // Afficher toujours la dernière page
+    if (current_page < last_page - 2) {
+      if (current_page < last_page - 3) {
+        pages.push('...');
+      }
+      pages.push(last_page);
+    }
+    
+    return pages;
+  };
+
   // Fonctions de pagination pour les backlinks
   const handleBacklinksPageChange = (newPage) => {
     // Validation stricte pour éviter les réinitialisations accidentelles
@@ -545,6 +600,7 @@ export default function Backlinks() {
     const value = e.target.value;
     setSearchTerm(value);
     fetchBacklinks(1, value); // Toujours retourner à la page 1 lors de la recherche
+    fetchSummarySources(1); // Réinitialiser la pagination des summary sources aussi
   };
 
   // Rafraîchissement automatique des données summary toutes les 30 secondes
@@ -687,46 +743,55 @@ export default function Backlinks() {
     }
   };
 
-  const exportToCSV = () => {
-    // Prepare CSV data
-    const csvData = safeSummarySources.map(source => {
-      return {
-        Website: source.actual_domain || source.domain || source.website, // Utilise le domaine actuel
-        Cost: source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${source.cost || 0}`, // Utilise le coût direct du summary
-        LinkType: source.link_type || '-', // Utilise le link_type depuis l'API sans valeur par défaut
-        ContactEmail: source.contact_email || '-', // Utilise l'email direct du summary
-        SpamScore: source.spam || 0 // Utilise le spam direct du summary
-      };
-    });
+  const exportToCSV = async () => {
+    try {
+      // Récupérer TOUTES les données pour l'export (pas seulement les données paginées)
+      const res = await api.get('/all-summary-sources');
+      const allSummaryData = res.data;
+      
+      // Prepare CSV data
+      const csvData = allSummaryData.map(source => {
+        return {
+          Website: source.actual_domain || source.domain || source.website, // Utilise le domaine actuel
+          Cost: source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${source.cost || 0}`, // Utilise le coût direct du summary
+          LinkType: source.link_type || '-', // Utilise le link_type depuis l'API sans valeur par défaut
+          ContactEmail: source.contact_email || '-', // Utilise l'email direct du summary
+          SpamScore: source.spam || 0 // Utilise le spam direct du summary
+        };
+      });
 
-    // Create CSV content with semicolon delimiter and UTF-8 BOM
-    const headers = ['Website', 'Cost', 'Link Type', 'Contact Email', 'Spam Score'];
-    const csvContent = [
-      '\uFEFF' + headers.join(';'), // Add UTF-8 BOM for Excel
-      ...csvData.map(row => [
-        `"${row.Website}"`, // Utilise la valeur Website
-        row.Cost,
-        `"${row.LinkType}"`,
-        `"${row.ContactEmail}"`,
-        row.SpamScore
-      ].join(';'))
-    ].join('\n');
+      // Create CSV content with semicolon delimiter and UTF-8 BOM
+      const headers = ['Website', 'Cost', 'Link Type', 'Contact Email', 'Spam Score'];
+      const csvContent = [
+        '\uFEFF' + headers.join(';'), // Add UTF-8 BOM for Excel
+        ...csvData.map(row => [
+          `"${row.Website}"`, // Utilise la valeur Website
+          row.Cost,
+          `"${row.LinkType}"`,
+          `"${row.ContactEmail}"`,
+          row.SpamScore
+        ].join(';'))
+      ].join('\n');
 
-    // Create blob and download
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    
-    // Generate filename with date
-    const today = new Date().toLocaleDateString();
-    const filename = `Backlinks_Report_${today}.csv`;
-    
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      // Create blob and download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      // Generate filename with date
+      const today = new Date().toLocaleDateString();
+      const filename = `Backlinks_Report_${today}.csv`;
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error exporting CSV:", error);
+      alert("Error exporting data. Please try again.");
+    }
   };
 
   const exportToPDF = () => {
@@ -738,7 +803,7 @@ export default function Backlinks() {
       
       return [
         source.domain,
-        source.cost == 0 || source.cost === "0" || source.cost === null || source.cost === undefined ? 'Free' : `$${associatedBacklink?.cost || 0}`,
+        associatedBacklink?.cost == 0 || associatedBacklink?.cost === "0" || associatedBacklink?.cost === null || associatedBacklink?.cost === undefined ? 'Free' : `$${associatedBacklink?.cost || 0}`,
         associatedBacklink?.link_type || '-',
         associatedClient?.contact_email || '-',
         `${source.spam_score || 0}%`
@@ -1077,9 +1142,23 @@ export default function Backlinks() {
           <div className="modal source-sites-modal">
             <div className="modal-header">
               <div className="modal-header-left">
-                <h3>Source Sites Summary</h3>
+                <h3>Source Sites Summary ({filteredSummarySources.length} sites)</h3>
               </div>
               <div className="modal-header-right">
+                <input 
+                  type="text" 
+                  placeholder="Rechercher un site..." 
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  style={{
+                    padding: '0.5rem',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    fontSize: '0.9rem',
+                    marginRight: '1rem',
+                    minWidth: '200px'
+                  }}
+                />
                 <button className="import-excel-btn" onClick={() => document.getElementById('sources-import-file-input').click()}>
                   Import Excel
                 </button>
@@ -1101,9 +1180,9 @@ export default function Backlinks() {
             </div>
             <div className="modal-content">
               <div className="source-sites-table-container">
-                {sources.length === 0 ? (
+                {filteredSummarySources.length === 0 ? (
                   <div className="no-sources">
-                    <p>No source sites found</p>
+                    <p>Aucun site trouvé pour "{searchTerm}"</p>
                   </div>
                 ) : (
                   <table className="source-sites-summary-table">
@@ -1118,7 +1197,7 @@ export default function Backlinks() {
                       </tr>
                     </thead>
                     <tbody>
-                      {safeSummarySources.map(source => {
+                      {filteredSummarySources.map(source => {
                         return (
                           <tr key={source.id}>
                             <td className="website-cell">
@@ -1161,8 +1240,47 @@ export default function Backlinks() {
                 )}
               </div>
               
-              {/* Contrôles de pagination */}
-              {summaryPagination.total > 0 && renderPaginationControls()}
+              {/* Contrôles de pagination pour le summary */}
+              {summaryPagination.total > 0 && (
+                <div className="pagination-controls">
+                  <div className="pagination-info">
+                    <span>
+                      Affichage de {((summaryPagination.current_page - 1) * summaryPagination.per_page) + 1} à{' '}
+                      {Math.min(summaryPagination.current_page * summaryPagination.per_page, summaryPagination.total)} sur{' '}
+                      {summaryPagination.total} sites
+                    </span>
+                  </div>
+                  
+                  <div className="pagination-buttons">
+                    <button
+                      className="pagination-btn"
+                      onClick={() => handleSummaryPageChange(summaryPagination.current_page - 1)}
+                      disabled={summaryPagination.current_page === 1}
+                    >
+                      Précédent
+                    </button>
+                    
+                    {renderSummaryPaginationNumbers().map((page, index) => (
+                      <button
+                        key={index}
+                        className={`pagination-btn ${page === summaryPagination.current_page ? 'active' : ''} ${page === '...' ? 'disabled' : ''}`}
+                        onClick={() => page !== '...' && handleSummaryPageChange(page)}
+                        disabled={page === '...'}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    
+                    <button
+                      className="pagination-btn"
+                      onClick={() => handleSummaryPageChange(summaryPagination.current_page + 1)}
+                      disabled={summaryPagination.current_page === summaryPagination.last_page}
+                    >
+                      Suivant
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

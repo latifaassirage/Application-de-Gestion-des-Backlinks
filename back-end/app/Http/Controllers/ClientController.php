@@ -14,7 +14,13 @@ class ClientController extends Controller
     private function syncClientSummaries($clientId)
     {
         try {
-            // Récupérer tous les domaines où ce client a des backlinks (sans jointure)
+            // Récupérer le client mis à jour pour avoir le nouvel email
+            $client = Client::find($clientId);
+            if (!$client) {
+                return;
+            }
+            
+            // Récupérer tous les domaines où ce client a des backlinks
             $domains = \App\Models\Backlink::with('sourceSite')
                 ->where('client_id', $clientId)
                 ->whereHas('sourceSite')
@@ -22,41 +28,19 @@ class ClientController extends Controller
                 ->pluck('sourceSite.domain')
                 ->unique();
 
-            // Pour chaque domaine, forcer la mise à jour du summary
+            // Pour chaque domaine, mettre à jour le contact_email dans source_summaries
             foreach ($domains as $domain) {
-                // Supprimer l'entrée summary pour forcer la recréation avec les nouvelles données
-                SourceSummary::where('website', $domain)->delete();
+                \Log::info("Updating contact_email for domain: {$domain} to client email: {$client->contact_email}");
                 
-                // Recréer le summary avec les données à jour (sans jointure)
-                $backlinks = \App\Models\Backlink::with('sourceSite')
-                    ->whereHas('sourceSite', function($query) use ($domain) {
-                        $query->where('domain', $domain);
-                    })
-                    ->get();
-
-                $totalBacklinks = $backlinks->count();
-                $liveBacklinks = $backlinks->where('status', 'Live')->count();
-                $pendingBacklinks = $backlinks->where('status', 'Pending')->count();
-                $lostBacklinks = $backlinks->where('status', 'Lost')->count();
-                $totalCost = $backlinks->sum('cost');
-                $dofollowBacklinks = $backlinks->where('link_type', 'DoFollow')->count();
-                $nofollowBacklinks = $backlinks->where('link_type', 'NoFollow')->count();
-
-                if ($totalBacklinks > 0) {
-                    SourceSummary::updateOrCreate(
-                        ['website' => $domain],
-                        [
-                            'total_backlinks' => $totalBacklinks,
-                            'live_backlinks' => $liveBacklinks,
-                            'pending_backlinks' => $pendingBacklinks,
-                            'lost_backlinks' => $lostBacklinks,
-                            'total_cost' => $totalCost,
-                            'dofollow_backlinks' => $dofollowBacklinks,
-                            'nofollow_backlinks' => $nofollowBacklinks,
-                        ]
-                    );
-                }
+                // Mettre à jour directement le champ contact_email dans source_summaries
+                \App\Models\SourceSummary::where('website', $domain)
+                    ->update(['contact_email' => $client->contact_email]);
+                
+                // Synchroniser aussi les autres données du summary
+                $backlinkController = new \App\Http\Controllers\BacklinkController();
+                $backlinkController->syncSourceSummary($domain);
             }
+
         } catch (\Exception $e) {
             \Log::error('Error syncing client summaries for client ' . $clientId . ': ' . $e->getMessage());
         }
@@ -138,9 +122,9 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $data = $request->validate([
-            'company_name'=>'sometimes|required|string|max:150',
+            'company_name'=>'sometimes|string|max:150',
             'contact_email'=>'sometimes|nullable|email|max:150',
-            'website'=>'sometimes|required|string|max:150',
+            'website'=>'sometimes|string|max:150',
             'city'=>'nullable|string|max:100',
             'state'=>'nullable|string|max:100',
             'notes'=>'nullable|string'
@@ -161,8 +145,10 @@ class ClientController extends Controller
 
         $client->update($data);
         
-        // Synchroniser les summaries pour mettre à jour l'email du contact
+        // Synchroniser les summaries pour mettre à jour l'email du contact dans tous les domaines concernés
+        \Log::info("Client {$id} updated, syncing summaries for email/contact changes");
         $this->syncClientSummaries($id);
+        \Log::info("Client summaries sync completed");
         
         return response()->json($client);
     }

@@ -22,7 +22,7 @@ class SourceSummary extends Model
 
     /**
      * Relation avec le site source correspondant
-     * Récupère dynamiquement les informations du site source
+     * Garder la relation existante mais améliorer la logique de recherche
      */
     public function sourceSite()
     {

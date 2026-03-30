@@ -15842,3 +15842,825 @@ Did you mean one of these?
 [2026-03-28 11:19:46] local.ERROR: Error syncing source summary for domain tality.neet: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 0, `pending_backlinks` = 1, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-28 11:19:46 where `id` = 96)  
 [2026-03-28 11:20:29] local.INFO: Backlink synchronized to source_summaries {"backlink_id":33,"website":"tality.neet","action":"sync"} 
 [2026-03-28 11:20:29] local.ERROR: Error syncing source summary for domain tality.neet: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 0, `pending_backlinks` = 1, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-28 11:20:29 where `id` = 96)  
+[2026-03-28 11:28:43] local.INFO: Backlink synchronized to source_summaries {"backlink_id":25,"website":"invetopedia.com","action":"sync"} 
+[2026-03-28 11:28:43] local.ERROR: Error syncing source summary for domain invetopedia.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 2, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 1, `dofollow_backlinks` = 0, `nofollow_backlinks` = 2, `source_summaries`.`updated_at` = 2026-03-28 11:28:43 where `id` = 87)  
+[2026-03-28 11:33:46] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"citysearch.com","action":"sync"} 
+[2026-03-28 11:33:46] local.ERROR: Error syncing source summary for domain citysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-28 11:33:46 where `id` = 97)  
+[2026-03-28 11:34:15] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"citysearch.com","action":"sync"} 
+[2026-03-28 11:34:15] local.ERROR: Error syncing source summary for domain citysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-28 11:34:15 where `id` = 97)  
+[2026-03-28 11:35:07] local.ERROR: Error syncing client summaries for client 27: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `updated_at`, `created_at`) values (ctysearch.com, 1, 1, 0, 0, 0, 1, 2026-03-28 11:35:07, 2026-03-28 11:35:07))  
+[2026-03-28 11:38:28] local.ERROR: Error syncing source summary for domain ctysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `link_type`, `updated_at`, `created_at`) values (ctysearch.com, 1, 1, 0, 0, 0, 1, NoFollow, 2026-03-28 11:38:28, 2026-03-28 11:38:28))  
+[2026-03-28 12:03:41] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"ctysearch.com","action":"sync"} 
+[2026-03-28 12:03:41] local.ERROR: Error syncing source summary for domain ctysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-28 12:03:41 where `id` = 98)  
+[2026-03-28 12:04:57] local.ERROR: Error syncing client summaries for client 27: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `updated_at`, `created_at`) values (citysearch.com, 1, 1, 0, 0, 1, 0, 2026-03-28 12:04:57, 2026-03-28 12:04:57))  
+[2026-03-28 12:14:47] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"citysearch.com","action":"sync"} 
+[2026-03-28 12:14:47] local.INFO: Backlink 34 updated. Old source site ID: 23, New source site ID: 23  
+[2026-03-28 12:14:47] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-28 12:14:47] local.INFO: Syncing domain: citysearch.com  
+[2026-03-28 12:14:47] local.INFO: Syncing source summary for domain: citysearch.com  
+[2026-03-28 12:14:47] local.INFO: Found 1 backlinks for domain: citysearch.com  
+[2026-03-28 12:14:47] local.INFO: Updating existing summary for domain: citysearch.com with ID: 99  
+[2026-03-28 12:14:47] local.ERROR: Error syncing source summary for domain citysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-28 12:14:47 where `id` = 99)  
+[2026-03-28 12:14:47] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-28 12:15:21] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"citysearch.com","action":"sync"} 
+[2026-03-28 12:15:21] local.INFO: Backlink 34 updated. Old source site ID: 23, New source site ID: 23  
+[2026-03-28 12:15:21] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-28 12:15:21] local.INFO: Syncing domain: citysearch.com  
+[2026-03-28 12:15:21] local.INFO: Syncing source summary for domain: citysearch.com  
+[2026-03-28 12:15:21] local.INFO: Found 1 backlinks for domain: citysearch.com  
+[2026-03-28 12:15:21] local.INFO: Updating existing summary for domain: citysearch.com with ID: 99  
+[2026-03-28 12:15:21] local.ERROR: Error syncing source summary for domain citysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-28 12:15:21 where `id` = 99)  
+[2026-03-28 12:15:21] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-28 12:15:59] local.ERROR: Error syncing client summaries for client 27: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `updated_at`, `created_at`) values (citysearch.com, 1, 1, 0, 0, 0, 1, 2026-03-28 12:15:59, 2026-03-28 12:15:59))  
+[2026-03-28 12:27:20] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"citysearch.com","action":"sync"} 
+[2026-03-28 12:27:20] local.INFO: Backlink 34 updated. Old source site ID: 23, New source site ID: 23  
+[2026-03-28 12:27:20] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-28 12:27:20] local.INFO: Syncing domain: citysearch.com  
+[2026-03-28 12:27:20] local.INFO: Syncing source summary for domain: citysearch.com  
+[2026-03-28 12:27:20] local.INFO: Found source site ID: 23 for domain: citysearch.com  
+[2026-03-28 12:27:20] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-28 12:27:20] local.INFO: Updating existing summary for domain: citysearch.com with ID: 100  
+[2026-03-28 12:27:20] local.ERROR: Error syncing source summary for domain citysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-28 12:27:20 where `id` = 100)  
+[2026-03-28 12:27:20] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-28 12:27:41] local.ERROR: Error syncing client summaries for client 27: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `updated_at`, `created_at`) values (citysearch.com, 1, 1, 0, 0, 1, 0, 2026-03-28 12:27:41, 2026-03-28 12:27:41))  
+[2026-03-28 12:46:45] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"citysearch.com","action":"sync"} 
+[2026-03-28 12:46:45] local.INFO: Backlink 34 updated. Old source site ID: 23, New source site ID: 23  
+[2026-03-28 12:46:45] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-28 12:46:45] local.INFO: Syncing domain: citysearch.com  
+[2026-03-28 12:46:45] local.INFO: Syncing source summary for domain: citysearch.com  
+[2026-03-28 12:46:45] local.INFO: Found source site ID: 23 for domain: citysearch.com  
+[2026-03-28 12:46:45] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-28 12:46:45] local.INFO: Updating existing summary for domain: citysearch.com with ID: 101  
+[2026-03-28 12:46:45] local.ERROR: Error syncing source summary for domain citysearch.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-28 12:46:45 where `id` = 101)  
+[2026-03-28 12:46:45] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-28 12:47:05] local.INFO: Client 27 updated, syncing summaries for email changes  
+[2026-03-28 12:47:05] local.ERROR: Error syncing client summaries for client 27: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist.  
+[2026-03-28 12:47:05] local.INFO: Client summaries sync completed  
+[2026-03-28 12:47:25] local.INFO: Domain changing from 'citysearch.com' to 'ctysearch.com' for source site ID: 23  
+[2026-03-28 12:47:25] local.INFO: Updated source_summaries website field from 'citysearch.com' to 'ctysearch.com'  
+[2026-03-28 12:47:26] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(157): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-28 12:48:10] local.INFO: Domain changing from 'ctysearch.com' to 'search.com' for source site ID: 23  
+[2026-03-28 12:48:10] local.INFO: Updated source_summaries website field from 'ctysearch.com' to 'search.com'  
+[2026-03-28 12:48:10] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(157): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 08:46:55] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"search.com","action":"sync"} 
+[2026-03-30 08:46:55] local.INFO: Backlink 34 updated. Old source site ID: 23, New source site ID: 23  
+[2026-03-30 08:46:55] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-30 08:46:55] local.INFO: Syncing domain: search.com  
+[2026-03-30 08:46:55] local.INFO: Syncing source summary for domain: search.com  
+[2026-03-30 08:46:55] local.INFO: Found source site ID: 23 for domain: search.com  
+[2026-03-30 08:46:55] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-30 08:46:55] local.INFO: Updating existing summary for domain: search.com with ID: 101  
+[2026-03-30 08:46:55] local.ERROR: Error syncing source summary for domain search.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 08:46:55 where `id` = 101)  
+[2026-03-30 08:46:55] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-30 08:47:48] local.INFO: Domain changing from 'search.com' to 'serch.com' for source site ID: 23  
+[2026-03-30 08:47:48] local.INFO: Updated source_summaries website field from 'search.com' to 'serch.com'  
+[2026-03-30 08:47:48] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(157): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 08:48:01] local.INFO: Domain changing from 'serch.com' to 'sarch.com' for source site ID: 23  
+[2026-03-30 08:48:01] local.INFO: Updated source_summaries website field from 'serch.com' to 'sarch.com'  
+[2026-03-30 08:48:01] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(157): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 08:48:35] local.INFO: Domain changing from 'sarch.com' to 'search.com' for source site ID: 23  
+[2026-03-30 08:48:35] local.INFO: Updated source_summaries website field from 'sarch.com' to 'search.com'  
+[2026-03-30 08:48:35] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(157): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 08:51:07] local.INFO: Client 27 updated, syncing summaries for email changes  
+[2026-03-30 08:51:07] local.ERROR: Error syncing client summaries for client 27: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist.  
+[2026-03-30 08:51:07] local.INFO: Client summaries sync completed  
+[2026-03-30 08:51:17] local.INFO: Client 27 updated, syncing summaries for email changes  
+[2026-03-30 08:51:17] local.ERROR: Error syncing client summaries for client 27: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist.  
+[2026-03-30 08:51:17] local.INFO: Client summaries sync completed  
+[2026-03-30 08:51:24] local.INFO: Client 27 updated, syncing summaries for email changes  
+[2026-03-30 08:51:24] local.ERROR: Error syncing client summaries for client 27: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist.  
+[2026-03-30 08:51:24] local.INFO: Client summaries sync completed  
+[2026-03-30 09:08:36] local.INFO: Source site 23 updated, syncing summary for domain: sarch.com  
+[2026-03-30 09:08:36] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(151): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 09:09:06] local.INFO: Source site 23 updated, syncing summary for domain: sarch.com  
+[2026-03-30 09:09:06] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(151): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 09:09:18] local.INFO: Source site 23 updated, syncing summary for domain: searceh.com  
+[2026-03-30 09:09:18] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(151): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 09:09:30] local.INFO: Source site 23 updated, syncing summary for domain: search.com  
+[2026-03-30 09:09:30] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(151): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 09:12:30] local.INFO: Source site 23 updated, syncing summary for domain: searceh.com  
+[2026-03-30 09:12:30] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(151): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 09:12:30] local.INFO: Source site 23 updated, syncing summary for domain: searceh.com  
+[2026-03-30 09:12:30] local.ERROR: Method App\Http\Controllers\BacklinkController::syncSourceSummary does not exist. {"userId":1,"exception":"[object] (BadMethodCallException(code: 0): Method App\\Http\\Controllers\\BacklinkController::syncSourceSummary does not exist. at C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php:68)
+[stacktrace]
+#0 C:/gestion-backlinks/back-end/app/Http/Controllers/SourceSiteController.php(151): Illuminate/Routing/Controller->__call('syncSourceSumma...', Array)
+#1 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/SourceSiteController->update(Object(Illuminate/Http/Request), '23')
+#2 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate/Routing/Controller->callAction('update', Array)
+#3 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/SourceSiteController), 'update')
+#4 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate/Routing/Route->runController()
+#5 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate/Routing/Route->run()
+#6 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Routing/Router->{closure:Illuminate/Routing/Router::runRouteWithinStack():821}(Object(Illuminate/Http/Request))
+#7 C:/gestion-backlinks/back-end/app/Http/Middleware/AdminMiddleware.php(25): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#8 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App/Http/Middleware/AdminMiddleware->handle(Object(Illuminate/Http/Request), Object(Closure))
+#9 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#10 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#11 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(63): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#12 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Auth/Middleware/Authenticate->handle(Object(Illuminate/Http/Request), Object(Closure), 'sanctum')
+#13 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#14 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#15 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#16 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#17 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#18 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#19 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate/Foundation/Http/Kernel->{closure:Illuminate/Foundation/Http/Kernel::dispatchToRouter():197}(Object(Illuminate/Http/Request))
+#20 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:Illuminate/Pipeline/Pipeline::prepareDestination():178}(Object(Illuminate/Http/Request))
+#21 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#22 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#24 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#26 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#27 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#28 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#29 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#31 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#33 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#35 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#37 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate/Http/Middleware/ValidatePathEncoding->handle(Object(Illuminate/Http/Request), Object(Closure))
+#38 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->{closure:{closure:Illuminate/Pipeline/Pipeline::carry():194}:195}(Object(Illuminate/Http/Request))
+#39 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#40 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#41 C:/gestion-backlinks/back-end/public/index.php(13): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#42 C:/gestion-backlinks/back-end/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://gestion-back...')
+#43 {main}
+"} 
+[2026-03-30 09:16:46] local.INFO: Source site 23 updated, syncing summary for domain: search.com  
+[2026-03-30 09:16:46] local.INFO: Syncing source summary for domain: search.com  
+[2026-03-30 09:16:46] local.INFO: Found source site ID: 23 for domain: search.com  
+[2026-03-30 09:16:46] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-30 09:16:46] local.INFO: Updating existing summary for domain: search.com with ID: 101  
+[2026-03-30 09:16:46] local.ERROR: Error syncing source summary for domain search.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:16:46 where `id` = 101)  
+[2026-03-30 09:16:46] local.INFO: Domain changed from 'searceh.com' to 'search.com', updating source_summaries  
+[2026-03-30 09:16:46] local.INFO: Updated source_summaries website field from 'searceh.com' to 'search.com'  
+[2026-03-30 09:16:46] local.INFO: Syncing source summary for domain: searceh.com  
+[2026-03-30 09:16:46] local.ERROR: Source site not found for domain: searceh.com  
+[2026-03-30 09:16:46] local.INFO: Synced summaries for both old and new domains  
+[2026-03-30 09:17:14] local.INFO: Client 27 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:17:14] local.INFO: Syncing source summary for domain: search.com  
+[2026-03-30 09:17:14] local.INFO: Found source site ID: 23 for domain: search.com  
+[2026-03-30 09:17:14] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-30 09:17:14] local.INFO: Updating existing summary for domain: search.com with ID: 101  
+[2026-03-30 09:17:14] local.ERROR: Error syncing source summary for domain search.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:17:14 where `id` = 101)  
+[2026-03-30 09:17:14] local.INFO: Client summaries sync completed  
+[2026-03-30 09:17:30] local.INFO: Client 27 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:17:30] local.INFO: Syncing source summary for domain: search.com  
+[2026-03-30 09:17:30] local.INFO: Found source site ID: 23 for domain: search.com  
+[2026-03-30 09:17:30] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-30 09:17:30] local.INFO: Updating existing summary for domain: search.com with ID: 101  
+[2026-03-30 09:17:30] local.ERROR: Error syncing source summary for domain search.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:17:30 where `id` = 101)  
+[2026-03-30 09:17:30] local.INFO: Client summaries sync completed  
+[2026-03-30 09:17:51] local.INFO: Backlink synchronized to source_summaries {"backlink_id":34,"website":"search.com","action":"sync"} 
+[2026-03-30 09:17:51] local.INFO: Backlink 34 updated. Old source site ID: 23, New source site ID: 23  
+[2026-03-30 09:17:51] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-30 09:17:51] local.INFO: Syncing domain: search.com  
+[2026-03-30 09:17:51] local.INFO: Syncing source summary for domain: search.com  
+[2026-03-30 09:17:51] local.INFO: Found source site ID: 23 for domain: search.com  
+[2026-03-30 09:17:51] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-30 09:17:51] local.INFO: Updating existing summary for domain: search.com with ID: 101  
+[2026-03-30 09:17:51] local.ERROR: Error syncing source summary for domain search.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-30 09:17:51 where `id` = 101)  
+[2026-03-30 09:17:51] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-30 09:22:30] local.INFO: Backlink synchronized to source_summaries {"backlink_id":35,"website":"cruisecritic.com","action":"sync"} 
+[2026-03-30 09:22:30] local.INFO: Syncing source summary for domain: cruisecritic.com  
+[2026-03-30 09:22:30] local.INFO: Found source site ID: 24 for domain: cruisecritic.com  
+[2026-03-30 09:22:30] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:22:30] local.INFO: Updating existing summary for domain: cruisecritic.com with ID: 102  
+[2026-03-30 09:22:30] local.ERROR: Error syncing source summary for domain cruisecritic.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:22:30 where `id` = 102)  
+[2026-03-30 09:23:04] local.INFO: Source site 24 updated, syncing summary for domain: cruisecritc.com  
+[2026-03-30 09:23:04] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:23:04] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:23:04] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:23:04] local.INFO: Creating new summary for domain: cruisecritc.com  
+[2026-03-30 09:23:04] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `link_type`, `updated_at`, `created_at`) values (cruisecritc.com, 1, 1, 0, 0, 1, 0, DoFollow, 2026-03-30 09:23:04, 2026-03-30 09:23:04))  
+[2026-03-30 09:23:04] local.INFO: Domain changed from 'cruisecritic.com' to 'cruisecritc.com', updating source_summaries  
+[2026-03-30 09:23:04] local.INFO: Updated source_summaries website field from 'cruisecritic.com' to 'cruisecritc.com'  
+[2026-03-30 09:23:04] local.INFO: Syncing source summary for domain: cruisecritic.com  
+[2026-03-30 09:23:04] local.ERROR: Source site not found for domain: cruisecritic.com  
+[2026-03-30 09:23:04] local.INFO: Synced summaries for both old and new domains  
+[2026-03-30 09:23:44] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:23:44] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:23:44] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:23:44] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:23:44] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:23:44] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:23:44 where `id` = 102)  
+[2026-03-30 09:23:44] local.INFO: Client summaries sync completed  
+[2026-03-30 09:24:37] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:24:37] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:24:37] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:24:37] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:24:37] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:24:37] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:24:37 where `id` = 102)  
+[2026-03-30 09:24:37] local.INFO: Client summaries sync completed  
+[2026-03-30 09:28:27] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:28:27] local.INFO: Updating contact_email for domain: cruisecritc.com to client email: info@harborlim.com  
+[2026-03-30 09:28:27] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:28:27] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:28:27] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:28:27] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:28:27] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:28:27 where `id` = 102)  
+[2026-03-30 09:28:27] local.INFO: Client summaries sync completed  
+[2026-03-30 09:28:41] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:28:41] local.INFO: Updating contact_email for domain: cruisecritc.com to client email: info@harborlimo.com  
+[2026-03-30 09:28:41] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:28:41] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:28:41] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:28:41] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:28:41] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:28:41 where `id` = 102)  
+[2026-03-30 09:28:41] local.INFO: Client summaries sync completed  
+[2026-03-30 09:28:54] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:28:54] local.INFO: Updating contact_email for domain: cruisecritc.com to client email: info@harborlimo.com  
+[2026-03-30 09:28:54] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:28:54] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:28:54] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:28:54] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:28:54] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:28:54 where `id` = 102)  
+[2026-03-30 09:28:54] local.INFO: Client summaries sync completed  
+[2026-03-30 09:29:14] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:29:14] local.INFO: Updating contact_email for domain: cruisecritc.com to client email: ifo@harborlimo.com  
+[2026-03-30 09:29:14] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:29:14] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:29:14] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:29:14] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:29:14] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:29:14 where `id` = 102)  
+[2026-03-30 09:29:14] local.INFO: Client summaries sync completed  
+[2026-03-30 09:29:29] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:29:29] local.INFO: Updating contact_email for domain: cruisecritc.com to client email: info@harborlimo.com  
+[2026-03-30 09:29:29] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:29:29] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:29:29] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:29:29] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:29:29] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:29:29 where `id` = 102)  
+[2026-03-30 09:29:29] local.INFO: Client summaries sync completed  
+[2026-03-30 09:29:51] local.INFO: Backlink synchronized to source_summaries {"backlink_id":35,"website":"cruisecritc.com","action":"sync"} 
+[2026-03-30 09:29:51] local.INFO: Backlink 35 updated. Old source site ID: 24, New source site ID: 24  
+[2026-03-30 09:29:51] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-30 09:29:51] local.INFO: Syncing domain: cruisecritc.com  
+[2026-03-30 09:29:51] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:29:51] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:29:51] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:29:51] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:29:51] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-30 09:29:51 where `id` = 102)  
+[2026-03-30 09:29:51] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-30 09:30:26] local.INFO: Backlink synchronized to source_summaries {"backlink_id":35,"website":"cruisecritc.com","action":"sync"} 
+[2026-03-30 09:30:26] local.INFO: Backlink 35 updated. Old source site ID: 24, New source site ID: 24  
+[2026-03-30 09:30:26] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-30 09:30:26] local.INFO: Syncing domain: cruisecritc.com  
+[2026-03-30 09:30:26] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:30:26] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:30:26] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:30:26] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 102  
+[2026-03-30 09:30:26] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:30:26 where `id` = 102)  
+[2026-03-30 09:30:26] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-30 09:31:28] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:31:28] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:31:28] local.INFO: Found 0 backlinks for source site ID: 24  
+[2026-03-30 09:31:28] local.INFO: No backlinks found, deleting summary for domain: cruisecritc.com  
+[2026-03-30 09:33:20] local.INFO: Backlink synchronized to source_summaries {"backlink_id":36,"website":"cruisecritc.com","action":"sync"} 
+[2026-03-30 09:33:20] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:33:20] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:33:20] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:33:20] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 103  
+[2026-03-30 09:33:20] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 0, `pending_backlinks` = 1, `lost_backlinks` = 0, `dofollow_backlinks` = 1, `nofollow_backlinks` = 0, `source_summaries`.`updated_at` = 2026-03-30 09:33:20 where `id` = 103)  
+[2026-03-30 09:33:56] local.INFO: Backlink synchronized to source_summaries {"backlink_id":36,"website":"cruisecritc.com","action":"sync"} 
+[2026-03-30 09:33:56] local.INFO: Backlink 36 updated. Old source site ID: 24, New source site ID: 24  
+[2026-03-30 09:33:56] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-30 09:33:56] local.INFO: Syncing domain: cruisecritc.com  
+[2026-03-30 09:33:56] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:33:56] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:33:56] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:33:56] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 103  
+[2026-03-30 09:33:56] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 0, `pending_backlinks` = 1, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-30 09:33:56 where `id` = 103)  
+[2026-03-30 09:33:56] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-30 09:34:49] local.INFO: Source site 22 updated, syncing summary for domain: tality.net  
+[2026-03-30 09:34:49] local.INFO: Syncing source summary for domain: tality.net  
+[2026-03-30 09:34:49] local.INFO: Found source site ID: 22 for domain: tality.net  
+[2026-03-30 09:34:49] local.INFO: Found 1 backlinks for source site ID: 22  
+[2026-03-30 09:34:49] local.INFO: Creating new summary for domain: tality.net  
+[2026-03-30 09:34:49] local.ERROR: Error syncing source summary for domain tality.net: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `link_type`, `updated_at`, `created_at`) values (tality.net, 1, 0, 1, 0, 0, 1, NoFollow, 2026-03-30 09:34:49, 2026-03-30 09:34:49))  
+[2026-03-30 09:34:49] local.INFO: Domain changed from 'tality.neet' to 'tality.net', updating source_summaries  
+[2026-03-30 09:34:49] local.INFO: Updated source_summaries website field from 'tality.neet' to 'tality.net'  
+[2026-03-30 09:34:49] local.INFO: Syncing source summary for domain: tality.neet  
+[2026-03-30 09:34:49] local.ERROR: Source site not found for domain: tality.neet  
+[2026-03-30 09:34:49] local.INFO: Synced summaries for both old and new domains  
+[2026-03-30 09:45:30] local.INFO: Client 28 updated, syncing summaries for email/contact changes  
+[2026-03-30 09:45:30] local.INFO: Updating contact_email for domain: cruisecritc.com to client email: info@harborlimo.com  
+[2026-03-30 09:45:30] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:45:30] local.INFO: Found source site ID: 24 for domain: cruisecritc.com  
+[2026-03-30 09:45:30] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:45:30] local.INFO: Updating existing summary for domain: cruisecritc.com with ID: 103  
+[2026-03-30 09:45:30] local.ERROR: Error syncing source summary for domain cruisecritc.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 0, `pending_backlinks` = 1, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-30 09:45:30 where `id` = 103)  
+[2026-03-30 09:45:30] local.INFO: Client summaries sync completed  
+[2026-03-30 09:45:57] local.INFO: Source site 24 updated, syncing summary for domain: cruisecriitic.com  
+[2026-03-30 09:45:57] local.INFO: Syncing source summary for domain: cruisecriitic.com  
+[2026-03-30 09:45:57] local.INFO: Found source site ID: 24 for domain: cruisecriitic.com  
+[2026-03-30 09:45:57] local.INFO: Found 1 backlinks for source site ID: 24  
+[2026-03-30 09:45:57] local.INFO: Creating new summary for domain: cruisecriitic.com  
+[2026-03-30 09:45:57] local.ERROR: Error syncing source summary for domain cruisecriitic.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `link_type`, `updated_at`, `created_at`) values (cruisecriitic.com, 1, 0, 1, 0, 0, 1, NoFollow, 2026-03-30 09:45:57, 2026-03-30 09:45:57))  
+[2026-03-30 09:45:57] local.INFO: Domain changed from 'cruisecritc.com' to 'cruisecriitic.com', updating source_summaries  
+[2026-03-30 09:45:57] local.INFO: Updated source_summaries website field from 'cruisecritc.com' to 'cruisecriitic.com'  
+[2026-03-30 09:45:57] local.INFO: Syncing source summary for domain: cruisecritc.com  
+[2026-03-30 09:45:57] local.ERROR: Source site not found for domain: cruisecritc.com  
+[2026-03-30 09:45:57] local.INFO: Synced summaries for both old and new domains  
+[2026-03-30 10:20:09] local.INFO: Client 27 updated, syncing summaries for email/contact changes  
+[2026-03-30 10:20:09] local.INFO: Updating contact_email for domain: search.com to client email: hello@bayoulimo.com  
+[2026-03-30 10:20:09] local.INFO: Syncing source summary for domain: search.com  
+[2026-03-30 10:20:09] local.INFO: Found source site ID: 23 for domain: search.com  
+[2026-03-30 10:20:09] local.INFO: Found 1 backlinks for source site ID: 23  
+[2026-03-30 10:20:09] local.INFO: Updating existing summary for domain: search.com with ID: 101  
+[2026-03-30 10:20:09] local.ERROR: Error syncing source summary for domain search.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 1, `pending_backlinks` = 0, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-30 10:20:09 where `id` = 101)  
+[2026-03-30 10:20:09] local.INFO: Client summaries sync completed  
+[2026-03-30 10:21:30] local.INFO: Backlink synchronized to source_summaries {"backlink_id":29,"website":"theguardian.com","action":"sync"} 
+[2026-03-30 10:21:30] local.INFO: Backlink 29 updated. Old source site ID: 21, New source site ID: 21  
+[2026-03-30 10:21:30] local.INFO: Source site ID unchanged, syncing single domain  
+[2026-03-30 10:21:30] local.INFO: Syncing domain: theguardian.com  
+[2026-03-30 10:21:30] local.INFO: Syncing source summary for domain: theguardian.com  
+[2026-03-30 10:21:30] local.INFO: Found source site ID: 21 for domain: theguardian.com  
+[2026-03-30 10:21:30] local.INFO: Found 1 backlinks for source site ID: 21  
+[2026-03-30 10:21:30] local.INFO: Updating existing summary for domain: theguardian.com with ID: 90  
+[2026-03-30 10:21:30] local.ERROR: Error syncing source summary for domain theguardian.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: update `source_summaries` set `total_backlinks` = 1, `live_backlinks` = 0, `pending_backlinks` = 1, `lost_backlinks` = 0, `dofollow_backlinks` = 0, `nofollow_backlinks` = 1, `source_summaries`.`updated_at` = 2026-03-30 10:21:30 where `id` = 90)  
+[2026-03-30 10:21:30] local.INFO: Forcing immediate refresh of summary data after backlink update  
+[2026-03-30 10:25:28] local.INFO: Source site 21 updated, syncing summary for domain: teguardian.com  
+[2026-03-30 10:25:28] local.INFO: Syncing source summary for domain: teguardian.com  
+[2026-03-30 10:25:28] local.INFO: Found source site ID: 21 for domain: teguardian.com  
+[2026-03-30 10:25:28] local.INFO: Found 1 backlinks for source site ID: 21  
+[2026-03-30 10:25:28] local.INFO: Creating new summary for domain: teguardian.com  
+[2026-03-30 10:25:28] local.ERROR: Error syncing source summary for domain teguardian.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `link_type`, `updated_at`, `created_at`) values (teguardian.com, 1, 0, 1, 0, 0, 1, NoFollow, 2026-03-30 10:25:28, 2026-03-30 10:25:28))  
+[2026-03-30 10:25:28] local.INFO: Domain changed from 'theguardian.com' to 'teguardian.com', updating source_summaries  
+[2026-03-30 10:25:28] local.INFO: Updated source_summaries website field from 'theguardian.com' to 'teguardian.com'  
+[2026-03-30 10:25:28] local.INFO: Syncing source summary for domain: theguardian.com  
+[2026-03-30 10:25:28] local.ERROR: Source site not found for domain: theguardian.com  
+[2026-03-30 10:25:28] local.INFO: Synced summaries for both old and new domains  
+[2026-03-30 10:27:52] local.INFO: Source site 1 updated, syncing summary for domain: medm.com  
+[2026-03-30 10:27:52] local.INFO: Syncing source summary for domain: medm.com  
+[2026-03-30 10:27:52] local.INFO: Found source site ID: 1 for domain: medm.com  
+[2026-03-30 10:27:52] local.INFO: Found 1 backlinks for source site ID: 1  
+[2026-03-30 10:27:52] local.INFO: Creating new summary for domain: medm.com  
+[2026-03-30 10:27:52] local.ERROR: Error syncing source summary for domain medm.com: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'total_backlinks' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: gestion_backlinks, SQL: insert into `source_summaries` (`website`, `total_backlinks`, `live_backlinks`, `pending_backlinks`, `lost_backlinks`, `dofollow_backlinks`, `nofollow_backlinks`, `link_type`, `updated_at`, `created_at`) values (medm.com, 1, 0, 0, 1, 0, 1, NoFollow, 2026-03-30 10:27:52, 2026-03-30 10:27:52))  
+[2026-03-30 10:27:52] local.INFO: Domain changed from 'medium.com' to 'medm.com', updating source_summaries  
+[2026-03-30 10:27:52] local.INFO: Updated source_summaries website field from 'medium.com' to 'medm.com'  
+[2026-03-30 10:27:52] local.INFO: Syncing source summary for domain: medium.com  
+[2026-03-30 10:27:52] local.ERROR: Source site not found for domain: medium.com  
+[2026-03-30 10:27:52] local.INFO: Synced summaries for both old and new domains  

@@ -167,11 +167,13 @@ export default function Sources() {
       if (id) {
         // Edit
         await api.put(`/sources/${id}`, newSource);
+        console.log("Source site updated successfully!");
       } else {
         // Add - Le backend bloquera automatiquement si doublon
         await api.post("/sources", newSource);
+        console.log("Source site created successfully!");
       }
-      // Rafraîchir la liste avec pagination
+      // Rafraîchir la liste avec pagination actuelle pour rester sur la même page
       fetchSources(pagination.current_page, searchTerm);
     } catch (error) {
       console.error("Error saving source:", error);
@@ -179,6 +181,9 @@ export default function Sources() {
       if (error.response?.status === 422 && error.response?.data?.errors) {
         const errorMessages = Object.values(error.response.data.errors).flat();
         alert(errorMessages.join(', '));
+      } else if (error.response?.status === 409) {
+        // Erreur de doublon spécifique
+        alert(error.response?.data?.message || "Duplicate source detected.");
       } else {
         alert("Error saving source. Please try again.");
       }

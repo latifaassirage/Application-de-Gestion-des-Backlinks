@@ -94,8 +94,19 @@ export default function SourceSites() {
       if (error.response) {
         console.error("Erreur response:", error.response.data);
         console.error("Status:", error.response.status);
+        
+        // Afficher les erreurs spécifiques du backend
+        if (error.response.status === 422 && error.response.data?.errors) {
+          const errorMessages = Object.values(error.response.data.errors).flat();
+          alert(errorMessages.join(', '));
+        } else if (error.response.status === 409) {
+          alert(error.response.data?.message || "Duplicate source detected.");
+        } else {
+          alert("Error saving source site. Please try again.");
+        }
+      } else {
+        alert("Network error. Please check your connection.");
       }
-      alert("Error saving source site");
     }
   };
 

@@ -119,11 +119,11 @@ class SourceSiteController extends Controller
         $oldDomain = $source->domain; // Garder l'ancien domaine
         
         $data = $request->validate([
-            'domain'=>'sometimes|required|string|unique:source_sites,domain,'.$id,
-            'quality_score'=>'sometimes|required|integer|min:1|max:5',
+            'domain'=>'sometimes|string|unique:source_sites,domain,'.$id,
+            'quality_score'=>'sometimes|integer|min:1|max:5',
             'dr'=>'nullable|integer',
             'traffic_estimated'=>'nullable|integer',
-            'spam_score'=>'sometimes|required|integer|min:0|max:100',
+            'spam_score'=>'sometimes|integer|min:0|max:100',
             'contact_email'=>'nullable|email',
             'notes'=>'nullable|string',
         ]);
@@ -143,10 +143,26 @@ class SourceSiteController extends Controller
         
         $source->update($data);
         
-        // Si le domaine a changé, mettre à jour la table source_summaries
+        // Toujours synchroniser le summary après modification pour garantir la cohérence
+        $currentDomain = $data['domain'] ?? $oldDomain;
+        \Log::info("Source site {$id} updated, syncing summary for domain: {$currentDomain}");
+        
+        $backlinkController = new \App\Http\Controllers\BacklinkController();
+        $backlinkController->syncSourceSummary($currentDomain);
+        
+        // Si le domaine a changé, synchroniser aussi l'ancien domaine
         if (isset($data['domain']) && $data['domain'] !== $oldDomain) {
+            \Log::info("Domain changed from '{$oldDomain}' to '{$data['domain']}', updating source_summaries");
+            
             \App\Models\SourceSummary::where('website', $oldDomain)
                 ->update(['website' => $data['domain']]);
+                
+            \Log::info("Updated source_summaries website field from '{$oldDomain}' to '{$data['domain']}'");
+                
+            // Synchroniser l'ancien domaine aussi au cas où il aurait encore des backlinks
+            $backlinkController->syncSourceSummary($oldDomain);
+            
+            \Log::info("Synced summaries for both old and new domains");
         }
         
         return response()->json($source);

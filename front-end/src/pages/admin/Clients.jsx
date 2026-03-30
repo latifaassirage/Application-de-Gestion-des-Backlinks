@@ -166,12 +166,14 @@ export default function Clients() {
         // Update
         await api.put(`/clients/${editClient.id}`, newClient);
         setEditClient(null);
+        console.log("Client updated successfully!");
       } else {
         // Create - Le backend bloquera automatiquement si doublon
         await api.post("/clients", newClient);
+        console.log("Client created successfully!");
       }
-      // Rafraîchir la liste avec pagination
-      fetchClients(1, searchTerm);
+      // Rafraîchir la liste avec pagination actuelle pour rester sur la même page
+      fetchClients(pagination.current_page, searchTerm);
     } catch (error) {
       console.error("Error saving client:", error);
       // Afficher les erreurs de validation du backend (doublons inclus)

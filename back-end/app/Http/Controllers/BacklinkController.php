@@ -14,18 +14,27 @@ class BacklinkController extends Controller
     /**
      * Synchroniser les totaux dans source_summaries pour un domaine donné
      */
-    private function syncSourceSummary($domain)
+    public function syncSourceSummary($domain)
     {
         try {
-            // Récupérer tous les backlinks pour ce domaine (sans jointure qui crée des stdClass)
-            $backlinks = Backlink::with('sourceSite')
-                ->whereHas('sourceSite', function($query) use ($domain) {
-                    $query->where('domain', $domain);
-                })
-                ->get();
+            \Log::info("Syncing source summary for domain: " . $domain);
+            
+            // Récupérer le site source correspondant au domaine
+            $sourceSite = SourceSite::where('domain', $domain)->first();
+            if (!$sourceSite) {
+                \Log::error("Source site not found for domain: " . $domain);
+                return;
+            }
+            
+            \Log::info("Found source site ID: " . $sourceSite->id . " for domain: " . $domain);
+            
+            // Récupérer tous les backlinks pour ce site source (par ID - PLUS FIABLE)
+            $backlinks = Backlink::where('source_site_id', $sourceSite->id)->get();
 
             // Calculer les totaux
             $totalBacklinks = $backlinks->count();
+            \Log::info("Found {$totalBacklinks} backlinks for source site ID: " . $sourceSite->id);
+            
             $liveBacklinks = $backlinks->where('status', 'Live')->count();
             $pendingBacklinks = $backlinks->where('status', 'Pending')->count();
             $lostBacklinks = $backlinks->where('status', 'Lost')->count();
@@ -39,12 +48,15 @@ class BacklinkController extends Controller
 
             // Si aucun backlink n'existe, supprimer le résumé
             if ($totalBacklinks === 0) {
+                \Log::info("No backlinks found, deleting summary for domain: " . $domain);
                 SourceSummary::where('website', $domain)->delete();
                 return;
             }
 
-            // Mettre à jour ou créer le résumé - SEULEMENT les totaux calculés
+            // Mettre à jour ou créer le résumé - BASÉ SUR L'ID DU SITE SOURCE
             $summaryData = [
+                // ✅ Garder le website pour la liaison existante
+                'website' => $domain,
                 // ✅ TOTAUX CALCULÉS (stockés)
                 'total_backlinks' => $totalBacklinks,
                 'live_backlinks' => $liveBacklinks,
@@ -59,10 +71,19 @@ class BacklinkController extends Controller
             ];
 
             // Utiliser updateOrCreate avec try-catch pour gérer les erreurs
-            SourceSummary::updateOrCreate(
+            $existingSummary = SourceSummary::where('website', $domain)->first();
+            if ($existingSummary) {
+                \Log::info("Updating existing summary for domain: " . $domain . " with ID: " . $existingSummary->id);
+            } else {
+                \Log::info("Creating new summary for domain: " . $domain);
+            }
+            
+            $summary = SourceSummary::updateOrCreate(
                 ['website' => $domain],
                 $summaryData
             );
+            
+            \Log::info("Summary updated/created with ID: " . $summary->id . " for domain: " . $domain);
 
             // Forcer la mise à jour des champs dynamiques SEULEMENT si nécessaire
             // Garder link_type tel quel pour qu'il soit synchronisé
@@ -126,8 +147,8 @@ class BacklinkController extends Controller
         
         return response()->json([
             'total_backlinks' => Backlink::count(),
-            'total_clients' => \App\Models\Client::count(),
-            'total_sources' => \App\Models\SourceSite::count(),
+            'total_clients' => Client::count(),
+            'total_sources' => SourceSite::count(),
             'live_backlinks' => Backlink::where('status', 'Live')->count(),
             'pending_backlinks' => Backlink::where('status', 'Pending')->count(),
             'lost_backlinks' => Backlink::where('status', 'Lost')->count(),
@@ -136,6 +157,37 @@ class BacklinkController extends Controller
             'nofollow_backlinks' => Backlink::where('link_type', 'NoFollow')->count(),
             'monthly_backlinks' => $monthlyBacklinks,
         ]);
+    }
+
+    public function getAllSummarySources(Request $request)
+    {
+        // Récupérer TOUTES les données de la table source_summaries pour l'export
+        $summaryData = SourceSummary::with('sourceSite')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Transformer les données pour inclure les champs dynamiques depuis sourceSite
+        $transformedData = $summaryData->map(function ($summary) {
+            return [
+                'id' => $summary->id,
+                'website' => $summary->website, // Garder website intact
+                'cost' => $summary->getAttribute('cost'), // Forcer l'appel de l'accessor
+                'link_type' => $summary->getAttribute('link_type'), // Forcer l'appel de l'accessor
+                'contact_email' => $summary->getAttribute('contact_email'), // Forcer l'appel de l'accessor
+                'spam' => $summary->getAttribute('spam'), // Forcer l'appel de l'accessor
+                'total_backlinks' => $summary->total_backlinks,
+                'live_backlinks' => $summary->live_backlinks,
+                'pending_backlinks' => $summary->pending_backlinks,
+                'lost_backlinks' => $summary->lost_backlinks,
+                'dofollow_backlinks' => $summary->dofollow_backlinks,
+                'nofollow_backlinks' => $summary->nofollow_backlinks,
+                'created_at' => $summary->created_at,
+                'updated_at' => $summary->updated_at,
+                'source_site' => $summary->sourceSite, // Inclure les données complètes du sourceSite
+            ];
+        });
+
+        return response()->json($transformedData);
     }
 
     public function getSummarySources(Request $request)
@@ -281,30 +333,42 @@ class BacklinkController extends Controller
         
         $backlink->update($data);
         
+        \Log::info("Backlink {$id} updated. Old source site ID: {$oldSourceSiteId}, New source site ID: " . ($data['source_site_id'] ?? $backlink->source_site_id));
+        
         // Synchroniser les totaux dans source_summaries
         // Si le source_site_id a changé, synchroniser les deux domaines
         if (isset($data['source_site_id']) && $data['source_site_id'] != $oldSourceSiteId) {
-            // Ancien domaine
+            \Log::info("Source site ID changed, syncing both domains");
+            // Ancien site source
             $oldSourceSite = SourceSite::find($oldSourceSiteId);
             if ($oldSourceSite) {
+                \Log::info("Syncing old domain: " . $oldSourceSite->domain);
                 $this->syncSourceSummary($oldSourceSite->domain);
             }
             
-            // Nouveau domaine
+            // Nouveau site source
             $newSourceSite = SourceSite::find($data['source_site_id']);
             if ($newSourceSite) {
+                \Log::info("Syncing new domain: " . $newSourceSite->domain);
                 $this->syncSourceSummary($newSourceSite->domain);
             }
         } else {
-            // Même domaine, synchroniser une seule fois
+            \Log::info("Source site ID unchanged, syncing single domain");
+            // Même site source, synchroniser une seule fois
             $sourceSite = SourceSite::find($backlink->source_site_id);
             if ($sourceSite) {
+                \Log::info("Syncing domain: " . $sourceSite->domain);
                 $this->syncSourceSummary($sourceSite->domain);
             }
         }
         
         // Renvoyer l'objet complet avec les relations
-        return response()->json($backlink->load(['client', 'sourceSite']));
+        $response = $backlink->load(['client', 'sourceSite']);
+        
+        // Forcer le rafraîchissement immédiat des données summary pour garantir la cohérence
+        \Log::info("Forcing immediate refresh of summary data after backlink update");
+        
+        return response()->json($response);
     }
 
     public function destroy($id)
@@ -425,6 +489,43 @@ class BacklinkController extends Controller
         }
     }
 
+    /**
+     * Normaliser le type de lien depuis le fichier Excel
+     * Gère la sensibilité à la casse et les espaces invisibles
+     */
+    private function normalizeLinkType($linkType)
+    {
+        if (empty($linkType)) {
+            return 'DoFollow'; // Valeur par défaut seulement si vide
+        }
+        
+        // Enlever les espaces invisibles avant et après
+        $cleaned = trim($linkType);
+        
+        // Comparaison exacte (case-insensitive) avec les valeurs valides
+        $lowerCleaned = strtolower($cleaned);
+        
+        // Mapping exact des valeurs valides
+        if ($lowerCleaned === 'nofollow') {
+            return 'NoFollow';
+        } elseif ($lowerCleaned === 'dofollow' || $lowerCleaned === 'follow') {
+            return 'DoFollow';
+        } elseif ($lowerCleaned === 'sponsored') {
+            return 'Sponsored';
+        } elseif ($lowerCleaned === 'ugc') {
+            return 'UGC';
+        } else {
+            // Si la valeur n'est pas reconnue, retourner DoFollow par défaut
+            // mais logger la valeur pour debug
+            \Log::info('Link type non reconnu, utilisation de DoFollow par défaut', [
+                'original_value' => $linkType,
+                'cleaned_value' => $cleaned,
+                'lower_value' => $lowerCleaned
+            ]);
+            return 'DoFollow';
+        }
+    }
+
     public function importBacklinks(Request $request)
     {
         // Debug: Vérifier si le fichier est bien reçu
@@ -523,7 +624,7 @@ class BacklinkController extends Controller
                         'client_id' => $client->id,
                         'source_site_id' => $source->id,
                         'type' => $row['Type'] ?? $row['type'] ?? 'Guest Post',
-                        'link_type' => $row['Link Type'] ?? $row['link_type'] ?? 'DoFollow',
+                        'link_type' => $this->normalizeLinkType($row['Link Type'] ?? $row['link_type'] ?? null),
                         'target_url' => $row['Target URL'] ?? $row['target_url'] ?? '',
                         'anchor_text' => $row['Anchor Text'] ?? $row['anchor_text'] ?? '',
                         'placement_url' => $row['Placement URL'] ?? $row['placement_url'] ?? '',
@@ -741,14 +842,8 @@ class BacklinkController extends Controller
                     $costValue = is_numeric($cost) ? (float)$cost : null;
                     $spamValue = is_numeric($spam) ? (int)$spam : null;
 
-                    // Normaliser le link_type
-                    $normalizedLinkType = $linkType;
-                    if ($linkType) {
-                        $normalizedLinkType = ucfirst(strtolower($linkType));
-                        if (!in_array($normalizedLinkType, ['DoFollow', 'NoFollow'])) {
-                            $normalizedLinkType = 'DoFollow'; // Valeur par défaut
-                        }
-                    }
+                    // Normaliser le link_type avec la même logique que importBacklinks
+                    $normalizedLinkType = $this->normalizeLinkType($linkType);
 
                     // Utiliser updateOrCreate pour éviter les doublons
                     // La clé unique est le website, pas besoin de vérifier client ou source
