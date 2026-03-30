@@ -13,13 +13,18 @@ class SourceSiteController extends Controller
         $page = $request->get('page', 1); // Page 1 par défaut
         $search = $request->get('search', ''); // Terme de recherche
         
-        $query = SourceSite::orderBy('created_at', 'desc');
+        // Construire la requête de base
+        $query = SourceSite::query();
         
-        // Ajouter la recherche si un terme est fourni
+        // Appliquer le filtre de recherche SUR TOUTE LA TABLE en premier
         if ($search) {
             $query->where('domain', 'LIKE', '%' . $search . '%');
         }
         
+        // Appliquer le tri APRÈS le filtrage
+        $query->orderBy('created_at', 'desc');
+        
+        // Appliquer la pagination EN DERNIER
         $sources = $query->paginate($perPage, ['*'], 'page', $page);
 
         return $sources;

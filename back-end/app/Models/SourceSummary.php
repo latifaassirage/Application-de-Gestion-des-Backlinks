@@ -11,13 +11,7 @@ class SourceSummary extends Model
         'cost',
         'link_type',
         'contact_email',
-        'spam',
-        'total_backlinks',
-        'live_backlinks',
-        'pending_backlinks',
-        'lost_backlinks',
-        'dofollow_backlinks',
-        'nofollow_backlinks'
+        'spam'
     ];
 
     /**

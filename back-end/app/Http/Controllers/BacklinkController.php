@@ -101,25 +101,29 @@ class BacklinkController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 10); // 10 par défaut
-        $page = $request->get('page', 1); // Page 1 par défaut
-        $search = $request->get('search', ''); // Terme de recherche
+        // Récupérer les paramètres (même modèle que Summary)
+        $perPage = $request->get('per_page', 10);
+        $page = $request->get('page', 1);
+        $search = $request->get('search', '');
         
-        $query = Backlink::with(['client','sourceSite'])->orderBy('created_at', 'desc');
+        // EAGER LOADING pour charger les relations d'un coup (même modèle que Summary)
+        $query = Backlink::with(['client','sourceSite']);
         
-        // Ajouter la recherche si un terme est fourni
-        if ($search) {
+        // FILTRE GLOBAL sur TOUTE la table AVANT la pagination (copie exacte de Summary)
+        if (!empty($search)) {
             $query->where(function($q) use ($search) {
+                // Scanner Client Name et Source Website (même logique que Summary)
                 $q->whereHas('client', function($clientQuery) use ($search) {
-                    $clientQuery->where('company_name', 'LIKE', '%' . $search . '%');
+                    $clientQuery->where('company_name', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('sourceSite', function($sourceQuery) use ($search) {
-                    $sourceQuery->where('domain', 'LIKE', '%' . $search . '%');
+                    $sourceQuery->where('domain', 'like', '%' . $search . '%');
                 });
             });
         }
         
-        $backlinks = $query->paginate($perPage, ['*'], 'page', $page);
+        // PAGINATION après le filtre global (même modèle que Summary)
+        $backlinks = $query->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
 
         return $backlinks;
     }
@@ -192,37 +196,28 @@ class BacklinkController extends Controller
 
     public function getSummarySources(Request $request)
     {
-        // Récupérer les données de la table source_summaries avec la relation sourceSite
-        $perPage = $request->get('per_page', 10); // 10 par défaut
-        $page = $request->get('page', 1); // Page 1 par défaut
+        // Récupérer les paramètres
+        $perPage = $request->get('per_page', 10);
+        $page = $request->get('page', 1);
+        $search = $request->get('search', '');
         
-        $summaryData = SourceSummary::with('sourceSite')
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
-
-        // Transformer les données pour inclure les champs dynamiques depuis sourceSite
-        $transformedData = $summaryData->getCollection()->map(function ($summary) {
-            return [
-                'id' => $summary->id,
-                'website' => $summary->website, // Garder website intact
-                'cost' => $summary->getAttribute('cost'), // Forcer l'appel de l'accessor
-                'link_type' => $summary->getAttribute('link_type'), // Forcer l'appel de l'accessor
-                'contact_email' => $summary->getAttribute('contact_email'), // Forcer l'appel de l'accessor
-                'spam' => $summary->getAttribute('spam'), // Forcer l'appel de l'accessor
-                'total_backlinks' => $summary->total_backlinks,
-                'live_backlinks' => $summary->live_backlinks,
-                'pending_backlinks' => $summary->pending_backlinks,
-                'lost_backlinks' => $summary->lost_backlinks,
-                'dofollow_backlinks' => $summary->dofollow_backlinks,
-                'nofollow_backlinks' => $summary->nofollow_backlinks,
-                'created_at' => $summary->created_at,
-                'updated_at' => $summary->updated_at,
-                'source_site' => $summary->sourceSite, // Inclure les données complètes du sourceSite
-            ];
-        });
-
-        // Remplacer la collection dans la pagination
-        $summaryData->setCollection($transformedData);
+        // EAGER LOADING pour charger les relations d'un coup
+        $query = SourceSummary::with(['sourceSite']);
+        
+        // FILTRE GLOBAL sur TOUTE la table AVANT la pagination
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                // Scanner website, contact_email, et domain du site source
+                $q->where('website', 'like', '%' . $search . '%')
+                  ->orWhere('contact_email', 'like', '%' . $search . '%')
+                  ->orWhereHas('sourceSite', function($sourceQuery) use ($search) {
+                      $sourceQuery->where('domain', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+        
+        // PAGINATION après le filtre global
+        $summaryData = $query->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
 
         return $summaryData;
     }

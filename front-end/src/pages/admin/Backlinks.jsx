@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import api from "../../api/api";
 import Navbar from "../../components/Navbar";
 import jsPDF from 'jspdf';
@@ -23,15 +23,22 @@ export default function Backlinks() {
   const safeSources = Array.isArray(sources) ? sources : [];
   const safeSummarySources = Array.isArray(summarySources) ? summarySources : [];
 
-  // Filtrer les sources en fonction du terme de recherche
-  const filteredSummarySources = safeSummarySources.filter(source => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      (source.domain && source.domain.toLowerCase().includes(searchLower)) ||
-      (source.website && source.website.toLowerCase().includes(searchLower)) ||
-      (source.actual_domain && source.actual_domain.toLowerCase().includes(searchLower))
-    );
-  });
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [searchTimeoutId, setSearchTimeoutId] = useState(null);
+
+  // Les données sont déjà filtrées par l'API, plus besoin de filtrer localement
+  const filteredSummarySources = safeSummarySources.map(source => ({
+    ...source,
+    // Ajouter les totaux par défaut pour compatibilité frontend
+    total_backlinks: 0,
+    live_backlinks: 0,
+    pending_backlinks: 0,
+    lost_backlinks: 0,
+    dofollow_backlinks: 0,
+    nofollow_backlinks: 0,
+    source_site: source.source_site || null
+  }));
   
   const [dynamicTypes, setDynamicTypes] = useState([]);
   const [showAddType, setShowAddType] = useState(false);
@@ -173,24 +180,16 @@ export default function Backlinks() {
     }
   };
 
-  const fetchSummarySources = async (page = 1) => {
+  const fetchSummarySources = async (page = 1, search = '') => {
     try {
-      console.log(`Fetching summary sources for page ${page}`);
-      const res = await api.get(`/summary-sources?page=${page}&per_page=10`);
-      console.log("Summary sources data received:", res.data);
-      console.log("Summary sources type:", typeof res.data.data);
-      console.log("Summary sources total:", res.data.total);
-      console.log("Summary sources current_page:", res.data.current_page);
-      console.log("Summary sources last_page:", res.data.last_page);
-      console.log("First summary source:", res.data.data?.[0]);
-      console.log("Summary sources keys:", res.data.data?.[0] ? Object.keys(res.data.data[0]) : 'No data');
-      
-      setSummarySources(res.data.data || []);
+      console.log(`Fetching summary sources for page ${page} with search: "${search}"`);
+      const res = await api.get(`/summary-sources?page=${page}&per_page=10&search=${encodeURIComponent(search)}`);
+      setSummarySources(res.data.data);
       setSummaryPagination({
-        current_page: res.data.current_page || 1,
-        last_page: res.data.last_page || 1,
-        per_page: res.data.per_page || 10,
-        total: res.data.total || 0
+        current_page: res.data.current_page,
+        last_page: res.data.last_page,
+        per_page: res.data.per_page,
+        total: res.data.total,
       });
     } catch (error) {
       console.error("Error fetching summary sources:", error);
@@ -251,7 +250,7 @@ export default function Backlinks() {
       alert("Backlink updated successfully!");
       fetchBacklinks(1);
       // Rafraîchir aussi les summary sources pour garantir la cohérence
-      fetchSummarySources(summaryPagination.current_page);
+      fetchSummarySources(summaryPagination.current_page, searchTerm);
     } catch (error) {
       alert("Error updating backlink");
     }
@@ -265,7 +264,7 @@ export default function Backlinks() {
       
         fetchBacklinks(1);
         // Rafraîchir aussi les summary sources pour garantir la cohérence
-        fetchSummarySources(summaryPagination.current_page);
+        fetchSummarySources(summaryPagination.current_page, searchTerm);
       } catch (error) {
         alert("Error deleting backlink");
       }
@@ -395,7 +394,7 @@ export default function Backlinks() {
       await fetchBacklinks(1);
       
       // Rafraîchir les données summary pour voir le changement
-      await fetchSummarySources(summaryPagination.current_page);
+      await fetchSummarySources(summaryPagination.current_page, searchTerm);
       console.log('Backlink link type updated successfully!');
     } catch (error) {
       console.error('Error updating backlink link type:', error);
@@ -408,7 +407,7 @@ export default function Backlinks() {
     
     try {
       await api.delete(`/summary-sources/${sourceId}`);
-      await fetchSummarySources(summaryPagination.current_page); // Rafraîchir la liste après suppression
+      await fetchSummarySources(summaryPagination.current_page, searchTerm); // Rafraîchir la liste après suppression
       console.log('Summary source deleted successfully!');
     } catch (error) {
       console.error('Error deleting summary source:', error);
@@ -427,7 +426,7 @@ export default function Backlinks() {
     // Validation stricte pour éviter les réinitialisations accidentelles
     if (newPage >= 1 && newPage <= summaryPagination.last_page && newPage !== summaryPagination.current_page) {
       console.log(`Changing to page ${newPage} from page ${summaryPagination.current_page}`);
-      fetchSummarySources(newPage);
+      fetchSummarySources(newPage, searchTerm); // Inclure le terme de recherche
       fetchBacklinks(newPage, searchTerm); // Inclure le terme de recherche
     } else {
       console.log(`Invalid page change: ${newPage} (current: ${summaryPagination.current_page}, max: ${summaryPagination.last_page})`);
@@ -510,7 +509,7 @@ export default function Backlinks() {
     // Validation stricte pour éviter les réinitialisations accidentelles
     if (newPage >= 1 && newPage <= summaryPagination.last_page && newPage !== summaryPagination.current_page) {
       console.log(`Changing summary to page ${newPage} from page ${summaryPagination.current_page}`);
-      fetchSummarySources(newPage);
+      fetchSummarySources(newPage, searchTerm); // Inclure le terme de recherche
     } else {
       console.log(`Invalid summary page change: ${newPage} (current: ${summaryPagination.current_page}, max: ${summaryPagination.last_page})`);
     }
@@ -593,14 +592,49 @@ export default function Backlinks() {
   };
 
   useEffect(() => { 
-    fetchBacklinks(1, searchTerm); fetchClients(); fetchSources(); fetchSummarySources(); fetchTypes();
+    fetchBacklinks(1, searchTerm); fetchClients(); fetchSources(); fetchSummarySources(1, searchTerm); fetchTypes();
   }, []);
+
+  // DEBOUNCE DE 300MS pour Backlinks (même logique que Summary)
+  useEffect(() => {
+    if (searchTimeoutId) {
+      clearTimeout(searchTimeoutId);
+    }
+
+    const timeoutId = setTimeout(() => {
+      // Mettre à jour uniquement l'état data (pas de rechargement complet)
+      if (debouncedSearchTerm !== searchTerm) {
+        setDebouncedSearchTerm(searchTerm);
+        // Appel API pour les DEUX tables : backlinks ET summarySources
+        fetchBacklinks(1, searchTerm);
+        fetchSummarySources(1, searchTerm);
+      }
+    }, 300); // 300ms précis comme demandé
+
+    setSearchTimeoutId(timeoutId);
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [searchTerm]);
+
+  // Effectuer la recherche lorsque le debounced term change
+  useEffect(() => {
+    if (debouncedSearchTerm !== searchTerm && debouncedSearchTerm !== '') {
+      fetchBacklinks(1, debouncedSearchTerm);
+      fetchSummarySources(1, debouncedSearchTerm);
+    } else if (debouncedSearchTerm === '') {
+      // Si search est vide, recharger toutes les données
+      fetchBacklinks(1, '');
+      fetchSummarySources(1, '');
+    }
+  }, [debouncedSearchTerm]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    fetchBacklinks(1, value); // Toujours retourner à la page 1 lors de la recherche
-    fetchSummarySources(1); // Réinitialiser la pagination des summary sources aussi
   };
 
   // Rafraîchissement automatique des données summary toutes les 30 secondes
@@ -612,13 +646,13 @@ export default function Backlinks() {
       const totalPages = summaryPagination.last_page;
       
       if (currentPage >= 1 && currentPage <= totalPages) {
-        fetchSummarySources(currentPage);
-        fetchBacklinks(backlinksPagination.current_page); // Rafraîchir aussi les backlinks pour garantir la cohérence
+        fetchSummarySources(currentPage, searchTerm);
+        fetchBacklinks(backlinksPagination.current_page, searchTerm); // Rafraîchir aussi les backlinks pour garantir la cohérence
       }
     }, 30000); // 30 secondes
 
     return () => clearInterval(interval); // Nettoyer l'intervalle quand le composant est démonté
-  }, [summaryPagination.current_page, summaryPagination.last_page, backlinksPagination.current_page]);
+  }, [summaryPagination.current_page, searchTerm]);
 
   // Rafraîchissement quand le modal est ouvert
   useEffect(() => {
@@ -630,11 +664,11 @@ export default function Backlinks() {
       
       if (currentPage >= 1 && currentPage <= totalPages && summarySources.length === 0) {
         console.log('Refreshing summary sources on modal open');
-        fetchSummarySources(currentPage);
-        fetchBacklinks(backlinksPagination.current_page);
+        fetchSummarySources(currentPage, searchTerm);
+        fetchBacklinks(backlinksPagination.current_page, searchTerm);
       }
     }
-  }, [showSourceSitesView]);
+  }, [showSourceSitesView, searchTerm]);
 
   useEffect(() => {
     if (formData.source_site_id && sources.length > 0) {
@@ -702,7 +736,7 @@ export default function Backlinks() {
       console.log("Import successful, refreshing summary sources...");
 
       // Rafraîchir les données après l'import
-      await fetchSummarySources(1); // Revenir à la page 1 après import
+      await fetchSummarySources(1, searchTerm); // Revenir à la page 1 après import
 
       console.log("Summary sources refreshed after import");
       const message = response.data.message || 'Import réussi !';
@@ -873,6 +907,7 @@ export default function Backlinks() {
                 onChange={handleSearch}
                 className="search-input"
               />
+              {/* PAS DE SPINNER - RÉSULTATS INSTANTANÉS */}
             </div>
           </div>
           <div className="header-buttons">
