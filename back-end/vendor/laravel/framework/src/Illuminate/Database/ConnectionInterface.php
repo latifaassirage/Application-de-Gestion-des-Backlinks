@@ -179,4 +179,11 @@ interface ConnectionInterface
      * @return string
      */
     public function getDatabaseName();
+
+    /**
+     * Get the connection name.
+     *
+     * @return string|null
+     */
+    public function getName();
 }

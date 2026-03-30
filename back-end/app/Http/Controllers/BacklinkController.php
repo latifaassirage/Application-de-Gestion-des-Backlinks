@@ -172,6 +172,7 @@ class BacklinkController extends Controller
 
         // Transformer les données pour inclure les champs dynamiques depuis sourceSite
         $transformedData = $summaryData->map(function ($summary) {
+            /** @var \App\Models\SourceSummary $summary */
             return [
                 'id' => $summary->id,
                 'website' => $summary->website, // Garder website intact
