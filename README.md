@@ -38,8 +38,8 @@ npm start
 ```
 
 ### Accès par Défaut
-- **Admin**: admin@agency.com / admin123
-- **Staff**: staff@agency.com / staff123
+- **Admin**: 
+- **Staff**: 
 
 ### Données de Test
 La commande `php artisan migrate:fresh --seed` charge automatiquement:
