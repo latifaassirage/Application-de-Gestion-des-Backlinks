@@ -39,6 +39,14 @@ Route::middleware(['auth:sanctum', 'staff'])->group(function(){
     Route::get('/all-summary-sources', [BacklinkController::class, 'getAllSummarySources']);
     Route::put('/summary-sources/{id}', [BacklinkController::class, 'updateSummarySource']);
     Route::delete('/summary-sources/{id}', [BacklinkController::class, 'deleteSummarySource']);
+    
+    // Report generation routes (moved here for testing)
+    Route::post('/reports/summary-pdf', [ReportController::class, 'generateSummaryPdf']);
+    
+    // Route de test pour diagnostiquer le problème
+    Route::post('/test-pdf', function() {
+        return response()->json(['message' => 'Test route works']);
+    });
 });
 
 // Admin only routes

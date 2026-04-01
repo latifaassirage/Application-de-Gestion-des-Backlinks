@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import api from "../../api/api";
+import { exportSummaryPdf } from "../../api/reports";
 import Navbar from "../../components/Navbar";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -828,65 +829,44 @@ export default function Backlinks() {
     }
   };
 
-  const exportToPDF = () => {
-    // Prepare PDF data
-    const pdfData = safeSources.map(source => {
-      // Find associated client through backlinks
-      const associatedBacklink = safeBacklinks.find(b => b.source_site_id === source.id);
-      const associatedClient = associatedBacklink ? safeClients.find(c => c.id === associatedBacklink.client_id) : null;
+  const exportToPDF = async () => {
+    try {
+      // Utiliser la fonction dédiée avec la bonne configuration
+      const response = await exportSummaryPdf();
       
-      return [
-        source.domain,
-        associatedBacklink?.cost == 0 || associatedBacklink?.cost === "0" || associatedBacklink?.cost === null || associatedBacklink?.cost === undefined ? 'Free' : `$${associatedBacklink?.cost || 0}`,
-        associatedBacklink?.link_type || '-',
-        associatedClient?.contact_email || '-',
-        `${source.spam_score || 0}%`
-      ];
-    });
-
-    // Create PDF
-    const doc = new jsPDF();
-    const today = new Date().toLocaleDateString();
-    
-    // Add title
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Source Sites Summary Report', 14, 20);
-    
-    // Add date
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Date: ${today}`, 14, 30);
-    
-    // Add table using autoTable
-    autoTable(doc, {
-      head: [['Website', 'Cost', 'Type', 'Email', 'Spam']],
-      body: pdfData,
-      startY: 40,
-      styles: {
-        font: 'helvetica',
-        fontSize: 10,
-        cellPadding: 3
-      },
-      headStyles: {
-        fillColor: [59, 130, 246],
-        textColor: 255,
-        fontStyle: 'bold'
-      },
-      alternateRowStyles: {
-        fillColor: [245, 245, 245]
-      },
-      columnStyles: {
-        0: { cellWidth: 40 }, // Website
-        1: { cellWidth: 20, halign: 'right' }, // Cost
-        2: { cellWidth: 25, halign: 'center' }, // Type
-        3: { cellWidth: 50 }, // Email
-        4: { cellWidth: 20, halign: 'center' } // Spam
+      // Créer un blob à partir de la réponse PDF
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      
+      // Générer le nom de fichier avec date
+      const today = new Date().toLocaleDateString();
+      const filename = `Source_Sites_Summary_${today}.pdf`;
+      
+      // Créer un lien temporaire et déclencher le téléchargement
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Nettoyer l'URL
+      window.URL.revokeObjectURL(url);
+      
+    } catch (error) {
+      console.error("Error exporting PDF:", error);
+      
+      // Gestion d'erreur détaillée
+      if (error.response?.status === 405) {
+        alert("Erreur 405: La route n'est pas autorisée. Veuillez redémarrer le serveur Laravel et exécuter 'php artisan route:clear'.");
+      } else if (error.response?.status === 403) {
+        alert("Erreur 403: Vous n'avez pas les permissions nécessaires pour exporter le PDF.");
+      } else if (error.response?.status === 401) {
+        alert("Erreur 401: Votre session a expiré. Veuillez vous reconnecter.");
+      } else {
+        alert("Error exporting PDF. Please try again.");
       }
-    });
-    
-    // Save PDF
-    doc.save(`Backlinks_Report_${today}.pdf`);
+    }
   };
 
   if (loading) return <div className="loading">Loading...</div>;

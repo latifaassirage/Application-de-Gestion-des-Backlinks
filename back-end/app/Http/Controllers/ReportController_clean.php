@@ -119,28 +119,4 @@ class ReportController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
-    public function generateSummaryPdf(Request $request)
-    {
-        try {
-            // Récupérer toutes les données de la table summary
-            $summaries = SourceSummary::with(['sourceSite'])->get();
-            
-            // Calculer les statistiques depuis la table summary
-            $stats = [
-                'total' => $summaries->count(),
-                'free' => $summaries->where('cost', 0)->count(),
-                'paid' => $summaries->where('cost', '>', 0)->count(),
-                'dofollow' => $summaries->where('link_type', 'DoFollow')->count(),
-                'nofollow' => $summaries->where('link_type', 'NoFollow')->count(),
-                'total_cost' => (float) $summaries->sum('cost')
-            ];
-
-            $pdf = Pdf::loadView('reports.summary-pdf', compact('summaries', 'stats'));
-            return $pdf->download('source-sites-summary.pdf');
-
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
 }
